@@ -1,0 +1,100 @@
+/*
+    DEMO STYLE
+*/
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #262641;
+    color: #ffffff;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #555555;
+}
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+.btn-default{
+    color: #fff;
+    background-color: #1bc5bc;
+    border-color: #1bc5bc;
+}
+
+.btn-default:hover{
+    color: #fff;
+    background-color: #1dcfc6;
+    border-color: #1dcfc6;
+}
+
+.card-default{
+
+    transition: 0.5s;
+    background-color: #32324e;
+
+}
+
+.card-default:hover{
+
+    transition: 0.5s;
+    background-color: #1c1a2f;
+
+}
+
+.navbar-footer{
+
+    margin-bottom: 0 !important;
+
+}
+
+.form-control {
+    transition: 0.5s;
+    color: #ffffff;
+    background-color: #1c1a2f;
+    border: 1px solid #32324e;
+}
+
+.form-control:hover {
+    transition: 0.5s;
+    color: #ffffff;
+    background-color: #32324e;
+    border: 1px solid #1c1a2f;
+}
+
+.form-control:focus {
+    transition: 0.5s;
+    color: #ffffff;
+    background-color: #32324e;
+    border: 1px solid #1c1a2f;
+}

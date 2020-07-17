@@ -74,38 +74,33 @@ try {
                     if (is_dir($path)){
 
                         /** Crio os arquivos de classes **/
-                        foreach ($classes->all($project_id) as $keyClasses => $resultClasses){
+                        foreach ($classes->allBuild($project_id) as $keyClasses => $resultClasses){
 
-                            /** Verifico as pastas **/
-                            foreach ($folder->all() as $keyFolders => $resultFolders){
+                            if (empty($resultClasses['folder_name'])){
 
-                                if ($resultClasses['folder_id'] == $resultFolders['folder_id'] && $resultFolders['folder_id'] == 1){
+                                /** Crio meu arquivo e escrevo dentro dele **/
+                                $document = fopen($path . '/' . $resultClasses['class_name'] . '.class.php', "a+");
 
-                                    /** Crio meu arquivo e escrevo dentro dele **/
-                                    $document = fopen($path . '/' . $resultClasses['name'] . '.class.php', "a+");
+                            }else{
 
-                                }elseif ($resultClasses['folder_id'] == $resultFolders['folder_id']){
+                                /** Crio o caminho **/
+                                mkdir($path . '/' . $resultClasses['folder_name'], 0777, true);
 
-                                    /** Crio o caminho **/
-                                    mkdir($path . '/' . $resultFolders['name'], 0777, true);
-
-                                    /** Crio meu arquivo e escrevo dentro dele **/
-                                    $document = fopen($path . '/' . $resultFolders['name'] . '/' . $resultClasses['name'] . '.class.php', "a+");
-
-                                }
-
-                                /** Preenchos os arquivos de classes **/
-                                foreach ($methods->all($resultClasses['class_id']) as $keyMethods => $resultMethods){
-
-                                    /** Escrevo dentro do arquivo **/
-                                    fwrite($document, $main->internalCode($resultMethods['code']));
-
-                                }
-
-                                /** Encerro a escrita do arquivo **/
-                                fclose($document);
+                                /** Crio meu arquivo e escrevo dentro dele **/
+                                $document = fopen($path . '/' . $resultClasses['folder_name'] . '/' . $resultClasses['class_name'] . '.class.php', "a+");
 
                             }
+
+                            /** Preenchos os arquivos de classes **/
+                            foreach ($methods->all($resultClasses['class_id']) as $keyMethods => $resultMethods){
+
+                                /** Escrevo dentro do arquivo **/
+                                fwrite($document, $main->internalCode($resultMethods['code']));
+
+                            }
+
+                            /** Encerro a escrita do arquivo **/
+                            fclose($document);
 
                         }
 
@@ -124,38 +119,33 @@ try {
                         if (is_dir($path)){
 
                             /** Crio os arquivos de classes **/
-                            foreach ($classes->all($project_id) as $keyClasses => $resultClasses){
+                            foreach ($classes->allBuild($project_id) as $keyClasses => $resultClasses){
 
-                                /** Verifico as pastas **/
-                                foreach ($folder->all() as $keyFolders => $resultFolders){
+                                if (empty($resultClasses['folder_name'])){
 
-                                    if ($resultClasses['folder_id'] == $resultFolders['folder_id'] && $resultFolders['folder_id'] == 1){
+                                    /** Crio meu arquivo e escrevo dentro dele **/
+                                    $document = fopen($path . '/' . $resultClasses['class_name'] . '.class.php', "a+");
 
-                                        /** Crio meu arquivo e escrevo dentro dele **/
-                                        $document = fopen($path . '/' . $resultClasses['name'] . '.class.php', "a+");
+                                }else{
 
-                                    }elseif ($resultClasses['folder_id'] == $resultFolders['folder_id']){
+                                    /** Crio o caminho **/
+                                    mkdir($path . '/' . $resultClasses['folder_name'], 0777, true);
 
-                                        /** Crio o caminho **/
-                                        mkdir($path . '/' . $resultFolders['name'], 0777, true);
-
-                                        /** Crio meu arquivo e escrevo dentro dele **/
-                                        $document = fopen($path . '/' . $resultFolders['name'] . '/' . $resultClasses['name'] . '.class.php', "a+");
-
-                                    }
-
-                                    /** Preenchos os arquivos de classes **/
-                                    foreach ($methods->all($resultClasses['class_id']) as $keyMethods => $resultMethods){
-
-                                        /** Escrevo dentro do arquivo **/
-                                        fwrite($document, $main->internalCode($resultMethods['code']));
-
-                                    }
-
-                                    /** Encerro a escrita do arquivo **/
-                                    fclose($document);
+                                    /** Crio meu arquivo e escrevo dentro dele **/
+                                    $document = fopen($path . '/' . $resultClasses['folder_name'] . '/' . $resultClasses['class_name'] . '.class.php', "a+");
 
                                 }
+
+                                /** Preenchos os arquivos de classes **/
+                                foreach ($methods->all($resultClasses['class_id']) as $keyMethods => $resultMethods){
+
+                                    /** Escrevo dentro do arquivo **/
+                                    fwrite($document, $main->internalCode($resultMethods['code']));
+
+                                }
+
+                                /** Encerro a escrita do arquivo **/
+                                fclose($document);
 
                             }
 

@@ -36,19 +36,29 @@
 
                         <h5 class="card-title">
 
-                            <span class="badge badge-light mr-1">#199</span>save
+                            <span class="badge badge-light mr-1">#{{query.result.classes.class_id}}</span>{{query.result.classes.name}}
 
                         </h5>
 
                         <h6 class="card-subtitle text-white-50 mb-2">
 
-                            Detalhes
+                            Detalhes da classe
 
                         </h6>
 
-                        <div class="form-group">
+                        <div v-for="(result, index) in query.result.methods" v-bind:key="index">
 
-                            <textarea name="" rows="10" class="form-control"></textarea>
+                            <div class="card-text">
+
+                                Método: <span class="badge badge-light">{{ result.name }}</span>
+
+                            </div>
+
+                            <div class="card-code mt-1">
+
+                                {{ result.code }}
+
+                            </div>
 
                         </div>
 
@@ -66,24 +76,105 @@
 
 <script type="text/ecmascript-6">
 
+    /** Importação de componentes **/
+    import axios from 'axios';
+
     export default {
 
-        name: "ProjectsDetails",
+        /** Nome do componente atual **/
+        name: "ClassDetails",
 
         data (){
 
             return {
 
-                value : [
+                inputs : {
 
-                    1,
-                    2,
-                    3,
-                    4,
+                    class_id: this.$route.params.class_id,
 
-                ]
+                },
+
+                query : {
+
+                    result: {
+
+                        methods : [],
+                        classes : [],
+
+                    },
+
+                },
 
             }
+
+        },
+
+        methods : {
+
+            /** Listo os registros **/
+            Get(){
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_EDIT_FORM',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.query.result.classes = response.data.result;
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Listo os registros **/
+            List(){
+
+                /** Envio uma requisição **/
+                axios.post('router.php?TABLE=METHODS&ACTION=METHODS_IN_CLASS', {
+
+                    inputs : this.inputs,
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.query.result.methods = response.data.result;
+                        
+                        for (let i = 0; i < this.query.result.methods.length; i++){
+
+                            this.query.result.methods[i].code = atob(this.query.result.methods[i].code);
+
+                        }
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+        },
+
+        mounted(){
+
+            this.Get();
+            this.List();
 
         }
 

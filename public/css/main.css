@@ -98,3 +98,20 @@ a:focus {
     background-color: #32324e;
     border: 1px solid #1c1a2f;
 }
+
+.card-code{
+
+    transition: 0.5s;
+    padding: .375rem .75rem;
+    color: #ffffff;
+    background-color: #1c1a2f;
+    border-radius: .25rem;
+
+}
+
+.card-code:hover{
+
+    transition: 0.5s;
+    background-color: #32324e;
+
+}

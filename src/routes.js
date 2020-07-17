@@ -1,6 +1,9 @@
 import ProjectsDatagrid from './components/Projects/ProjectsDatagrid'
 import ProjectsForm from './components/Projects/ProjectsForm'
 
+import FoldersForm from './components/Folders/FoldersForm'
+import FoldersDetail from './components/Folders/FoldersDetail'
+
 import ClassesForm from './components/Classes/ClassesForm'
 import ClassesDatagrid from './components/Classes/ClassesDatagrid'
 import ClassesDetail from './components/Classes/ClassesDetail'
@@ -45,6 +48,24 @@ const routes = [
     {
 
         /** Página Inicial **/
+        path: '/folders/form/:project_id/:folder_id',
+        component: FoldersForm,
+        name: 'folders-form',
+
+    },
+
+    {
+
+        /** Página Inicial **/
+        path: '/folders/details/:project_id/:folder_id',
+        component: FoldersDetail,
+        name: 'folders-detail',
+
+    },
+
+    {
+
+        /** Página Inicial **/
         path: '/classes/datagrid/:project_id',
         component: ClassesDatagrid,
         name: 'classes-datagrid',
@@ -54,7 +75,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/classes/detail',
+        path: '/classes/detail/:class_id',
         component: ClassesDetail,
         name: 'classes-detail',
 

@@ -108,4 +108,39 @@ class Main
 
     }
 
+    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
+    public function nameClass($string){
+
+        /** Parâmetros de entrada **/
+        $this->string = $string;
+
+        /** Troco o "_" por " " **/
+        $this->string = str_replace('_', ' ', $this->string);
+
+        /** Coloco as primeiras letras em maiúsculo **/
+        $this->string = ucwords($this->string);
+
+        /** Troco o " " por "" **/
+        $this->string = str_replace(' ', '', $this->string);
+
+        return $this->string;
+
+    }
+
+    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
+    public function descriptionClass($string){
+
+        /** Parâmetros de entrada **/
+        $this->string = $string;
+
+        /** Tratamento do Texto **/
+        $this->string = trim($this->string);
+
+        /** Texto Fixo **/
+        $this->string = 'Classe utilizada para manipular os dados da tabela"' . $this->string . '"';
+
+        return $this->string;
+
+    }
+
 }

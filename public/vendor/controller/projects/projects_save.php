@@ -101,26 +101,35 @@ try {
 
             /** Preparo o formulario para retorno **/
             $result = array(
+
                 "cod" => 0,
                 "result" => $message
+
             );
+
         } else {
 
             $projects->save($project_id, $situation_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update);
 
             /** Result **/
             $result = array(
+
                 "cod" => 1,
+                "project_id" => $projects->getLast()->project_id,
                 "result" => "Informações atualizadas com sucesso!"
+
             );
+
         }
 
     }else{
 
         /** Preparo o formulario para retorno **/
         $result = array(
+
             "cod" => 404,
             "result" => "Usuário não autenticado",
+
         );
 
     }
@@ -135,8 +144,10 @@ try {
 
     /** Preparo o formulario para retorno **/
     $result = array(
+
         "cod" => 0,
         "message" => $e->getMessage()
+
     );
 
     /** Envio **/

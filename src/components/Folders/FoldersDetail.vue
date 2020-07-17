@@ -6,27 +6,11 @@
 
             <div class="item">
 
-                <router-link v-bind:to="{name : 'folders-form', params : {project_id : inputs.project_id}}">
-
-                    <i class="fas fa-folder"></i> Pasta
-
-                </router-link>
-
-            </div>
-
-            <div class="item">
-
                 <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0}}">
 
                     <i class="fas fa-file-code"></i> Classe
 
                 </router-link>
-
-            </div>
-
-            <div class="item" v-on:click="List()">
-
-                <i class="fas fa-sync"></i> Atualizar
 
             </div>
 
@@ -40,13 +24,11 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-light">Classes</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Pasta/ <span class="badge badge-light">Arquivos</span>
 
                 </h4>
 
             </div>
-
-            <FoldersDatagrid v-bind:project-id="inputs.project_id"></FoldersDatagrid>
 
             <div class="col-md-12 animate__animated animate__fadeIn">
 
@@ -172,17 +154,15 @@
     /** Importação de componentes **/
     import axios from 'axios';
     import ModalConfirm from '../Geral/ModalConfirm';
-    import FoldersDatagrid from '../Folders/FoldersDatagrid';
 
     export default {
 
         /** Nome do componente atual **/
-        name: "ClassesDatagrid",
+        name: "FoldersDetails",
 
         components : {
 
             ModalConfirm,
-            FoldersDatagrid,
 
         },
 
@@ -193,6 +173,7 @@
                 inputs : {
 
                     project_id: this.$route.params.project_id,
+                    folder_id: this.$route.params.folder_id,
 
                 },
 
@@ -216,13 +197,13 @@
             List(){
 
                 /** Envio uma requisição **/
-                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DATAGRID', {
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FILES_IN_FOLDER', {
 
                     inputs : this.inputs,
 
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.query.result.classes = response.data.result;

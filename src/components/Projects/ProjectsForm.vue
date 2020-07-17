@@ -202,15 +202,31 @@
 
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-4">
 
                                 <div class="form-group">
 
                                     <div class="custom-control custom-checkbox">
 
-                                        <input type="checkbox" class="custom-control-input" id="GerarClassesAutomaticamente">
+                                        <input type="checkbox" class="custom-control-input" id="GerarClassesAutomaticamente" v-model="inputs.generate_classes">
 
                                         <label class="custom-control-label" for="GerarClassesAutomaticamente">Gerar Classes Automaticamente</label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+
+                                    <div class="custom-control custom-checkbox">
+
+                                        <input type="checkbox" class="custom-control-input" id="EstruturaDaAplicacao" v-model="inputs.generate_methods">
+
+                                        <label class="custom-control-label" for="EstruturaDaAplicacao">Gerar Métodos Automaticamente</label>
 
                                     </div>
 
@@ -278,6 +294,9 @@
                     date_register : null,
                     date_update : null,
 
+                    generate_classes : false,
+                    generate_methods : false,
+
                 },
 
                 query : {
@@ -313,16 +332,144 @@
                         /** Verificação do retorno **/
                         switch (response.data.cod){
 
+                            /** Erro **/
                             case 0:
 
                                 this.query.result.error = response.data.result;
                                 break;
 
+                            /** Sucesso **/
                             case 1:
 
-                                this.$router.replace({name : 'projects-datagrid'});
+                                /** Verifica se deve gerar classes automaticamente **/
+                                if (this.inputs.generate_classes){
+
+                                    /** Executo o método para gerar classes automaticamente **/
+                                    this.SaveClasses(response.data.project_id, this.inputs.database_name);
+
+                                }else {
+
+                                    /** Realizo o redirecionamento **/
+                                    this.$router.replace({name : 'projects-datagrid'});
+
+                                }
+
+                                /** Verifica se deve gerar classes automaticamente **/
+                                if (this.inputs.generate_methods){
+
+                                    /** Executo o método para gerar classes automaticamente **/
+                                    this.SaveClasses(response.data.project_id, this.inputs.database_name);
+
+                                }else {
+
+                                    /** Realizo o redirecionamento **/
+                                    this.$router.replace({name : 'projects-datagrid'});
+
+                                }
                                 break;
 
+                            /** Usuário não autenticado **/
+                            case 404:
+
+                                /** Recarrego a página **/
+                                location.reload();
+                                break;
+
+                        }
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Método para salvar registro **/
+            SaveClasses(project_id, database_name){
+
+                this.inputs.project_id = project_id;
+                this.inputs.database_name = database_name;
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_GENERATE_SAVE',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        /** Verificação do retorno **/
+                        switch (response.data.cod){
+
+                            /** Erro **/
+                            case 0:
+
+                                this.query.result.error = response.data.result;
+                                break;
+
+                            /** Sucesso **/
+                            case 1:
+
+                                this.$router.replace({name : 'classes-datagrid'});
+                                break;
+
+                            /** Usuário não autenticado **/
+                            case 404:
+
+                                location.reload();
+                                break;
+
+                        }
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Método para salvar registro **/
+            SaveMethods(project_id, database_name){
+
+                this.inputs.project_id = project_id;
+                this.inputs.database_name = database_name;
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=METHODS&ACTION=METHODS_GENERATE_SAVE',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        /** Verificação do retorno **/
+                        switch (response.data.cod){
+
+                            /** Erro **/
+                            case 0:
+
+                                this.query.result.error = response.data.result;
+                                break;
+
+                            /** Sucesso **/
+                            case 1:
+
+                                this.$router.replace({name : 'classes-datagrid'});
+                                break;
+
+                            /** Usuário não autenticado **/
                             case 404:
 
                                 location.reload();

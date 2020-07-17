@@ -17,6 +17,7 @@ class Classes
     private $connection = null;
     private $sql = null;
     private $stmt = null;
+    private $database_name = null;
     private $class_id = null;
     private $situation_id = null;
     private $user_id = null;
@@ -94,13 +95,65 @@ class Classes
         $this->project_id = (int)$project_id;
 
         /** Consulta SQL **/
-        $this->sql = "select * from classes where project_id = :project_id";
+        $this->sql = "select * from classes where project_id = :project_id and folder_id is null";
 
         /** Preparo o Sql **/
         $this->stmt = $this->connection->connect()->prepare($this->sql);
 
         /** Preencho os parâmetros do SQl **/
         $this->stmt->bindParam(':project_id', $this->project_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /** Lista todos os registros **/
+    public function allBuild($project_id)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->project_id = (int)$project_id;
+
+        /** Consulta SQL **/
+        $this->sql = "select 
+                        c.class_id,
+                        c.name as class_name, 
+                        f.name as folder_name 
+                        from classes c
+                        left join folders f on c.folder_id = f.folder_id
+                        where c.project_id = :project_id ";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':project_id', $this->project_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /** Lista todos os registros **/
+    public function filesInFolder($folder_id)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->folder_id = (int)$folder_id;
+
+        /** Consulta SQL **/
+        $this->sql = "select * from classes where folder_id = :folder_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':folder_id', $this->folder_id);
 
         /** Executo o SQl **/
         $this->stmt->execute();
@@ -146,7 +199,11 @@ class Classes
         $this->stmt->bindParam(':situation_id', $this->situation_id);
         $this->stmt->bindParam(':user_id', $this->user_id);
         $this->stmt->bindParam(':project_id', $this->project_id);
-        $this->stmt->bindParam(':folder_id', $this->folder_id);
+        if ($this->folder_id > 0){
+            $this->stmt->bindParam(':folder_id', $this->folder_id);
+        }else{
+            $this->stmt->bindParam(':folder_id', $this->folder_id, \PDO::PARAM_NULL);
+        }
         $this->stmt->bindParam(':name', $this->name);
         $this->stmt->bindParam(':description', $this->description);
         $this->stmt->bindParam(':version', $this->version);
@@ -176,6 +233,30 @@ class Classes
 
         /** Retorno um objeto **/
         return $this->stmt->execute();
+
+    }
+
+    /** Método que salva as classes automaticamente quando o projeto for criado **/
+    public function findClasses($database_name)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->database_name = (string)$database_name;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT table_schema, table_name, table_type FROM information_schema.tables WHERE table_schema = :database_name";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':database_name', $this->database_name);
+
+        /** Retorno um objeto **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     }
 

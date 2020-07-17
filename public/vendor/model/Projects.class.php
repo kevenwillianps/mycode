@@ -89,6 +89,70 @@ class Projects
         return $this->stmt->fetchObject();
     }
 
+    /** Listo a quantidade total de registros **/
+    public function getLast()
+    {
+
+        /** Consulta SQL **/
+        $this->sql = "select * from projects order by project_id desc";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchObject();
+    }
+
+    /** Localizo o banco de dados **/
+    public function findDatabase($database_name){
+
+        /** Parâmetro de entrada **/
+        $this->database_name = (string)$database_name;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM information_schema.contactlist;";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':database_name', $this->database_name);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    /** Testo a conexão com o banco de dados **/
+    public function FindUserAndPassword($database_user, $database_password){
+
+        /** Parâmetro de entrada **/
+        $this->database_user     = (string)$database_user;
+        $this->database_password = (string)$database_password;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM mysql.user mysql_user WHERE mysql_user.user = :user";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':user', $this->database_user);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchObject();
+
+    }
+
     /** Lista todos os registros **/
     public function all()
     {

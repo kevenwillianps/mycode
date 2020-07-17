@@ -9,12 +9,12 @@
 
 /** Importo as classes que irei utilizar **/
 use \vendor\model\Main;
-use \vendor\model\Folder;
+use \vendor\model\Classes;
 use \vendor\model\ArrayUtf8Encode;
 
 /** Instânciamento das classes **/
 $main = new Main();
-$folder = new Folder();
+$classes = new Classes();
 $arrayUtf8Encode = new ArrayUtf8Encode();
 
 try {
@@ -25,15 +25,15 @@ try {
         $inputs = json_decode(file_get_contents('php://input'), true);
 
         /** Parâmetros de entrada **/
-        $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
+        $folder_id = isset($inputs['inputs']['folder_id']) ? (int)$main->antiInjection($inputs['inputs']['folder_id']) : 0;
 
         /** Controle de erros **/
         $message = array();
 
         /** Validação de campos obrigatórios **/
         /** Verifico se o campo class_id foi preenchido **/
-        if ($project_id <= 0) {
-            array_push($message, '$project_id - O seguinte campo deve ser preenchido/selecionado');
+        if ($folder_id <= 0) {
+            array_push($message, '$folder_id - O seguinte campo deve ser preenchido/selecionado');
         }
 
         /** Verifico se existem erros **/
@@ -46,11 +46,12 @@ try {
                 "message" => $message
 
             );
+
         } else {
 
             /** Result **/
             $result = array(
-                "result" => $arrayUtf8Encode->utf8Converter($folder->all($project_id))
+                "result" => $arrayUtf8Encode->utf8Converter($classes->filesInFolder($folder_id))
             );
 
         }

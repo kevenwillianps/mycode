@@ -68,7 +68,7 @@
 
                         <div class="row">
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
 
                                 <div class="form-group">
 
@@ -80,7 +80,7 @@
 
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
 
                                 <div class="form-group">
 
@@ -92,7 +92,7 @@
 
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
 
                                 <div class="form-group">
 
@@ -101,6 +101,26 @@
                                     <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
 
                                         <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
+
+                                            {{ result.name }}
+
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-group">
+
+                                    <label for="Pasta" class="col-form-label">Pasta</label>
+
+                                    <select id="Pasta" class="custom-select form-control" v-model="inputs.folder_id">
+
+                                        <option v-bind:value="result.folder_id" v-for="(result, index) in query.result.folders" v-bind:key="index">
 
                                             {{ result.name }}
 
@@ -177,6 +197,7 @@
 
                         error : [],
                         situations : [],
+                        folders : [],
 
                     }
 
@@ -280,6 +301,32 @@
 
             },
 
+            /** Método para listar registros **/
+            ListFolders(){
+
+                /** Envio uma requisição ao backend **/
+                axios.post('router.php?TABLE=FOLDERS&ACTION=FOLDERS_DATAGRID', {
+
+                    inputs : this.inputs,
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.query.result.folders = response.data.result;
+
+                    })
+
+                    /** Caso tenha erro **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
         },
 
         mounted(){
@@ -292,6 +339,7 @@
             }
 
             this.ListSituations();
+            this.ListFolders();
 
         }
 

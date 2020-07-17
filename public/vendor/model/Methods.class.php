@@ -110,6 +110,29 @@ class Methods
         return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /** Lista todos os registros **/
+    public function methodsInClass($class_id)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->class_id = (int)$class_id;
+
+        /** Consulta SQL **/
+        $this->sql = "select * from methods where class_id = :class_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':class_id', $this->class_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     /** Insere/autualiza um registro no banco de dados **/
     public function save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update)
     {

@@ -23,6 +23,7 @@ $projects = new Projects();
 
 try {
 
+    /** Verifico se existe sessão do usuário **/
     if ($main->verifySession()){
 
         /** Capturo meus campos envios por json **/
@@ -30,6 +31,7 @@ try {
 
         /** Parâmetros de entrada **/
         $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
+        $user_name = isset($inputs['inputs']['user_name']) ? (string)$main->antiInjection($inputs['inputs']['user_name']) : $_SESSION['MYCODE-USER-NAME'];
 
         /** Pego o ano atual **/
         $year = date('Y');
@@ -43,10 +45,11 @@ try {
         /** Controle de erros **/
         $message = array();
 
-        /** Validação de campos obrigatórios **/
         /** Verifico se o campo class_id foi preenchido **/
         if ($project_id <= 0) {
+
             array_push($message, '$project_id - O seguinte campo deve ser preenchido/selecionado');
+
         }
 
         /** Verifico se existem erros **/
@@ -56,7 +59,7 @@ try {
             $result = array(
 
                 "cod" => 0,
-                "message" => $message
+                "result" => $message
 
             );
 
@@ -66,101 +69,166 @@ try {
             $row = $projects->get($project_id);
 
             /** Verifico se existe o registro **/
-            if (isset($row)) {
+            if (isset($row))
+            {
 
                 /** Verfico se o registro é válido **/
-                if ($row->project_id > 0) {
+                if ($row->project_id > 0)
+                {
 
-                    if (is_dir($path)){
+                    /** Crio a pasta do projeto **/
+                    if (mkdir($path, 0777, true))
+                    {
 
                         /** Crio os arquivos de classes **/
-                        foreach ($classes->allBuild($project_id) as $keyClasses => $resultClasses){
+                        foreach ($classes->allBuild($row->project_id) as $keyClasses => $resultClasses)
+                        {
 
+                            /** Verifico se a classe irá ficar dentro de alguma pasta **/
                             if (empty($resultClasses['folder_name'])){
 
                                 /** Crio meu arquivo e escrevo dentro dele **/
                                 $document = fopen($path . '/' . $resultClasses['class_name'] . '.class.php', "a+");
 
+                                /** Preencho o arquivo **/
+                                $main->fillClass($path, $resultClasses['class_name'], $main->headerClass($resultClasses['class_name'], $user_name));
+
+                                /** Preencho o arquivo com os parâmetros padrão **/
+                                $main->fillClass($path, $resultClasses['class_name'], $main->defaultParametersClass());
+
+                                /** Localizo as classes **/
+                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables){
+
+                                    /** Verifico se os parâmetros é da classe atual **/
+                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
+                                    {
+
+                                        /** Localizo os campos da tabela **/
+                                        foreach ($classes->findParameters($row->database_name, $resultTables['table_name']) as $keyParameter => $resultParameters)
+                                        {
+
+                                            /** Preencho o arquivo **/
+                                            $main->fillClass($path, $resultClasses['class_name'], $main->parametersClass($resultParameters['COLUMN_NAME']));
+
+                                        }
+
+                                    }
+
+                                }
+
+                                /** Preencho o arquivo com método construtor **/
+                                $main->fillClass($path, $resultClasses['class_name'], $main->methodConstruct());
+
+                                /** Localizo as classes **/
+                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
+                                {
+
+                                    /** Verifico se os parâmetros é da classe atual **/
+                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
+                                    {
+
+                                        /** Localizo os campos da tabela **/
+                                        foreach ($classes->findPrimaryKey($row->database_name, $resultTables['table_name']) as $keyPrimaryKey => $resultPrimaryKey)
+                                        {
+
+                                            /** Preencho o arquivo com método destrutor **/
+                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodAll($resultTables['table_name']));
+                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodSave($resultTables['table_name'], $classes->findParameters($row->database_name, $resultTables['table_name'])));
+                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodGet($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
+                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodDelete($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
+
+                                        }
+
+                                    }
+
+                                }
+
+                                /** Preencho o arquivo com método destrutor **/
+                                $main->fillClass($path, $resultClasses['class_name'], $main->methodDestruct());
+
+                                /** Preencho o arquivo **/
+                                $main->fillClass($path, $resultClasses['class_name'], $main->footerClass());
+
                             }else{
 
-                                /** Crio o caminho **/
+                                /** Crio o caminho da pasta **/
                                 mkdir($path . '/' . $resultClasses['folder_name'], 0777, true);
 
-                                /** Crio meu arquivo e escrevo dentro dele **/
-                                $document = fopen($path . '/' . $resultClasses['folder_name'] . '/' . $resultClasses['class_name'] . '.class.php', "a+");
+                                /** Preencho o arquivo o método construtor **/
+                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->headerClass($resultClasses['class_name'], $user_name));
+
+                                /** Preencho o arquivo */
+                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->defaultParametersClass());
+
+                                /** Localizo as classes **/
+                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
+                                {
+
+                                    /** Verifico se os parâmetros é da classe atual **/
+                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
+                                    {
+
+                                        /** Localizo os campos da tabela **/
+                                        foreach ($classes->findParameters($row->database_name, $resultTables['table_name']) as $keyParameter => $resultParameters)
+                                        {
+
+                                            /** Preencho o arquivo **/
+                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->parametersClass($resultParameters['COLUMN_NAME']));
+
+                                        }
+
+                                    }
+
+                                }
+
+                                /** Preencho o arquivo */
+                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodConstruct());
+
+                                /** Localizo as classes **/
+                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
+                                {
+
+                                    /** Verifico se os parâmetros é da classe atual **/
+                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
+                                    {
+
+                                        /** Localizo os campos da tabela **/
+                                        foreach ($classes->findPrimaryKey($row->database_name, $resultTables['table_name']) as $keyPrimaryKey => $resultPrimaryKey)
+                                        {
+
+                                            /** Preencho o arquivo com método destrutor **/
+                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodAll($resultTables['table_name']));
+                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodSave($resultTables['table_name'], $classes->findParameters($row->database_name, $resultTables['table_name'])));
+                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodGet($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
+                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodDelete($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
+
+                                        }
+
+                                    }
+
+                                }
+
+                                /** Preencho o arquivo com método destrutor **/
+                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodDestruct());
+
+                                /** Preencho o arquivo **/
+                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->footerClass());
 
                             }
-
-                            /** Preenchos os arquivos de classes **/
-                            foreach ($methods->all($resultClasses['class_id']) as $keyMethods => $resultMethods){
-
-                                /** Escrevo dentro do arquivo **/
-                                fwrite($document, $main->internalCode($resultMethods['code']));
-
-                            }
-
-                            /** Encerro a escrita do arquivo **/
-                            fclose($document);
 
                         }
 
                         /** Result **/
                         $result = array(
 
-                            "message" => "Arquivos criados com sucesso"
+                            "result" => "Arquivos criados com sucesso"
 
                         );
-
-                    }else{
-
-                        /** Crio o caminho **/
-                        mkdir($path, 0777, true);
-
-                        if (is_dir($path)){
-
-                            /** Crio os arquivos de classes **/
-                            foreach ($classes->allBuild($project_id) as $keyClasses => $resultClasses){
-
-                                if (empty($resultClasses['folder_name'])){
-
-                                    /** Crio meu arquivo e escrevo dentro dele **/
-                                    $document = fopen($path . '/' . $resultClasses['class_name'] . '.class.php', "a+");
-
-                                }else{
-
-                                    /** Crio o caminho **/
-                                    mkdir($path . '/' . $resultClasses['folder_name'], 0777, true);
-
-                                    /** Crio meu arquivo e escrevo dentro dele **/
-                                    $document = fopen($path . '/' . $resultClasses['folder_name'] . '/' . $resultClasses['class_name'] . '.class.php', "a+");
-
-                                }
-
-                                /** Preenchos os arquivos de classes **/
-                                foreach ($methods->all($resultClasses['class_id']) as $keyMethods => $resultMethods){
-
-                                    /** Escrevo dentro do arquivo **/
-                                    fwrite($document, $main->internalCode($resultMethods['code']));
-
-                                }
-
-                                /** Encerro a escrita do arquivo **/
-                                fclose($document);
-
-                            }
-
-                            /** Result **/
-                            $result = array(
-
-                                "message" => "Arquivos criados com sucesso"
-
-                            );
-
-                        }
 
                     }
 
                 }
+
             } else {
 
                 array_push($message, "Não foi possível localizar o registro");
@@ -179,8 +247,10 @@ try {
 
         /** Preparo o formulario para retorno **/
         $result = array(
+
             "cod" => 404,
             "message" => "Usuário não autenticado",
+
         );
 
     }
@@ -190,6 +260,7 @@ try {
 
     /** Paro o procedimento **/
     exit;
+
 } catch (Exception $e) {
 
     /** Preparo o formulario para retorno **/

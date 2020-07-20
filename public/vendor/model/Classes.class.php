@@ -18,6 +18,7 @@ class Classes
     private $sql = null;
     private $stmt = null;
     private $database_name = null;
+    private $table_name = null;
     private $class_id = null;
     private $situation_id = null;
     private $user_id = null;
@@ -39,6 +40,7 @@ class Classes
 
         /** Inicio uma conexão com o banco de dados **/
         $this->connection->connect();
+
     }
 
     /** Listo a quantidade total de registros **/
@@ -137,6 +139,7 @@ class Classes
 
         /** Retorno um objeto **/
         return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+
     }
 
     /** Lista todos os registros **/
@@ -251,6 +254,56 @@ class Classes
 
         /** Preencho os parâmetros do SQl **/
         $this->stmt->bindParam(':database_name', $this->database_name);
+
+        /** Retorno um objeto **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    public function findParameters($database_name, $table_name)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->database_name = (string)$database_name;
+        $this->table_name    = (string)$table_name;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :database_name AND TABLE_NAME = :table_name;";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':database_name', $this->database_name);
+        $this->stmt->bindParam(':table_name', $this->table_name);
+
+        /** Retorno um objeto **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    public function findPrimaryKey($database_name, $table_name)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->database_name = (string)$database_name;
+        $this->table_name    = (string)$table_name;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :database_name AND TABLE_NAME = :table_name AND COLUMN_KEY = 'PRI';";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $this->stmt->bindParam(':database_name', $this->database_name);
+        $this->stmt->bindParam(':table_name', $this->table_name);
 
         /** Retorno um objeto **/
         $this->stmt->execute();

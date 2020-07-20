@@ -271,7 +271,7 @@ class Classes
         $this->table_name    = (string)$table_name;
 
         /** Consulta SQL **/
-        $this->sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :database_name AND TABLE_NAME = :table_name;";
+        $this->sql = "SELECT COLUMN_NAME, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :database_name AND TABLE_NAME = :table_name;";
 
         /** Preparo o Sql **/
         $this->stmt = $this->connection->connect()->prepare($this->sql);
@@ -296,7 +296,7 @@ class Classes
         $this->table_name    = (string)$table_name;
 
         /** Consulta SQL **/
-        $this->sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :database_name AND TABLE_NAME = :table_name AND COLUMN_KEY = 'PRI';";
+        $this->sql = "SELECT COLUMN_NAME, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :database_name AND TABLE_NAME = :table_name AND COLUMN_KEY = 'PRI';";
 
         /** Preparo o Sql **/
         $this->stmt = $this->connection->connect()->prepare($this->sql);

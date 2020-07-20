@@ -31,6 +31,9 @@ class Main
     private $primary_key = null;
     private $inputs = null;
     private $parameters = null;
+    private $bindParameters = null;
+    private $inputsInsert = null;
+    private $inputsUpdate = null;
 
     public function __construct()
     {
@@ -377,12 +380,24 @@ class Main
         $this->inputs = (array)$inputs;
 
         $this->parameters = null;
+        $this->bindParameters = null;
+        $this->inputsInsert = null;
+        $this->inputsUpdate = null;
+        $this->primary_key = null;
 
+        /** Preparação dos campos */
         foreach ($this->inputs as $key => $input){
 
-            /** Escrita do código **/
-            $this->parameters .= "$" . $input['COLUMN_NAME'] . ",";
+            $this->parameters     .= "$" . $input['COLUMN_NAME'] . ", ";
+            $this->bindParameters .= ":" . $input['COLUMN_NAME'] . ", ";
+            $this->inputsInsert   .= "`" . $input['COLUMN_NAME'] . "`" . ", ";
+            $this->inputsUpdate   .= "`" . $input['COLUMN_NAME'] . "`" . " = " . ":" .$input['COLUMN_NAME'] . ", ";
+            /** Verificação de chave primária */
+            if ($input['COLUMN_KEY'] == 'PRI'){
 
+                $this->primary_key = $input['COLUMN_NAME'];
+
+            }
 
         }
 
@@ -391,6 +406,7 @@ class Main
         $this->string .= "   /**\r\n";
         $this->string .= "   * Função para listar todos os registros\r\n";
         $this->string .= "   * @access public\r\n";
+        /** Escrevo a documentação de parâmetros */
         foreach ($inputs as $key => $input){
 
             /** Escrita do código **/
@@ -401,27 +417,41 @@ class Main
         $this->string .= "   */\r\n";
         $this->string .= "   public function save(" . $this->parameters . ")\r\n";
         $this->string .= "   {\r\n";
-        $this->string .= "   \r\n";
+        $this->string .= "\r\n";
+        $this->string .= "       /** Parâmetros de entrada */\r\n";
+        /** Escrevo os parâmetros de entrada */
         foreach ($inputs as $key => $input){
 
-            /** Escrita do código **/
             $this->string .= "       $" . "this->" . $input['COLUMN_NAME'] . " = $" . $input['COLUMN_NAME']. ";\r\n";
 
+        }
+        $this->string .= "\r\n";
+        $this->string .= "       /** Verifico se é inserção ou atualização */\r\n";
+        $this->string .= "       if ($" . "this->" . $this->primary_key . " == 0)\r\n";
+        $this->string .= "       {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "          /** Consulta SQL */\r\n";
+        $this->string .= "          $". "this->sql = 'INSERT INTO " . $this->table_name . "(". $this->inputsInsert . ")VALUES(" . $this->bindParameters . ")';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "       } else {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "          /** Consulta SQL */\r\n";
+        $this->string .= "          $". "this->sql = 'UPDATE " . $this->table_name . " SET " . $this->inputsUpdate . " WHERE `" . $this->primary_key . "` = :" . $this->primary_key . "';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "       }\r\n";
+        $this->string .= "       /** Preparo o SQL */\r\n";
+        $this->string .= "       $". "this->stmt = $" . "this->connection->connect()->prepare($". "this->sql);\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "       /** Preencho os parâmetros do sql **/\r\n";
+        /** Escrevo os BindParams */
+        foreach ($this->inputs as $key => $input){
+
+            $this->string .= "       $" . "this->stmt->bindParam(':" . $input['COLUMN_NAME'] . "', $" . "this->" . $input['COLUMN_NAME'] . ");\r\n";
 
         }
         $this->string .= "   \r\n";
-        $this->string .= "       /** Crio o sql */\r\n";
-        $this->string .= "       $" . "this->sql" . " = 'SELECT * FROM `" . $this->table_name . "`';\r\n";
-        $this->string .= "   \r\n";
-        $this->string .= "       /** Preparo o sql */\r\n";
-        $this->string .= "       $" . "this->stmt = $" . "this->connection->connect()->prepare($" . "this->sql);\r\n";
-        $this->string .= "   \r\n";
         $this->string .= "       /** Execução do Sql */\r\n";
-        $this->string .= "       $" . "this->stmt->execute();\r\n";
-        $this->string .= "   \r\n";
-        $this->string .= "       /** Retorno um objeto */\r\n";
-        $this->string .= "       return $" . "this->stmt->fetchAll(\PDO::FETCH_ASSOC);\r\n";
-        $this->string .= "   \r\n";
+        $this->string .= "       return $" . "this->stmt->execute();\r\n";
         $this->string .= "   }\r\n";
 
         /** Retorno o código gerado **/

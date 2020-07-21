@@ -8,7 +8,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-light">Formulário</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-primary">Formulário</span>
 
                 </h4>
 
@@ -18,7 +18,7 @@
 
                 <h4>
 
-                    <router-link to="/" class="btn btn-default">
+                    <router-link to="/" class="btn btn-primary">
 
                         Listagem
 
@@ -68,7 +68,7 @@
 
                 <div class="card card-default shadow-sm animate__animated animate__fadeIn">
 
-                    <div class="card-body text-white">
+                    <div class="card-body">
 
                         <div class="form-group row">
 
@@ -238,7 +238,7 @@
 
                                 <div class="form-group">
 
-                                    <div class="btn btn btn-default" v-on:click="Save()">
+                                    <div class="btn btn btn-primary" v-on:click="Save()">
 
                                         Salvar
 
@@ -345,20 +345,7 @@
                                 if (this.inputs.generate_classes){
 
                                     /** Executo o método para gerar classes automaticamente **/
-                                    this.SaveClasses(response.data.project_id, this.inputs.database_name);
-
-                                }else {
-
-                                    /** Realizo o redirecionamento **/
-                                    this.$router.replace({name : 'projects-datagrid'});
-
-                                }
-
-                                /** Verifica se deve gerar classes automaticamente **/
-                                if (this.inputs.generate_methods){
-
-                                    /** Executo o método para gerar classes automaticamente **/
-                                    this.SaveClasses(response.data.project_id, this.inputs.database_name);
+                                    this.SaveClasses(response.data.project_id, this.inputs.database_name, this.inputs.generate_methods);
 
                                 }else {
 
@@ -389,7 +376,7 @@
             },
 
             /** Método para salvar registro **/
-            SaveClasses(project_id, database_name){
+            SaveClasses(project_id, database_name, generate_methods){
 
                 this.inputs.project_id = project_id;
                 this.inputs.database_name = database_name;
@@ -416,7 +403,14 @@
                             /** Sucesso **/
                             case 1:
 
-                                this.$router.replace({name : 'classes-datagrid'});
+                                
+                                if (generate_methods){
+
+                                    this.SaveMethods(response.data.classes, response.data.tables);
+
+                                }
+                                
+                                this.$router.replace({name : 'projects-datagrid'});
                                 break;
 
                             /** Usuário não autenticado **/
@@ -439,10 +433,10 @@
             },
 
             /** Método para salvar registro **/
-            SaveMethods(project_id, database_name){
+            SaveMethods(classes, tables){
 
-                this.inputs.project_id = project_id;
-                this.inputs.database_name = database_name;
+                this.inputs.classes = classes;
+                this.inputs.tables = tables;
 
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=METHODS&ACTION=METHODS_GENERATE_SAVE',{
@@ -466,7 +460,7 @@
                             /** Sucesso **/
                             case 1:
 
-                                this.$router.replace({name : 'classes-datagrid'});
+                                this.$router.replace({name : 'projects-datagrid'});
                                 break;
 
                             /** Usuário não autenticado **/

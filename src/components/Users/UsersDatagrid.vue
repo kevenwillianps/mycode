@@ -8,7 +8,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Usuários
+                    <i class="far fa-folder-open mr-1"></i>Usuários/ <span class="badge badge-primary">Listagem</span>
 
                 </h4>
 
@@ -18,7 +18,7 @@
 
                 <h4>
 
-                    <router-link to="/users/form/" class="btn btn-default">
+                    <router-link to="/users/form/" class="btn btn-primary">
 
                         Cadastro
 
@@ -40,7 +40,7 @@
 
                                 <h5 class="card-title">
 
-                                    <span class="badge badge-light mr-1">
+                                    <span class="badge badge-primary mr-1">
 
                                         <i class="fas fa-hashtag mr-1"></i>{{ result.user_id }}
 
@@ -50,7 +50,7 @@
 
                                 </h5>
 
-                                <h6 class="card-subtitle text-white-50 mb-2">
+                                <h6 class="card-subtitle mb-2">
 
                                     {{ result.user_function }}
 
@@ -65,7 +65,7 @@
 
                             </div>
 
-                            <nav class="navbar navbar-footer navbar-expand-lg navbar-dark bg-transparent card-footer">
+                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 

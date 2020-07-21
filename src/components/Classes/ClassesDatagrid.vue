@@ -40,7 +40,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-light">Classes</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Listagem</span>
 
                 </h4>
 
@@ -50,7 +50,41 @@
 
             <div class="col-md-12 animate__animated animate__fadeIn">
 
-                <div class="row">
+                <div class="animate__animated animate__fadeIn" v-if="query.result.classes <= 0">
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-body">
+
+                            <div class="media">
+
+                                <img src="image/svg/003-error.svg" width="70px" class="mr-3" alt="MyCMS - Keven Willian">
+
+                                <div class="media-body">
+
+                                    <h3 class="mt-0">
+
+                                        Ops!
+
+                                    </h3>
+
+                                    <h5 class="text-muted">
+
+                                        Não foram localizado registros
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" v-else>
 
                     <div class="col-md-3 mb-3" v-for="(result, index) in query.result.classes" v-bind:key="index">
 
@@ -60,7 +94,7 @@
 
                                 <h5 class="card-title">
 
-                                    <span class="badge badge-light mr-1">
+                                    <span class="badge badge-primary mr-1">
 
                                         <i class="fas fa-hashtag mr-1"></i>{{result.class_id}}
 
@@ -70,7 +104,7 @@
 
                                 </h5>
 
-                                <h6 class="card-subtitle text-white-50 mb-2">
+                                <h6 class="card-subtitle mb-2">
 
                                     Classe
 
@@ -84,7 +118,7 @@
 
                             </div>
 
-                            <nav class="navbar navbar-footer navbar-expand-lg navbar-dark bg-transparent card-footer">
+                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_classes_' + result.folder_id" v-bind:aria-controls="'navbar_classes_' + result.folder_id" aria-expanded="false">
 

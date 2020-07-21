@@ -40,7 +40,7 @@ try {
         /** Pego o dia atual **/
         $day = date('d');
         /** Caminho raiz dos documentos **/
-        $path = "document/{$project_id}/{$year}/{$month}/{$day}";
+        $path = "document/{$project_id}/";
 
         /** Controle de erros **/
         $message = array();
@@ -80,156 +80,56 @@ try {
                     if (mkdir($path, 0777, true))
                     {
 
-                        /** Crio os arquivos de classes **/
-                        foreach ($classes->allBuild($row->project_id) as $keyClasses => $resultClasses)
+                        /** Listo todas as classes */
+                        foreach ($classes->all($row->project_id) as $keyClasses => $rowClasses)
                         {
 
-                            /** Verifico se a classe irá ficar dentro de alguma pasta **/
-                            if (empty($resultClasses['folder_name'])){
+                            /** Crio o arquivo **/
+                            $document = fopen($path . '/' . $rowClasses['name'] . '.class.php', "a+");
 
-                                /** Crio meu arquivo e escrevo dentro dele **/
-                                $document = fopen($path . '/' . $resultClasses['class_name'] . '.class.php', "a+");
+                            /** Monto o cabeçalho da classe*/
+                            fwrite($document, $main->headerClass($rowClasses['name'], $user_name, $rowClasses['version']));
 
-                                /** Preencho o arquivo **/
-                                $main->fillClass($path, $resultClasses['class_name'], $main->headerClass($resultClasses['class_name'], $user_name));
+                            /** Monto os parâmetros padrões da classe */
+                            fwrite($document, $main->defaultParametersClass());
 
-                                /** Preencho o arquivo com os parâmetros padrão **/
-                                $main->fillClass($path, $resultClasses['class_name'], $main->defaultParametersClass());
+                            /*** Listo todos os métodos de uma classe*/
+                            foreach ($methods->all($rowClasses['class_id']) as $keyMethods => $rowMethods){
 
-                                /** Localizo as classes **/
-                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables){
-
-                                    /** Verifico se os parâmetros é da classe atual **/
-                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
-                                    {
-
-                                        /** Localizo os campos da tabela **/
-                                        foreach ($classes->findParameters($row->database_name, $resultTables['table_name']) as $keyParameter => $resultParameters)
-                                        {
-
-                                            /** Preencho o arquivo **/
-                                            $main->fillClass($path, $resultClasses['class_name'], $main->parametersClass($resultParameters['COLUMN_NAME']));
-
-                                        }
-
-                                    }
-
-                                }
-
-                                /** Preencho o arquivo com método construtor **/
-                                $main->fillClass($path, $resultClasses['class_name'], $main->methodConstruct());
-
-                                /** Localizo as classes **/
-                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
-                                {
-
-                                    /** Verifico se os parâmetros é da classe atual **/
-                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
-                                    {
-
-                                        /** Localizo os campos da tabela **/
-                                        foreach ($classes->findPrimaryKey($row->database_name, $resultTables['table_name']) as $keyPrimaryKey => $resultPrimaryKey)
-                                        {
-
-                                            /** Preencho o arquivo com método destrutor **/
-                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodAll($resultTables['table_name']));
-                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodSave($resultTables['table_name'], $classes->findParameters($row->database_name, $resultTables['table_name'])));
-                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodGet($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
-                                            $main->fillClass($path, $resultClasses['class_name'], $main->methodDelete($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
-
-                                        }
-
-                                    }
-
-                                }
-
-                                /** Preencho o arquivo com método destrutor **/
-                                $main->fillClass($path, $resultClasses['class_name'], $main->methodDestruct());
-
-                                /** Preencho o arquivo **/
-                                $main->fillClass($path, $resultClasses['class_name'], $main->footerClass());
-
-                            }else{
-
-                                /** Crio o caminho da pasta **/
-                                mkdir($path . '/' . $resultClasses['folder_name'], 0777, true);
-
-                                /** Preencho o arquivo o método construtor **/
-                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->headerClass($resultClasses['class_name'], $user_name));
-
-                                /** Preencho o arquivo */
-                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->defaultParametersClass());
-
-                                /** Localizo as classes **/
-                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
-                                {
-
-                                    /** Verifico se os parâmetros é da classe atual **/
-                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
-                                    {
-
-                                        /** Localizo os campos da tabela **/
-                                        foreach ($classes->findParameters($row->database_name, $resultTables['table_name']) as $keyParameter => $resultParameters)
-                                        {
-
-                                            /** Preencho o arquivo **/
-                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->parametersClass($resultParameters['COLUMN_NAME']));
-
-                                        }
-
-                                    }
-
-                                }
-
-                                /** Preencho o arquivo */
-                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodConstruct());
-
-                                /** Localizo as classes **/
-                                foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
-                                {
-
-                                    /** Verifico se os parâmetros é da classe atual **/
-                                    if($main->nameClass($resultTables['table_name']) == $resultClasses['class_name'])
-                                    {
-
-                                        /** Localizo os campos da tabela **/
-                                        foreach ($classes->findPrimaryKey($row->database_name, $resultTables['table_name']) as $keyPrimaryKey => $resultPrimaryKey)
-                                        {
-
-                                            /** Preencho o arquivo com método destrutor **/
-                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodAll($resultTables['table_name']));
-                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodSave($resultTables['table_name'], $classes->findParameters($row->database_name, $resultTables['table_name'])));
-                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodGet($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
-                                            $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodDelete($resultPrimaryKey['COLUMN_NAME'], $resultTables['table_name']));
-
-                                        }
-
-                                    }
-
-                                }
-
-                                /** Preencho o arquivo com método destrutor **/
-                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->methodDestruct());
-
-                                /** Preencho o arquivo **/
-                                $main->fillClass($path . '/' . $resultClasses['folder_name'], $resultClasses['class_name'], $main->footerClass());
+                                /** Escrevo dentro do arquivo **/
+                                fwrite($document, base64_decode($rowMethods['code']));
 
                             }
 
+                            /** Monto o rodapé da classe*/
+                            fwrite($document, $main->footerClass());
+
+                            /** Encerro a escrita do arquivo **/
+                            fclose($document);
+
                         }
-
-                        /** Result **/
-                        $result = array(
-
-                            "result" => "Arquivos criados com sucesso"
-
-                        );
 
                     }
 
                 }
+                else
+                {
 
-            } else {
+                    array_push($message, "Registro inválido");
+
+                    /** Result **/
+                    $result = array(
+
+                        "cod" => 0,
+                        "message" => $message
+
+                    );
+
+                }
+
+            }
+            else
+            {
 
                 array_push($message, "Não foi possível localizar o registro");
 

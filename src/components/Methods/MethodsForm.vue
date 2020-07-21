@@ -8,7 +8,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-light">Formulário</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Formulário</span>
 
                 </h4>
 
@@ -18,7 +18,7 @@
 
                 <h4>
 
-                    <router-link to="/methods/datagrid" class="btn btn-default">
+                    <router-link to="/methods/datagrid" class="btn btn-primary">
 
                         Listagem
 
@@ -32,7 +32,7 @@
 
                 <div class="card card-default shadow-sm">
 
-                    <div class="card-body text-white">
+                    <div class="card-body">
 
                         <div class="form-group row">
 
@@ -134,7 +134,7 @@
 
                         <div class="form-group text-right" v-on:click="Save()">
 
-                            <div class="btn btn btn-default">
+                            <div class="btn btn btn-primary">
 
                                 Salvar
 

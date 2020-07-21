@@ -8,7 +8,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-light">Detalhes da Classe</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Detalhes da Classe</span>
 
                 </h4>
 
@@ -18,7 +18,7 @@
 
                 <h4>
 
-                    <router-link to="/classes/datagrid/" class="btn btn-default">
+                    <router-link to="/classes/datagrid/" class="btn btn-primary">
 
                         Listagem
 
@@ -36,7 +36,7 @@
 
                         <h5 class="card-title">
 
-                            <span class="badge badge-light mr-1">#{{query.result.classes.class_id}}</span>{{query.result.classes.name}}
+                            <span class="badge badge-primary mr-1">#{{query.result.classes.class_id}}</span>{{query.result.classes.name}}
 
                         </h5>
 
@@ -50,7 +50,7 @@
 
                             <div class="card-text">
 
-                                Método: <span class="badge badge-light">{{ result.name }}</span>
+                                Método: <span class="badge badge-primary">{{ result.name }}</span>
 
                             </div>
 

@@ -309,7 +309,7 @@ class Classes
         $this->stmt->execute();
 
         /** Retorno um objeto **/
-        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->stmt->fetchObject();
 
     }
 

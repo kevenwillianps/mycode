@@ -10,7 +10,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-light">Métodos</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Listagem</span>
 
                 </h4>
 
@@ -42,7 +42,7 @@
 
                                 <h5 class="card-title">
 
-                                    <span class="badge badge-light mr-1">
+                                    <span class="badge badge-primary mr-1">
 
                                         <i class="fas fa-hashtag mr-1"></i>{{ result.method_id }}
 
@@ -52,7 +52,7 @@
 
                                 </h5>
 
-                                <h6 class="card-subtitle text-white-50 mb-2">
+                                <h6 class="card-subtitle mb-2">
 
                                     Método
 
@@ -66,7 +66,7 @@
 
                             </div>
 
-                            <nav class="navbar navbar-footer navbar-expand-lg navbar-dark bg-transparent card-footer">
+                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_method_' + result.method_id" v-bind:aria-controls="'navbar_method_' + result.method_id" aria-expanded="false">
 

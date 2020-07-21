@@ -24,7 +24,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Pasta/ <span class="badge badge-light">Arquivos</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Pasta/ <span class="badge badge-primary">Arquivos</span>
 
                 </h4>
 
@@ -42,7 +42,7 @@
 
                                 <h5 class="card-title">
 
-                                    <span class="badge badge-light mr-1">
+                                    <span class="badge badge-primary mr-1">
 
                                         <i class="fas fa-hashtag mr-1"></i>{{result.class_id}}
 
@@ -66,7 +66,7 @@
 
                             </div>
 
-                            <nav class="navbar navbar-footer navbar-expand-lg navbar-dark bg-transparent card-footer">
+                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_classes_' + result.folder_id" v-bind:aria-controls="'navbar_classes_' + result.folder_id" aria-expanded="false">
 

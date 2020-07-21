@@ -4,8 +4,7 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
-    background: #262641;
-    color: #ffffff;
+    background: #f4f8f9;
 }
 
 p {
@@ -46,72 +45,54 @@ a:focus {
     margin: 40px 0;
 }
 
+.border-dashed{
+
+    border: 1px dashed rgba(0,0,0,.125) !important;
+
+}
+
+.border-left-dashed{
+
+    border-left: 1px dashed #dee2e6 !important;
+
+}
+
 .btn-default{
     color: #fff;
-    background-color: #1bc5bc;
-    border-color: #1bc5bc;
+    background-color: #1a212f;
+    border-color: #1a212f;
 }
 
 .btn-default:hover{
     color: #fff;
-    background-color: #1dcfc6;
-    border-color: #1dcfc6;
+    background-color: #252e40;
+    border-color: #252e40;
 }
 
-.card-default{
+.border-dashed-default{
 
-    transition: 0.5s;
-    background-color: #32324e;
-
-}
-
-.card-default:hover{
-
-    transition: 0.5s;
-    background-color: #1c1a2f;
+    border: 4px dashed #5D9AEA;
 
 }
 
-.navbar-footer{
+.border-dashed-table{
 
-    margin-bottom: 0 !important;
-
-}
-
-.form-control {
-    transition: 0.5s;
-    color: #ffffff;
-    background-color: #1c1a2f;
-    border: 1px solid #32324e;
-}
-
-.form-control:hover {
-    transition: 0.5s;
-    color: #ffffff;
-    background-color: #32324e;
-    border: 1px solid #1c1a2f;
-}
-
-.form-control:focus {
-    transition: 0.5s;
-    color: #ffffff;
-    background-color: #32324e;
-    border: 1px solid #1c1a2f;
-}
-
-.card-code{
-
-    transition: 0.5s;
-    padding: .375rem .75rem;
-    color: #ffffff;
-    background-color: #1c1a2f;
-    border-radius: .25rem;
+    border : 1px dashed #dee2e6;
 
 }
 
-.card-code:hover{
+.border-top-dashed-table{
 
-    transition: 0.5s;
-    background-color: #32324e;
+    border : 1px dashed #dee2e6;
+
+}
+
+.table-image td, .table-image th {
+    vertical-align: middle;
+}
+
+.navbar-card{
+
+    margin-bottom: 0;
 
 }

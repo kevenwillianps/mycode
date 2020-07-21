@@ -12,7 +12,7 @@
 
                         <h5 class="card-title">
 
-                            <span class="badge badge-primary mr-1">
+                            <span class="badge badge-dark mr-1">
 
                                 <i class="far fa-folder-open mr-1"></i>{{ result.folder_id }}
 
@@ -22,7 +22,7 @@
 
                         </h5>
 
-                        <h6 class="card-subtitle text-white-50 mb-2">
+                        <h6 class="card-subtitle mb-2">
 
                             Pasta
 
@@ -30,7 +30,7 @@
 
                     </div>
 
-                    <nav class="navbar navbar-footer navbar-expand-lg navbar-dark bg-transparent card-footer">
+                    <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
                         <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_folder_' + result.folder_id" v-bind:aria-controls="'navbar_folder_' + result.folder_id" aria-expanded="false">
 

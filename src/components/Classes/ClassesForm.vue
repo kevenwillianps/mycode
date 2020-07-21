@@ -8,7 +8,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-light">Formulário</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Formulário</span>
 
                 </h4>
 
@@ -18,7 +18,7 @@
 
                 <h4>
 
-                    <router-link to="/classes/datagrid" class="btn btn-default">
+                    <router-link to="/classes/datagrid" class="btn btn-primary">
 
                         Listagem
 
@@ -34,7 +34,7 @@
 
                 <div class="card card-default shadow-sm">
 
-                    <div class="card-body text-white">
+                    <div class="card-body">
 
                         <div class="form-group row">
 
@@ -64,7 +64,7 @@
 
                     <hr>
 
-                    <div class="card-body text-white">
+                    <div class="card-body">
 
                         <div class="row">
 
@@ -136,7 +136,7 @@
 
                                 <div class="form-group">
 
-                                    <div class="btn btn btn-default" v-on:click="Save()">
+                                    <div class="btn btn btn-primary" v-on:click="Save()">
 
                                         Salvar
 

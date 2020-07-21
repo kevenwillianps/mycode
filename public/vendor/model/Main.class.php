@@ -21,7 +21,7 @@ class Main
     private $string = null;
     private $database_name = null;
     private $table_name = null;
-    private $user_name = null;
+    private $userName = null;
 
     private $document = null;
     private $name = null;
@@ -34,6 +34,15 @@ class Main
     private $bindParameters = null;
     private $inputsInsert = null;
     private $inputsUpdate = null;
+
+    private $className = null;
+    private $version = null;
+
+    private $methodName = null;
+    private $methodDescription = null;
+    private $methodCode = null;
+    private $methodVersion = null;
+    private $methodRelease = null;
 
     public function __construct()
     {
@@ -217,33 +226,87 @@ class Main
     }
 
     /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
-    public function headerClass($table_name, $user_name){
+    public function headerClass($className, $userName, $version){
 
         /** Parâmetros de entrada **/
-        $this->table_name = (string)$table_name;
-        $this->user_name  = (string)$user_name;
+        $this->className = (string)$className;
+        $this->userName  = (string)$userName;
+        $this->version   = (string)$version;
 
         /** Escrita do código **/
         $this->string  = "<?php\r\n";
         $this->string .= "\r\n";
         $this->string .= "/**\r\n";
         $this->string .= " * Comentário de cabeçalho de arquivo\r\n";
-        $this->string .= " * Classe utilizada para manipular os dados da tabela '{$this->table_name}'\r\n";
+        $this->string .= " * Classe '" . utf8_encode($this->className) . "'\r\n";
         $this->string .= " *\r\n";
-        $this->string .= " *@author {$this->user_name}\r\n";
-        $this->string .= " *@version 0.1\r\n";
-        $this->string .= " *@copyright Souza Consultoria Tecnlogica\r\n";
-        $this->string .= " *@access public\r\n";
+        $this->string .= " * @author " . utf8_encode($this->userName) . "\r\n";
+        $this->string .= " * @version " . utf8_encode($this->version) . "\r\n";
+        $this->string .= " * @copyright Souza Consultoria Tecnlogica\r\n";
+        $this->string .= " * @access public\r\n";
         $this->string .= "*/\r\n";
         $this->string .= "\r\n";
-        $this->string .= "class {$this->table_name}\r\n";
+        $this->string .= "class " . $this->className . "\r\n";
         $this->string .= "{";
         $this->string .= "\r\n";
         $this->string .= "  /**\r\n";
-        $this->string .= "  *Comentário variáveis\r\n";
+        $this->string .= "  *Comentário das variáveis\r\n";
         $this->string .= "  *Variavéis usadas internamente na classe\r\n";
         $this->string .= "  *@access private\r\n";
         $this->string .= "  */\r\n";
+
+        /** Retorno o código gerado **/
+        return $this->string;
+
+    }
+
+    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
+    public function headerMethod($methodName, $methodDescription, $methodVersion, $methodRelease){
+
+        /** Parâmetros de entrada **/
+        $this->methodName        = (string)$methodName;
+        $this->methodDescription = (string)$methodDescription;
+        $this->methodVersion     = (string)$methodVersion;
+        $this->methodRelease     = (string)$methodRelease;
+
+        /** Escrita do código **/
+        $this->string  = "\r\n";
+        $this->string .= "   /**\r\n";
+        $this->string .= "   * Método '" . utf8_encode($this->methodName) . "'\r\n";
+        $this->string .= "   * " . utf8_encode($this->methodDescription) . "\r\n";
+        $this->string .= "   * @access public\r\n";
+        $this->string .= "   * @version " . utf8_encode($this->methodVersion) . "\r\n";
+        $this->string .= "   * @release " . utf8_encode($this->methodRelease) . "\r\n";
+        $this->string .= "   */\r\n";
+        $this->string .= "   public function " . $this->methodName . "()\r\n";
+        $this->string .= "   {\r\n";
+
+        /** Retorno o código gerado **/
+        return $this->string;
+
+    }
+
+    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
+    public function bodyMethod($methodCode){
+
+        /** Parâmetros de entrada **/
+        $this->methodCode = (string)$methodCode;
+
+        /** Escrita do código **/
+        $this->string  = "\r\n";
+        $this->string .= "       " . utf8_encode(base64_decode($this->methodCode)) . "\r\n";
+        $this->string .= "\r\n";
+
+        /** Retorno o código gerado **/
+        return $this->string;
+
+    }
+
+    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
+    public function footerMethod(){
+
+        /** Escrita do código **/
+        $this->string  = "   }";
 
         /** Retorno o código gerado **/
         return $this->string;
@@ -286,6 +349,138 @@ class Main
 
         /** Retorno o código gerado **/
         return $this->string;
+
+    }
+
+    /** Escrevo o método construtor */
+    public function fileAutoload($path, $name)
+    {
+
+        /** Parâmetros de entrada **/
+        $this->path = (string)$path;
+        $this->name = (string)$name;
+
+        /** Crio o arquivo **/
+        $this->document = fopen($this->path . '/' . $this->name, "a+");
+
+        /** Escrita do código **/
+        $this->string  = "<?php\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   spl_autoload_register(function ($"."className){\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      $"."filePath = str_replace('\\\', DIRECTORY_SEPARATOR, $"."className);\r\n";
+        $this->string .= "      require_once($"."filePath . '.class.php');\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   });\r\n";
+        $this->string .= "\r\n";
+
+        /** Escrevo dentro do arquivo **/
+        fwrite($this->document, $this->string);
+
+        /** Encerro a escrita do arquivo **/
+        fclose($this->document);
+
+        /** Retorno o código gerado **/
+        return true;
+
+    }
+
+    /** Escrevo o método construtor */
+    public function fileRouter($path, $name)
+    {
+
+        /** Parâmetros de entrada **/
+        $this->path = (string)$path;
+        $this->name = (string)$name;
+
+        /** Crio o arquivo **/
+        $this->document = fopen($this->path . '/' . $this->name, "a+");
+
+        /** Escrita do código **/
+        $this->string  = "<?php\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   /**\r\n";
+        $this->string .= "   * Arquivo que direciona as requisições\r\n";
+        $this->string .= "   * @access public\r\n";
+        $this->string .= "   */\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   /** Instânciamento de classes */\r\n";
+        $this->string .= "   include_once './vendor/autoload.php';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   /** Parâmetros de entrada **/\r\n";
+        $this->string .= "   $" . "table = strtolower(isset($"."_REQUEST['TABLE']) ? htmlspecialchars($"."_REQUEST['TABLE']) : '');\r\n";
+        $this->string .= "   $" . "table = strtolower(isset($"."_REQUEST['ACTION']) ? htmlspecialchars($"."_REQUEST['ACTION']) : '');\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   try\r\n";
+        $this->string .= "   {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      /** Verifico se a tabela foi preenchida */\r\n";
+        $this->string .= "      if (!empty($"."table))\r\n";
+        $this->string .= "      {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "          /** Verifico se a ação foi preenchida */\r\n";
+        $this->string .= "          if (!empty($"."action))\r\n";
+        $this->string .= "          {\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "              /** Verifico se o arquivo de ação existe */\r\n";
+        $this->string .= "              if (is_file('vendor/controller/' . $"."table . '/' . $"."action . '.php'))\r\n";
+        $this->string .= "              {\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "                  include_once 'vendor/controller/' . $"."table . '/' . $"."action . '.php';\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "              }\r\n";
+        $this->string .= "              else\r\n";
+        $this->string .= "              {\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "                  /** Mensagem de erro */\r\n";
+        $this->string .= "                  throw new Exception('Error :: There is no file for informed action.');\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "              }\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "          }\r\n";
+        $this->string .= "          else\r\n";
+        $this->string .= "          {\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "                  /** Mensagem de erro */\r\n";
+        $this->string .= "                  throw new Exception('Error :: action do not informed.');\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "          }\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "      }\r\n";
+        $this->string .= "      else\r\n";
+        $this->string .= "      {\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "                  /** Mensagem de erro */\r\n";
+        $this->string .= "                  throw new Exception('Error :: table do not informed.');\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "      }\r\n";
+        $this->string .= " \r\n";
+        $this->string .= "   }\r\n";
+        $this->string .= "   catch(Exception $"."e)\r\n";
+        $this->string .= "   {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "       /** Retorno de parâmetros */\r\n";
+        $this->string .= "       $"."result = array(\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "          'cod' => 0, \r\n";
+        $this->string .= "          'message' => $"."e->getMessage(), \r\n";
+        $this->string .= "\r\n";
+        $this->string .= "       );";
+        $this->string .= "\r\n";
+        $this->string .= "      /** Informações */\r\n";
+        $this->string .= "      echo json_encode($"."result);\r\n";
+        $this->string .= "      exit;\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "   }\r\n";
+
+        /** Escrevo dentro do arquivo **/
+        fwrite($this->document, $this->string);
+
+        /** Encerro a escrita do arquivo **/
+        fclose($this->document);
+
+        /** Retorno o código gerado **/
+        return true;
 
     }
 

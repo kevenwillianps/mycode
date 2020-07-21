@@ -18,7 +18,7 @@
 
                 <h4>
 
-                    <router-link to="/user/functions/datagrid" class="btn btn-default">
+                    <router-link to="/user/functions/datagrid" class="btn btn-primary">
 
                         Listagem
 
@@ -32,7 +32,7 @@
 
                 <div class="card card-default shadow-sm">
 
-                    <div class="card-body text-white">
+                    <div class="card-body">
 
                         <div class="form-group row">
 
@@ -60,7 +60,7 @@
 
                         <div class="form-group text-right">
 
-                            <div class="btn btn btn-default" v-on:click="Save()">
+                            <div class="btn btn btn-primary" v-on:click="Save()">
 
                                 Salvar
 

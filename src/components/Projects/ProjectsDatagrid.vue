@@ -10,7 +10,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos
+                    <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-primary">Listagem</span>
 
                 </h4>
 
@@ -20,9 +20,9 @@
 
                 <h4>
 
-                    <router-link v-bind:to="{name : 'projects-form', params : {project_id : 0}}" class="btn btn-default">
+                    <router-link v-bind:to="{name : 'projects-form', params : {project_id : 0}}" class="btn btn-primary">
 
-                        Cadastro
+                        <i class="fas fa-pencil-alt mr-1"></i>Novo
 
                     </router-link>
 
@@ -32,7 +32,41 @@
 
             <div class="col-md-12 animate__animated animate__fadeIn">
 
-                <div class="row">
+                <div class="animate__animated animate__fadeIn" v-if="query.result <= 0">
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-body">
+
+                            <div class="media">
+
+                                <img src="image/svg/003-error.svg" width="70px" class="mr-3" alt="MyCMS - Keven Willian">
+
+                                <div class="media-body">
+
+                                    <h3 class="mt-0">
+
+                                        Ops!
+
+                                    </h3>
+
+                                    <h5 class="text-muted">
+
+                                        Não foram localizado registros
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" v-else>
 
                     <div class="col-md-3 mb-3" v-for="(result, index) in query.result" v-bind:key="index">
 
@@ -42,7 +76,7 @@
 
                                 <h5 class="card-title">
 
-                                    <span class="badge badge-light">
+                                    <span class="badge badge-primary">
 
                                         <i class="fas fa-hashtag mr-1"></i>{{result.project_id}}
 
@@ -52,7 +86,7 @@
 
                                 </h5>
 
-                                <h6 class="card-subtitle text-white-50 mb-2">
+                                <h6 class="card-subtitle mb-2">
 
                                     Projeto
 
@@ -66,7 +100,7 @@
 
                             </div>
 
-                            <nav class="navbar navbar-footer navbar-expand-lg navbar-dark bg-transparent card-footer">
+                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_project_' + result.project_id" v-bind:aria-controls="'#navbar_project_' + result.project_id" aria-expanded="false">
 

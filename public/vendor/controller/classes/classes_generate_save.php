@@ -22,9 +22,6 @@ try {
         /** Capturo meus campos envios por json **/
         $inputs = json_decode(file_get_contents('php://input'), true);
 
-        /** Capturo meus campos envios por json **/
-        $inputs = json_decode(file_get_contents('php://input'), true);
-
         $class_id      = isset($inputs['inputs']['class_id'])      ? (int)$main->antiInjection($inputs['inputs']['class_id'])         : 0;
         $situation_id  = isset($inputs['inputs']['situation_id'])  ? (int)$main->antiInjection($inputs['inputs']['situation_id'])     : 1;
         $user_id       = isset($inputs['inputs']['user_id'])       ? (int)$main->antiInjection($inputs['inputs']['user_id'])          : $_SESSION['MYCODE-USER-ID'];
@@ -80,7 +77,9 @@ try {
             $result = array(
 
                 "cod" => 1,
-                "result" => "Informações atualizadas com sucesso!"
+                "result" => "Informações atualizadas com sucesso!",
+                "classes" => $classes->all($project_id),
+                "tables" => $classes->findClasses($database_name),
 
             );
 

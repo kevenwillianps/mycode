@@ -122,16 +122,6 @@ class Main
 
     }
 
-    /** Trato o Código Interno da Aplicação **/
-    public function internalCode($string){
-
-        /** Parâmetros de entrada **/
-        $this->string = (string)$string;
-
-        return utf8_encode(trim(base64_decode($string)));
-
-    }
-
     /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
     public function nameClass($string){
 
@@ -161,67 +151,9 @@ class Main
         $this->string = trim($this->string);
 
         /** Texto Fixo **/
-        $this->string = 'Classe utilizada para manipular os dados da tabela"' . $this->string . '"';
+        $this->string = 'Classe utilizada para manipular os dados da tabela "' . $this->string . '"';
 
         return $this->string;
-
-    }
-
-    /** Gero os arquivos de classes **/
-    public function fileClass($path, $name)
-    {
-
-        /** Parâmetros de entrada **/
-        $this->path = (string)$path;
-        $this->name = (string)$name;
-
-        /** Verifico se o caminho informado existe **/
-        if(!is_dir($this->path . '/' . $this->name))
-        {
-
-            /** Crio o caminho **/
-            mkdir($this->path . '/' . $this->name, 0777, true);
-
-        }
-
-        /** Crio o arquivo **/
-        $this->document = fopen($this->path . '/' . $this->name . '.class.php', "a+");
-
-        /** Encerro a escrita do arquivo **/
-        fclose($this->document);
-
-        /** Verifico se o arquivo existe **/
-        if (is_file($this->path . '/' . $this->name . '.class.php')){
-
-            return true;
-
-        }else{
-
-            return false;
-
-        }
-
-    }
-
-    /** Preencho a classe **/
-    public function fillClass($path, $name, $content)
-    {
-
-        /** Parâmetros de entrada **/
-        $this->path = (string)$path;
-        $this->name = (string)$name;
-        $this->content = (string)$content;
-
-        /** Crio o arquivo **/
-        $this->document = fopen($this->path . '/' . $this->name . '.class.php', "a+");
-
-        /** Escrevo dentro do arquivo **/
-        fwrite($this->document, $this->content);
-
-        /** Encerro a escrita do arquivo **/
-        fclose($this->document);
-
-        return true;
 
     }
 
@@ -250,9 +182,9 @@ class Main
         $this->string .= "{";
         $this->string .= "\r\n";
         $this->string .= "  /**\r\n";
-        $this->string .= "  *Comentário das variáveis\r\n";
-        $this->string .= "  *Variavéis usadas internamente na classe\r\n";
-        $this->string .= "  *@access private\r\n";
+        $this->string .= "  * Comentário das variáveis\r\n";
+        $this->string .= "  * Variavéis usadas internamente na classe\r\n";
+        $this->string .= "  * @access private\r\n";
         $this->string .= "  */\r\n";
 
         /** Retorno o código gerado **/
@@ -610,7 +542,7 @@ class Main
 
         }
         $this->string .= "   */\r\n";
-        $this->string .= "   public function save(" . $this->parameters . ")\r\n";
+        $this->string .= "   public function save(" . substr($this->parameters, 0, -2) . ")\r\n";
         $this->string .= "   {\r\n";
         $this->string .= "\r\n";
         $this->string .= "       /** Parâmetros de entrada */\r\n";
@@ -626,12 +558,12 @@ class Main
         $this->string .= "       {\r\n";
         $this->string .= "\r\n";
         $this->string .= "          /** Consulta SQL */\r\n";
-        $this->string .= "          $". "this->sql = 'INSERT INTO " . $this->table_name . "(". $this->inputsInsert . ")VALUES(" . $this->bindParameters . ")';\r\n";
+        $this->string .= "          $". "this->sql = 'INSERT INTO " . $this->table_name . "(". substr($this->inputsInsert, 0, -2) . ")VALUES(" . substr($this->bindParameters, 0, -2) . ")';\r\n";
         $this->string .= "\r\n";
         $this->string .= "       } else {\r\n";
         $this->string .= "\r\n";
         $this->string .= "          /** Consulta SQL */\r\n";
-        $this->string .= "          $". "this->sql = 'UPDATE " . $this->table_name . " SET " . $this->inputsUpdate . " WHERE `" . $this->primary_key . "` = :" . $this->primary_key . "';\r\n";
+        $this->string .= "          $". "this->sql = 'UPDATE " . $this->table_name . " SET " . substr($this->inputsUpdate, 0, -2) . " WHERE `" . $this->primary_key . "` = :" . $this->primary_key . "';\r\n";
         $this->string .= "\r\n";
         $this->string .= "       }\r\n";
         $this->string .= "       /** Preparo o SQL */\r\n";

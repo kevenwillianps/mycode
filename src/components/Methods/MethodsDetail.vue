@@ -8,7 +8,7 @@
 
                 <h4>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-light">Detalhes do Método</span>
+                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Detalhes do Método</span>
 
                 </h4>
 
@@ -36,19 +36,25 @@
 
                         <h5 class="card-title">
 
-                            <span class="badge badge-light mr-1">#199</span>save
+                            <span class="badge badge-primary mr-1">
+
+                                <i class="fas fa-hashtag mr-1"></i>{{ query.result.method_id }}
+
+                            </span>
+
+                            {{ query.result.name }}
 
                         </h5>
 
-                        <h6 class="card-subtitle text-white-50 mb-2">
+                        <h6 class="card-subtitle mb-2">
 
-                            Detalhes
+                            {{ query.result.description }}
 
                         </h6>
 
                         <div class="form-group">
 
-                            <textarea name="" rows="10" class="form-control"></textarea>
+                            <textarea rows="10" class="form-control" v-model="query.result.code"></textarea>
 
                         </div>
 
@@ -66,6 +72,8 @@
 
 <script type="text/ecmascript-6">
 
+    import axios from 'axios';
+
     export default {
 
         name: "ProjectsDetails",
@@ -74,14 +82,60 @@
 
             return {
 
-                value : [
+                inputs : {
 
-                    1,
-                    2,
-                    3,
-                    4,
+                    method_id : this.$route.params.method_id,
 
-                ]
+                },
+
+                query : {
+
+                    result : [],
+
+                }
+
+            }
+
+        },
+
+        methods : {
+
+            /** Método para editar o registro **/
+            EditForm(){
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=METHODS&ACTION=METHODS_EDIT_FORM',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.query.result = response.data.result;
+                        /** Descriptografo em base64 o código escrito **/
+                        this.query.result.code = atob(this.query.result.code);
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+        },
+
+        mounted(){
+
+            /** Verifico se é cadastro ou alteração **/
+            if (this.$route.params.method_id > 0){
+
+                this.EditForm();
 
             }
 

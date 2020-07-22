@@ -10,10 +10,12 @@
 /** Realizo a importação de classes **/
 use \vendor\model\Main;
 use \vendor\model\Classes;
+use \vendor\model\Projects;
 
 /** Instânciamento das classes importadas **/
 $main = new Main();
 $classes = new Classes();
+$projects = new Projects();
 
 try {
 
@@ -63,25 +65,70 @@ try {
 
             );
 
-        } else {
+        }
+        else
+        {
 
-            /** Localizo as classes **/
-            foreach($classes->findClasses($database_name) as $key => $result){
+            /** Busco o registro solicitado **/
+            $row = $projects->get($project_id);
 
-                /** Salvo as classes **/
-                $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $main->nameClass($result['table_name']), $main->descriptionClass($result['table_name']), $version, $release, $date_register, $date_update);
+            /** Verifico se existe o registro **/
+            if (isset($row))
+            {
+
+                /** Verfico se o registro é válido **/
+                if ($row->project_id > 0)
+                {
+
+                    /** Localizo as classes **/
+                    foreach($classes->findClasses($database_name) as $key => $result){
+
+                        /** Salvo as classes **/
+                        $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $main->nameClass($result['table_name']), $main->descriptionClass($result['table_name']), $version, $release, $date_register, $date_update);
+
+                    }
+
+                    /** Result **/
+                    $result = array(
+
+                        "cod" => 1,
+                        "result" => "Informações atualizadas com sucesso!",
+                        "classes" => $classes->all($project_id),
+                        "tables" => $classes->findClasses($database_name),
+
+                    );
+
+                }
+                else
+                {
+
+                    array_push($message, "Registro inválido");
+
+                    /** Preparo o formulario para retorno **/
+                    $result = array(
+
+                        "cod" => 0,
+                        "result" => $message,
+
+                    );
+
+                }
 
             }
+            else
+            {
 
-            /** Result **/
-            $result = array(
+                array_push($message, "Registro não localizado");
 
-                "cod" => 1,
-                "result" => "Informações atualizadas com sucesso!",
-                "classes" => $classes->all($project_id),
-                "tables" => $classes->findClasses($database_name),
+                /** Preparo o formulario para retorno **/
+                $result = array(
 
-            );
+                    "cod" => 0,
+                    "result" => $message,
+
+                );
+
+            }
 
         }
 

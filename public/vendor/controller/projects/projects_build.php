@@ -80,6 +80,12 @@ try {
                     if (mkdir($path, 0777, true))
                     {
 
+                        /** Monto o arquivo de autoload */
+                        $main->fileAutoload($path,  'autoload.php');
+
+                        /** Criação do arquivo de rotas */
+                        $main->fileRouter($path,  'router.php');
+
                         /** Listo todas as classes */
                         foreach ($classes->all($row->project_id) as $keyClasses => $rowClasses)
                         {
@@ -92,6 +98,27 @@ try {
 
                             /** Monto os parâmetros padrões da classe */
                             fwrite($document, $main->defaultParametersClass());
+
+                            /** Localizo todas as classes */
+                            foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
+                            {
+
+                                /** Verifico se os parâmetros é da classe atual **/
+                                if($main->nameClass($resultTables['table_name']) == $rowClasses['name'])
+                                {
+
+                                    /** Localizo os campos da tabela **/
+                                    foreach ($classes->findParameters($row->database_name, $resultTables['table_name']) as $keyParameter => $resultParameters)
+                                    {
+
+                                        /** Monto os parâmetros dinâmicos da classe */
+                                        fwrite($document, $main->parametersClass($resultParameters['COLUMN_NAME']));
+
+                                    }
+
+                                }
+
+                            }
 
                             /*** Listo todos os métodos de uma classe*/
                             foreach ($methods->all($rowClasses['class_id']) as $keyMethods => $rowMethods){
@@ -108,6 +135,14 @@ try {
                             fclose($document);
 
                         }
+
+                        /** Result **/
+                        $result = array(
+
+                            "cod" => 1,
+                            "result" => 'Arquivos criados com sucesso',
+
+                        );
 
                     }
 

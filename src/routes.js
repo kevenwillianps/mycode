@@ -111,7 +111,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/methods/detail',
+        path: '/methods/detail/:project_id/:class_id/:method_id',
         component: MethodsDetail,
         name: 'methods-detail',
 

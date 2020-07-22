@@ -402,7 +402,6 @@
 
                             /** Sucesso **/
                             case 1:
-
                                 
                                 if (generate_methods){
 

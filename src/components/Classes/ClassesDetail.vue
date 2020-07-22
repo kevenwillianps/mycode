@@ -40,7 +40,7 @@
 
                         </h5>
 
-                        <h6 class="card-subtitle text-white-50 mb-2">
+                        <h6 class="card-subtitle mb-2">
 
                             Detalhes da classe
 
@@ -54,11 +54,15 @@
 
                             </div>
 
-                            <div class="card-code mt-1">
+                           <div class="form-group">
 
-                                {{ result.code }}
+                               <div class="card-code mt-1">
 
-                            </div>
+                                   {{ result.code }}
+
+                               </div>
+
+                           </div>
 
                         </div>
 

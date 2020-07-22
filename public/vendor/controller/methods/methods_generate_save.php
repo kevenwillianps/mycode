@@ -11,11 +11,13 @@
 use \vendor\model\Main;
 use \vendor\model\Methods;
 use \vendor\model\Classes;
+use \vendor\model\Projects;
 
 /** Instânciamento das classes importadas **/
 $main = new Main();
 $methods = new Methods();
 $classes = new Classes();
+$projects = new Projects();
 
 try {
 
@@ -54,7 +56,8 @@ try {
         }
 
         /** Verifico a existência de erros **/
-        if (count($message) > 0) {
+        if (count($message) > 0)
+        {
 
             /** Preparo o formulario para retorno **/
             $result = array(
@@ -64,38 +67,128 @@ try {
 
             );
 
-        } else {
+        }
+        else
+        {
 
-            /** Localizo as classes **/
-            foreach($classes_result as $keyClasses => $resultClasses){
+            /** Busco o registro solicitado **/
+            $row = $projects->get($project_id);
 
-                /** Monto uma array com os métodos padrões */
-                $defaultMethods = array(
+            /** Verifico se existe o registro **/
+            if (isset($row)) {
 
-                    $main->methodConstruct(),
-                    $main->methodAll($tables_result[$keyClasses]['table_name']),
-                    $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
-                    $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
-                    $main->methodDestruct(),
+                /** Verfico se o registro é válido **/
+                if ($row->project_id > 0) {
 
-                );
+                    /** Localizo as classes **/
+                    foreach($classes_result as $keyClasses => $resultClasses)
+                    {
 
-                foreach ($defaultMethods as $keyDefaultMethods => $resultDefaultMethods){
+                        /** Monto uma array com os métodos padrões */
+                        $defaultMethods = array();
 
-                    /** Salvo ps método **/
-                    $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], $name, $description, $type, base64_encode($resultDefaultMethods), $version, $release, $date_register, $date_update);
+                        /** Monto uma array com os métodos padrões */
+                        $arrayConstruct = array(
+
+                            'name' => 'Construct',
+                            'description' => 'Método gerado automaticamente',
+                            'code' => $main->methodConstruct(),
+
+                        );
+                        array_push($defaultMethods, $arrayConstruct);
+                        /** Monto uma array com os métodos padrões */
+                        $arraySave = array(
+
+                            'name' => 'Save',
+                            'description' => 'Método gerado automaticamente',
+                            'code' => $main->methodSave($tables_result[$keyClasses]['table_name'], $classes->findParameters($database_name, $tables_result[$keyClasses]['table_name'])),
+
+                        );
+                        array_push($defaultMethods, $arraySave); /** Monto uma array com os métodos padrões */
+                        $arrayAll = array(
+
+                            'name' => 'All',
+                            'description' => 'Método gerado automaticamente',
+                            'code' => $main->methodAll($tables_result[$keyClasses]['table_name']),
+
+                        );
+                        array_push($defaultMethods, $arrayAll);
+                        /** Monto uma array com os métodos padrões */
+                        $arrayGet = array(
+
+                            'name' => 'Get',
+                            'description' => 'Método gerado automaticamente',
+                            'code' => $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
+
+                        );
+                        array_push($defaultMethods, $arrayGet);
+                        /** Monto uma array com os métodos padrões */
+                        $arrayDelete = array(
+
+                            'name' => 'Delete',
+                            'description' => 'Método gerado automaticamente',
+                            'code' => $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
+
+                        );
+                        array_push($defaultMethods, $arrayDelete);
+                        /** Monto uma array com os métodos padrões */
+                        $arrayDestruct = array(
+
+                            'name' => 'Destruct',
+                            'description' => 'Método gerado automaticamente',
+                            'code' => $main->methodDestruct(),
+
+                        );
+                        array_push($defaultMethods, $arrayDestruct);
+
+                        foreach ($defaultMethods as $keyDefaultMethods => $resultDefaultMethods){
+
+                            /** Salvo ps método **/
+                            $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], utf8_encode($defaultMethods[$keyDefaultMethods]['name']), utf8_encode($defaultMethods[$keyDefaultMethods]['description']), $type, utf8_encode(base64_encode($defaultMethods[$keyDefaultMethods]['code'])), $version, $release, $date_register, $date_update);
+
+                        }
+
+                        /** Result **/
+                        $result = array(
+
+                            "cod" => 1,
+                            "result" => "Informações atualizadas com sucesso!",
+
+                        );
+
+                    }
+
+                }
+                else
+                {
+
+                    array_push($message, "Registro inválido");
+
+                    /** Preparo o formulario para retorno **/
+                    $result = array(
+
+                        "cod" => 0,
+                        "result" => $message,
+
+                    );
 
                 }
 
             }
+            else
+            {
 
-            /** Result **/
-            $result = array(
+                array_push($message, "Registro não localizado");
 
-                "cod" => 1,
-                "message" => "Informações atualizadas com sucesso!"
+                /** Preparo o formulario para retorno **/
+                $result = array(
 
-            );
+                    "cod" => 0,
+                    "result" => $message,
+
+                );
+
+            }
 
         }
 

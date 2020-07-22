@@ -100,7 +100,7 @@
 
                                         <li class="nav-item">
 
-                                            <router-link to="/methods/detail" class="nav-link" href="#">
+                                            <router-link class="nav-link" v-bind:to="{name : 'methods-detail', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
 
                                                 <i class="fa fa-search"></i>
 

@@ -86,6 +86,7 @@ try {
                 "cod" => 0,
                 "message" => $message
             );
+
         } else {
 
             $methods->save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update);
@@ -95,6 +96,7 @@ try {
                 "cod" => 1,
                 "message" => "Informações atualizadas com sucesso!"
             );
+
         }
 
     }else{
@@ -112,6 +114,7 @@ try {
 
     /** Paro o procedimento **/
     exit;
+
 } catch (Exception $e) {
 
     /** Preparo o formulario para retorno **/

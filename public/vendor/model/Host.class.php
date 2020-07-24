@@ -36,4 +36,5 @@ class Host
     {
         return $charset = (string)"charset=utf8";
     }
+
 }

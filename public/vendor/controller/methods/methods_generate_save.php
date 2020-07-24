@@ -91,7 +91,7 @@ try {
                         $arrayConstruct = array(
 
                             'name' => 'Construct',
-                            'description' => 'Método gerado automaticamente',
+                            'description' => 'Método utilizado na construção da classe',
                             'code' => $main->methodConstruct(),
 
                         );
@@ -100,7 +100,7 @@ try {
                         $arraySave = array(
 
                             'name' => 'Save',
-                            'description' => 'Método gerado automaticamente',
+                            'description' => 'Método utilizado para salvar os registros',
                             'code' => $main->methodSave($tables_result[$keyClasses]['table_name'], $classes->findParameters($database_name, $tables_result[$keyClasses]['table_name'])),
 
                         );
@@ -108,7 +108,7 @@ try {
                         $arrayAll = array(
 
                             'name' => 'All',
-                            'description' => 'Método gerado automaticamente',
+                            'description' => 'Método utilizado para listar todos os registros',
                             'code' => $main->methodAll($tables_result[$keyClasses]['table_name']),
 
                         );
@@ -117,7 +117,7 @@ try {
                         $arrayGet = array(
 
                             'name' => 'Get',
-                            'description' => 'Método gerado automaticamente',
+                            'description' => 'Método utilizado para pegar um registro em especifíco',
                             'code' => $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
 
                         );
@@ -126,7 +126,7 @@ try {
                         $arrayDelete = array(
 
                             'name' => 'Delete',
-                            'description' => 'Método gerado automaticamente',
+                            'description' => 'Método para excluir um registro',
                             'code' => $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
 
                         );
@@ -135,7 +135,7 @@ try {
                         $arrayDestruct = array(
 
                             'name' => 'Destruct',
-                            'description' => 'Método gerado automaticamente',
+                            'description' => 'Método utilizado quando chegar ao final da classe',
                             'code' => $main->methodDestruct(),
 
                         );
@@ -144,7 +144,7 @@ try {
                         foreach ($defaultMethods as $keyDefaultMethods => $resultDefaultMethods){
 
                             /** Salvo ps método **/
-                            $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], utf8_encode($defaultMethods[$keyDefaultMethods]['name']), utf8_encode($defaultMethods[$keyDefaultMethods]['description']), $type, utf8_encode(base64_encode($defaultMethods[$keyDefaultMethods]['code'])), $version, $release, $date_register, $date_update);
+                            $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], $defaultMethods[$keyDefaultMethods]['name'], $defaultMethods[$keyDefaultMethods]['description'], $type, base64_encode($defaultMethods[$keyDefaultMethods]['code']), $version, $release, $date_register, $date_update);
 
                         }
 

@@ -123,6 +123,9 @@ class Classes
         $this->sql = "select 
                         c.class_id,
                         c.name as class_name, 
+                        c.description as class_description, 
+                        c.version as class_version, 
+                        c.release as class_release, 
                         f.name as folder_name 
                         from classes c
                         left join folders f on c.folder_id = f.folder_id

@@ -79,10 +79,6 @@ try {
         if (empty($database_user)) {
             array_push($message, 'O campo "Usuário do Banco de Dados", deve ser preenchido');
         }
-        /** Verifico se o campo date_update foi preenchido **/
-        if (empty($database_password)) {
-            array_push($message, 'O campo "Senha do Banco de Dados", deve ser preenchido');
-        }
         /** Verifico se o campo description foi preenchido **/
         if (empty($path)) {
             array_push($message, 'O campo "Caminho", deve ser preenchido');

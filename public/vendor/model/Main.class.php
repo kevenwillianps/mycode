@@ -19,7 +19,12 @@ class Main
     /** Declaro as variaveis que irei utilizar na classe **/
     private $user_id = 0;
     private $string = null;
+
     private $database_name = null;
+    private $database_user = null;
+    private $database_password = null;
+    private $database_path = null;
+
     private $table_name = null;
     private $userName = null;
 
@@ -36,6 +41,7 @@ class Main
     private $inputsUpdate = null;
 
     private $className = null;
+    private $description = null;
     private $version = null;
 
     private $methodName = null;
@@ -158,12 +164,13 @@ class Main
     }
 
     /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
-    public function headerClass($className, $userName, $version){
+    public function headerClass($className, $userName, $version, $description){
 
         /** Parâmetros de entrada **/
-        $this->className = (string)$className;
-        $this->userName  = (string)$userName;
-        $this->version   = (string)$version;
+        $this->className   = (string)$className;
+        $this->userName    = (string)$userName;
+        $this->version     = (string)$version;
+        $this->description = (string)$description;
 
         /** Escrita do código **/
         $this->string  = "<?php\r\n";
@@ -175,6 +182,7 @@ class Main
         $this->string .= " * @author " . utf8_encode($this->userName) . "\r\n";
         $this->string .= " * @version " . utf8_encode($this->version) . "\r\n";
         $this->string .= " * @copyright Souza Consultoria Tecnlogica\r\n";
+        $this->string .= " * @description $this->description\r\n";
         $this->string .= " * @access public\r\n";
         $this->string .= "*/\r\n";
         $this->string .= "\r\n";
@@ -193,7 +201,7 @@ class Main
     }
 
     /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
-    public function headerMethod($methodName, $methodDescription, $methodVersion, $methodRelease){
+    public function descriptionMethod($methodName, $methodDescription, $methodVersion, $methodRelease){
 
         /** Parâmetros de entrada **/
         $this->methodName        = (string)$methodName;
@@ -205,40 +213,11 @@ class Main
         $this->string  = "\r\n";
         $this->string .= "   /**\r\n";
         $this->string .= "   * Método '" . utf8_encode($this->methodName) . "'\r\n";
-        $this->string .= "   * " . utf8_encode($this->methodDescription) . "\r\n";
+        $this->string .= "   * @description " . utf8_encode($this->methodDescription) . "\r\n";
         $this->string .= "   * @access public\r\n";
         $this->string .= "   * @version " . utf8_encode($this->methodVersion) . "\r\n";
         $this->string .= "   * @release " . utf8_encode($this->methodRelease) . "\r\n";
         $this->string .= "   */\r\n";
-        $this->string .= "   public function " . $this->methodName . "()\r\n";
-        $this->string .= "   {\r\n";
-
-        /** Retorno o código gerado **/
-        return $this->string;
-
-    }
-
-    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
-    public function bodyMethod($methodCode){
-
-        /** Parâmetros de entrada **/
-        $this->methodCode = (string)$methodCode;
-
-        /** Escrita do código **/
-        $this->string  = "\r\n";
-        $this->string .= "       " . utf8_encode(base64_decode($this->methodCode)) . "\r\n";
-        $this->string .= "\r\n";
-
-        /** Retorno o código gerado **/
-        return $this->string;
-
-    }
-
-    /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
-    public function footerMethod(){
-
-        /** Escrita do código **/
-        $this->string  = "   }";
 
         /** Retorno o código gerado **/
         return $this->string;
@@ -304,6 +283,134 @@ class Main
         $this->string .= "      require_once($"."filePath . '.class.php');\r\n";
         $this->string .= "\r\n";
         $this->string .= "   });\r\n";
+        $this->string .= "\r\n";
+
+        /** Escrevo dentro do arquivo **/
+        fwrite($this->document, $this->string);
+
+        /** Encerro a escrita do arquivo **/
+        fclose($this->document);
+
+        /** Retorno o código gerado **/
+        return true;
+
+    }
+
+    /** Escrevo o método construtor */
+    public function fileMySql($path, $name)
+    {
+
+        /** Parâmetros de entrada **/
+        $this->path = (string)$path;
+        $this->name = (string)$name;
+
+        /** Crio o arquivo **/
+        $this->document = fopen($this->path . '/' . $this->name, "a+");
+
+        /** Escrita do código **/
+        $this->string  = "<?php\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "class MySql\r\n";
+        $this->string .= "{\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    /** Declaro as variaveis que irei utilizar na classe */\r\n";
+        $this->string .= "    public static $" . "pdo;\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    /** Método para conectar ao banco de dados */\r\n";
+        $this->string .= "    public static function connect()\r\n";
+        $this->string .= "    {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      /**\r\n";
+        $this->string .= "      * Instânciamento de classe\r\n";
+        $this->string .= "      * Pelo fato de estarem no mesmo lugar ambas as classes, não é necessário informar o 'use'\r\n";
+        $this->string .= "      */\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      $" . "host = new Host();\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      if (!isset(self::$" . "pdo))\r\n";
+        $this->string .= "      {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "          /** Inicio a conexão com o banco de dados */\r\n";
+        $this->string .= "          self::$". "pdo = new \PDO($" . "host->getDsn(), $" . "host->getUser(), $" . "host->getPassword());\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "          /** Habilito a listagem de erros ao executar o sql **/\r\n";
+        $this->string .= "          self::$" . "pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      }\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      /** Retorno minha conexão */\r\n";
+        $this->string .= "      return self::$" . "pdo;\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "      }\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "}\r\n";
+        $this->string .= "\r\n";
+
+        /** Escrevo dentro do arquivo **/
+        fwrite($this->document, $this->string);
+
+        /** Encerro a escrita do arquivo **/
+        fclose($this->document);
+
+        /** Retorno o código gerado **/
+        return true;
+
+    }
+
+    /** Escrevo o método construtor */
+    public function fileHost($path, $name, $database_name, $database_user, $database_password, $database_path)
+    {
+
+        /** Parâmetros de entrada **/
+        $this->path              = (string)$path;
+        $this->name              = (string)$name;
+        $this->database_name     = (string)$database_name;
+        $this->database_user     = (string)$database_user;
+        $this->database_password = (string)$database_password;
+        $this->database_path     = (string)$database_path;
+
+        /** Crio o arquivo **/
+        $this->document = fopen($this->path . '/' . $this->name, "a+");
+
+        /** Escrita do código **/
+        $this->string  = "<?php\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "class Host\r\n";
+        $this->string .= "{\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    /** Pego a localização do banco de dados */\r\n";
+        $this->string .= "    public function getDsn()\r\n";
+        $this->string .= "    {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "        return $" . "dsn = (string)'mysql:host=" . $this->database_path . ";dbname=" . $this->database_name. "';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    }\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    /** Pego o usuário de acesso */\r\n";
+        $this->string .= "    public function getUser()\r\n";
+        $this->string .= "    {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "        return $" . "user = (string)'" . $this->database_user . "';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    }\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    /** Pego a senha de acesso */\r\n";
+        $this->string .= "    public function getPassword()\r\n";
+        $this->string .= "    {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "        return $" . "password = (string)'" . $this->database_password . "';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    }\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    /** Pego o charset de acesso */\r\n";
+        $this->string .= "    public function getCharset()\r\n";
+        $this->string .= "    {\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "        return $" . "charset = (string)'charset=utf8';\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "    }\r\n";
+        $this->string .= "\r\n";
+        $this->string .= "}\r\n";
         $this->string .= "\r\n";
 
         /** Escrevo dentro do arquivo **/
@@ -421,10 +528,6 @@ class Main
 
         /** Escrita do código **/
         $this->string  = "\r\n";
-        $this->string .= "   /**\r\n";
-        $this->string .= "   * Função para iniciar a conexão com o banco de dados\r\n";
-        $this->string .= "   * @access public\r\n";
-        $this->string .= "   */\r\n";
         $this->string .= "   public function __construct()\r\n";
         $this->string .= "   {\r\n";
         $this->string .= "   \r\n";
@@ -446,10 +549,6 @@ class Main
 
         /** Escrita do código **/
         $this->string  = "\r\n";
-        $this->string .= "   /**\r\n";
-        $this->string .= "   * Função para encerrar a conexão com o banco de dados\r\n";
-        $this->string .= "   * @access public\r\n";
-        $this->string .= "   */\r\n";
         $this->string .= "   public function __destruct()\r\n";
         $this->string .= "   {\r\n";
         $this->string .= "   \r\n";
@@ -472,10 +571,6 @@ class Main
 
         /** Escrita do código **/
         $this->string  = "\r\n";
-        $this->string .= "   /**\r\n";
-        $this->string .= "   * Função para listar todos os registros\r\n";
-        $this->string .= "   * @access public\r\n";
-        $this->string .= "   */\r\n";
         $this->string .= "   public function all()\r\n";
         $this->string .= "   {\r\n";
         $this->string .= "   \r\n";
@@ -531,8 +626,6 @@ class Main
         /** Escrita do código **/
         $this->string  = "\r\n";
         $this->string .= "   /**\r\n";
-        $this->string .= "   * Função para listar todos os registros\r\n";
-        $this->string .= "   * @access public\r\n";
         /** Escrevo a documentação de parâmetros */
         foreach ($inputs as $key => $input){
 
@@ -596,11 +689,6 @@ class Main
 
         /** Escrita do código **/
         $this->string  = "\r\n";
-        $this->string .= "   /**\r\n";
-        $this->string .= "   * Função para remover um registro especifico\r\n";
-        $this->string .= "   * @access public\r\n";
-        $this->string .= "   * @param int $" . $this->primary_key . "\r\n";
-        $this->string .= "   */\r\n";
         $this->string .= "   public function get($" . $this->primary_key . ")\r\n";
         $this->string .= "   {\r\n";
         $this->string .= "   \r\n";
@@ -639,11 +727,6 @@ class Main
 
         /** Escrita do código **/
         $this->string  = "\r\n";
-        $this->string .= "   /**\r\n";
-        $this->string .= "   * Função para remover um registro especifico\r\n";
-        $this->string .= "   * @access public\r\n";
-        $this->string .= "   * @param int $" . $this->primary_key . "\r\n";
-        $this->string .= "   */\r\n";
         $this->string .= "   public function delete($" . $this->primary_key . ")\r\n";
         $this->string .= "   {\r\n";
         $this->string .= "   \r\n";

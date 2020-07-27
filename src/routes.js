@@ -129,7 +129,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/methods/templates/form',
+        path: '/methods/templates/form/:method_template_id',
         component: MethodsTemplateForm,
         name: 'methods-templates-form',
 
@@ -138,7 +138,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/methods/templates/detail',
+        path: '/methods/templates/detail/:method_template_id',
         component: MethodsTemplateDetail,
         name: 'methods-templates-detail',
 

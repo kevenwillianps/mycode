@@ -36,7 +36,7 @@
 
                         <h4 class="card-title">
 
-                            Ops! Alguns erros foram encontrados...
+                            <span class="badge badge-danger">Ops!</span> Alguns erros foram encontrados...
 
                         </h4>
 

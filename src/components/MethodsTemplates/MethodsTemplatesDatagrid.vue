@@ -108,11 +108,41 @@
 
                                         </li>
 
+                                        <li class="nav-item">
+
+                                            <a class="nav-link" type="button" data-toggle="collapse" v-bind:href="'#navbar_method_template_' + result.method_template_id" role="button" aria-expanded="false" aria-controls="collapseExample">
+
+                                                <i class="fas fa-hammer"></i>
+
+                                            </a>
+
+                                        </li>
+
                                     </ul>
 
                                 </div>
 
                             </nav>
+
+                            <div class="collapse card-body" v-bind:id="'navbar_method_template_' + result.method_template_id">
+                                
+                                <div class="card card-body">
+                                    
+                                    <div class="form-group">
+
+                                        <input type="text" class="form-control" v-model="inputs.database_name">
+                                        
+                                    </div>
+
+                                    <button class="btn btn-primary" v-on:click="Build(), inputs.method_template_id = result.method_template_id">
+
+                                        Gerar
+
+                                    </button>
+                                    
+                                </div>
+                                
+                            </div>
 
                         </div>
 
@@ -151,7 +181,8 @@
 
                 inputs : {
 
-                    method_template : null,
+                    method_template_id : null,
+                    database_name : null,
 
                 },
 
@@ -215,6 +246,34 @@
                     });
 
             },
+
+            /** Listagem de registros **/
+            Build(){
+
+                /** Envio de requisição **/
+                    axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_BUILD',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.List();
+                        console.log('Sucesso -> ' + response.data);
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            }
+
 
         },
 

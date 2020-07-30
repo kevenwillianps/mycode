@@ -11,6 +11,7 @@ import ClassesDetail from './components/Classes/ClassesDetail'
 import MethodsForm from './components/Methods/MethodsForm'
 import MethodsDatagrid from './components/Methods/MethodsDatagrid'
 import MethodsDetail from './components/Methods/MethodsDetail'
+import MethodsFormTemplateBuild from './components/Methods/MethodsFormTemplateBuild'
 
 import MethodsTemplateForm from './components/MethodsTemplates/MethodsTemplatesForm'
 import MethodsTemplateDatagrid from './components/MethodsTemplates/MethodsTemplatesDatagrid'
@@ -105,6 +106,15 @@ const routes = [
         path: '/methods/form/:project_id/:class_id/:method_id',
         component: MethodsForm,
         name: 'methods-form',
+
+    },
+
+    {
+
+        /** Página Inicial **/
+        path: '/methods/form/template/build/:project_id/:class_id/',
+        component: MethodsFormTemplateBuild,
+        name: 'methods-form-template-build',
 
     },
 

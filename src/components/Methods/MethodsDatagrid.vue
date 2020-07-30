@@ -26,6 +26,12 @@
 
                     </router-link>
 
+                    <router-link v-bind:to="{name : 'methods-form-template-build', params : { project_id : inputs.project_id, class_id : inputs.class_id}}" class="btn btn-default">
+
+                        Template de Métodos
+
+                    </router-link>
+
                 </h4>
 
             </div>

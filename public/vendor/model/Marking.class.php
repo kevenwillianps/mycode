@@ -34,6 +34,44 @@ class Marking
 
     }
 
+    /** Gero os parâmetros padrões */
+    public function markingDefaultParameters()
+    {
+
+        /** Escrita do código **/
+        $this->string  = "private $" . "connection;\r\n";
+        $this->string .= "private $" . "sql;\r\n";
+        $this->string .= "private $" . "stmt;\r\n";
+
+        /** Retorno o código gerado **/
+        return $this->string;
+
+    }
+
+    /** Gero os Parâmetros dinâmicos do PDO */
+    public function markingBindParams($inputs){
+
+        /** Parâmetros de entrada **/
+        $this->inputs = (array)$inputs;
+        $this->string = null;
+
+        /** Gero os campos */
+        foreach ($this->inputs as $keyInputs => $resultInputs)
+        {
+
+            /** Escrita do código **/
+            $this->string .= "$" . "this->stmt->bindParam(':" . $resultInputs['COLUMN_NAME'] . "', $" . "this->" . $resultInputs['COLUMN_NAME'] . ");\n";
+
+        }
+
+        /** Limpo virgulas que esta sobrando */
+        $this->string = substr($this->string, 0, -2);
+
+        /** Retorno o resultado */
+        return $this->string;
+
+    }
+
     /** Gerenciamento de marcações **/
     public function markingPrimaryKey($string)
     {

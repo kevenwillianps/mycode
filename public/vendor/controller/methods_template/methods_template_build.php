@@ -120,6 +120,12 @@ try {
                             /** Marco o Sql de exclusão */
                             $str = str_replace('[inputs_parameters]', $marking->markingParameters($classes->findParameters($database_name, $resultClasses['table_name'])), $str);
 
+                            /** Marco os Parâmetros padrões */
+                            $str = str_replace('[default_parameters_class]', $marking->markingDefaultParameters(), $str);
+
+                            /** Marco os Parâmetros padrões */
+                            $str = str_replace('[bind_param]', $marking->markingBindParams($classes->findParameters($database_name, $resultClasses['table_name'])), $str);
+
                             /** Monto os parâmetros padrões da classe */
                             fwrite($document, utf8_encode($str));
 

@@ -11,6 +11,7 @@
 /** Realizo a importação de classes **/
 use \vendor\model\Main;
 use \vendor\model\Projects;
+use \vendor\model\Classes;
 use \vendor\model\Methods;
 use \vendor\model\Marking;
 use \vendor\model\MethodsTemplates;
@@ -18,6 +19,7 @@ use \vendor\model\MethodsTemplates;
 /** Instânciamento das classes importadas **/
 $main = new Main();
 $projects = new Projects();
+$classes = new Classes();
 $methods = new Methods();
 $marking = new Marking();
 $methodsTemplate = new MethodsTemplates();
@@ -84,6 +86,7 @@ try {
                 /** Pego o Registros */
                 $rowMethod = $methodsTemplate->get($resultMethodTemplateId);
                 $rowProject = $projects->get($project_id);
+                $rowClass = $classes->get($class_id);
 
                 /** Verifico se existe o registros */
                 if (isset($rowMethod))
@@ -201,31 +204,31 @@ try {
                         $code = base64_decode($code);
 
                         /** Marco a Chave Primária */
-                        $code = str_replace('[primary_key]', $marking->markingPrimaryKey($classes->findPrimaryKey($rowProject->database_name, $resultClasses['table_name'])->COLUMN_NAME), $code);
+                        $code = str_replace('[primary_key]', $marking->markingPrimaryKey($classes->findPrimaryKey($rowProject->database_name, $rowClass->table_name)->COLUMN_NAME), $code);
 
                         /** Marco os parâmetros de entrada **/
-                        $code = str_replace('[inputs_parameters_method]', $marking->markingParametersMethod($classes->findParameters($database_name, $resultClasses['table_name'])), $code);
+                        $code = str_replace('[inputs_parameters_method]', $marking->markingParametersMethod($classes->findParameters($rowProject->database_name, $rowClass->table_name)), $code);
 
                         /** Marco os parâmetros de entrada **/
-                        $code = str_replace('[sql_insert]', $marking->markingSqlInsert($classes->findParameters($database_name, $resultClasses['table_name']), $database_name), $code);
+                        $code = str_replace('[sql_insert]', $marking->markingSqlInsert($classes->findParameters($rowProject->database_name, $rowClass->table_name), $rowProject->database_name), $code);
 
                         /** Marco os parâmetros de entrada **/
-                        $code = str_replace('[sql_update]', $marking->markingSqlUpdate($classes->findParameters($database_name, $resultClasses['table_name']), $database_name), $code);
+                        $code = str_replace('[sql_update]', $marking->markingSqlUpdate($classes->findParameters($rowProject->database_name, $rowClass->table_name), $rowProject->database_name), $code);
 
                         /** Marco o Sql de pesquisa */
-                        $code = str_replace('[sql_select]', $marking->markingSqlSelect($database_name), $code);
+                        $code = str_replace('[sql_select]', $marking->markingSqlSelect($rowProject->database_name), $code);
 
                         /** Marco o Sql de exclusão */
-                        $code = str_replace('[sql_delete]', $marking->markingSqlDelete($classes->findPrimaryKey($database_name, $resultClasses['table_name'])->COLUMN_NAME, $database_name), $code);
+                        $code = str_replace('[sql_delete]', $marking->markingSqlDelete($classes->findPrimaryKey($rowProject->database_name, $rowClass->table_name)->COLUMN_NAME, $rowProject->database_name), $code);
 
                         /** Marco o Sql de exclusão */
-                        $code = str_replace('[inputs_parameters]', $marking->markingParameters($classes->findParameters($database_name, $resultClasses['table_name'])), $code);
+                        $code = str_replace('[inputs_parameters]', $marking->markingParameters($classes->findParameters($rowProject->database_name, $rowClass->table_name)), $code);
 
                         /** Marco os Parâmetros padrões */
                         $code = str_replace('[default_parameters_class]', $marking->markingDefaultParameters(), $code);
 
                         /** Marco os Parâmetros padrões */
-                        $code = str_replace('[bind_param]', $marking->markingBindParams($classes->findParameters($database_name, $resultClasses['table_name'])), $code);
+                        $code = str_replace('[bind_param]', $marking->markingBindParams($classes->findParameters($rowProject->database_name, $rowClass->table_name)), $code);
 
                         /** Decodifico minha strign */
                         $code = base64_encode($code);

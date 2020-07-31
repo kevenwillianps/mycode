@@ -1,47 +1,64 @@
 <template>
 
-    <div>
+    <div class="row">
 
-        <div class="row">
+        <div class="col-md-6 animate__animated animate__fadeIn">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <h4>
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/Template de Métodos/ <span class="badge badge-primary">Gerar</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/Template de Métodos/ <span class="badge badge-primary">Gerar</span>
+            </h4>
 
-                </h4>
+        </div>
 
-            </div>
+        <div class="col-md-6 text-right animate__animated animate__fadeIn">
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+            <h4>
 
-                <h4>
+                <router-link to="/methods/datagrid" class="btn btn-primary">
 
-                    <router-link to="/methods/datagrid" class="btn btn-primary">
+                    Listagem
 
-                        Listagem
+                </router-link>
 
-                    </router-link>
+            </h4>
 
-                </h4>
+        </div>
 
-            </div>
+        <div class="col-md-12 mt-3">
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+            <div class="row">
 
-                <div class="card card-default shadow-sm">
+                <div class="col-md-3" v-for="(result, index) in query.result.methods_template" v-bind:key="index">
 
-                    <div class="card-body">
+                    <div class="card card-default shadow-sm">
 
-                        <div class="form-group" v-for="(result, index) in query.result.methods_template" v-bind:key="index">
+                        <div class="card-body">
 
-                            <div class="custom-control custom-checkbox">
+                            <h4 class="card-title">
 
-                                <input type="checkbox" class="custom-control-input" v-bind:id="'check_' + result">
-                                <label class="custom-control-label" v-bind:for="'check_' + result" v-on:click="AddOrRemoveMethodTemplateId(result.method_template_id)">
+                                {{ result.name }}
 
-                                    {{ result.name }}
+                            </h4>
+
+                            <h6 class="card-subtitle">
+
+                                {{ result.description }}
+
+                            </h6>
+
+                            <p class="card-text">
+
+                                {{ result.code }}
+
+                            </p>
+
+                            <div class="btn-group-toggle" data-toggle="buttons">
+
+                                <label class="btn btn-outline-primary active" v-bind:for="'check_' + result" v-on:click="AddOrRemoveMethodTemplateId(result.method_template_id)">
+
+                                    <input type="checkbox" v-bind:id="'check_' + result"> Marcar
 
                                 </label>
 
@@ -49,17 +66,17 @@
 
                         </div>
 
-                        <div class="form-group text-right" v-on:click="Save()">
-
-                            <div class="btn btn btn-primary">
-
-                                Salvar
-
-                            </div>
-
-                        </div>
-
                     </div>
+
+                </div>
+
+                <div class="col-md-12 text-right">
+
+                    <button class="btn btn-primary" v-on:click="Save()">
+
+                        Gerar
+
+                    </button>
 
                 </div>
 
@@ -182,6 +199,13 @@
                     .then(response => {
 
                         this.query.result.methods_template = response.data.result;
+
+                        /** Decodifico o código */
+                        for (let i = 0; i < response.data.result.length; i++){
+
+                            this.query.result.methods_template[i].code = atob(this.query.result.methods_template[i].code);
+
+                        }
 
                     })
 

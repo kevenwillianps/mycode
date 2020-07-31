@@ -169,7 +169,7 @@ class Classes
     }
 
     /** Insere/autualiza um registro no banco de dados **/
-    public function save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $description, $version, $release, $date_register, $date_update)
+    public function save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $description, $version, $release, $table_name, $date_register, $date_update)
     {
 
         /** Parâmetros de entrada **/
@@ -182,6 +182,7 @@ class Classes
         $this->description   = (string)$description;
         $this->version       = (string)$version;
         $this->release       = (string)$release;
+        $this->table_name    = (string)$table_name;
         $this->date_register = (string)$date_register;
         $this->date_update   = (string)$date_update;
 
@@ -189,7 +190,7 @@ class Classes
         if ($this->class_id == 0) {
 
             /** Consulta SQL **/
-            $this->sql = "INSERT INTO classes(`class_id`, `situation_id`, `user_id`, `project_id`, `folder_id`, `name`, `description`, `version`, `release`, `date_register`, `date_update`)VALUES(:class_id, :situation_id, :user_id, :project_id, :folder_id, :name, :description, :version, :release, :date_register, :date_update)";
+            $this->sql = "INSERT INTO classes(`class_id`, `situation_id`, `user_id`, `project_id`, `folder_id`, `name`, `description`, `version`, `release`, `table_name`, `date_register`, `date_update`)VALUES(:class_id, :situation_id, :user_id, :project_id, :folder_id, :name, :description, :version, :release, :table_name, :date_register, :date_update)";
 
         } else {
 
@@ -214,6 +215,7 @@ class Classes
         $this->stmt->bindParam(':description', $this->description);
         $this->stmt->bindParam(':version', $this->version);
         $this->stmt->bindParam(':release', $this->release);
+        $this->stmt->bindParam(':table_name', $this->table_name);
         $this->stmt->bindParam(':date_register', $this->date_register);
         $this->stmt->bindParam(':date_update', $this->date_update);
 

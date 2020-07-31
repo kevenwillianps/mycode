@@ -4,123 +4,133 @@
 
         <ModalConfirm title="Atenção!" message="Deseja excluir este registro ?" v-on:ConfirmRequest="Delete"></ModalConfirm>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Listagem</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Listagem</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'methods-form', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : 0}}" class="nav-link">
+
+                            <i class="fas fa-plus mr-1"></i> Novo
+
+                        </router-link>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'methods-form-template-build', params : { project_id : inputs.project_id, class_id : inputs.class_id}}" class="nav-link">
+
+                            <i class="fas fa-code-branch mr-1"></i> Template
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 mt-3">
 
-                    <router-link v-bind:to="{name : 'methods-form', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : 0}}" class="btn btn-default">
+            <div class="row">
 
-                        Cadastro
+                <div class="col-md-3 mb-3" v-for="(result, index) in query.result.methods" v-bind:key="index">
 
-                    </router-link>
+                    <div class="card card-default shadow-sm">
 
-                    <router-link v-bind:to="{name : 'methods-form-template-build', params : { project_id : inputs.project_id, class_id : inputs.class_id}}" class="btn btn-default">
+                        <div class="card-body">
 
-                        Template de Métodos
+                            <h5 class="card-title">
 
-                    </router-link>
+                            <span class="badge badge-primary mr-1">
 
-                </h4>
+                                <i class="fas fa-hashtag mr-1"></i>{{ result.method_id }}
 
-            </div>
+                            </span>
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+                                {{ result.name }}
 
-                <div class="row">
+                            </h5>
 
-                    <div class="col-md-3 mb-3" v-for="(result, index) in query.result.methods" v-bind:key="index">
+                            <h6 class="card-subtitle mb-2">
 
-                        <div class="card card-default shadow-sm">
+                                Método
 
-                            <div class="card-body">
+                            </h6>
 
-                                <h5 class="card-title">
+                            <div class="card-text">
 
-                                    <span class="badge badge-primary mr-1">
-
-                                        <i class="fas fa-hashtag mr-1"></i>{{ result.method_id }}
-
-                                    </span>
-
-                                    {{ result.name }}
-
-                                </h5>
-
-                                <h6 class="card-subtitle mb-2">
-
-                                    Método
-
-                                </h6>
-
-                                <div class="card-text">
-
-                                    {{ result.description}}
-
-                                </div>
+                                {{ result.description}}
 
                             </div>
 
-                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
-
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_method_' + result.method_id" v-bind:aria-controls="'navbar_method_' + result.method_id" aria-expanded="false">
-
-                                    <span class="navbar-toggler-icon"></span>
-
-                                </button>
-
-                                <div class="collapse navbar-collapse" v-bind:id="'navbar_method_' + result.method_id">
-
-                                    <ul class="navbar-nav mr-auto">
-
-                                        <li class="nav-item">
-
-                                            <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.method_id = result.method_id">
-
-                                                <i class="fas fa-fire-alt"></i>
-
-                                            </a>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link class="nav-link" v-bind:to="{name : 'methods-form', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
-
-                                                <i class="fas fa-pencil-alt"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link class="nav-link" v-bind:to="{name : 'methods-detail', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
-
-                                                <i class="fa fa-search"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                            </nav>
-
                         </div>
+
+                        <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
+
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_method_' + result.method_id" v-bind:aria-controls="'navbar_method_' + result.method_id" aria-expanded="false">
+
+                                <span class="navbar-toggler-icon"></span>
+
+                            </button>
+
+                            <div class="collapse navbar-collapse" v-bind:id="'navbar_method_' + result.method_id">
+
+                                <ul class="navbar-nav mr-auto">
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.method_id = result.method_id">
+
+                                            <i class="fas fa-fire-alt"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link class="nav-link" v-bind:to="{name : 'methods-form', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
+
+                                            <i class="fas fa-pencil-alt"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link class="nav-link" v-bind:to="{name : 'methods-detail', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
+
+                                            <i class="fa fa-search"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </nav>
 
                     </div>
 
@@ -189,7 +199,7 @@
 
                 })
 
-                /** Caso tenha sucesso **/
+                    /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.query.result.methods = response.data.result;

@@ -33,6 +33,7 @@ try {
         $description   = isset($inputs['inputs']['description'])   ? (string)$main->antiInjection($inputs['inputs']['description'])   : '';
         $version       = isset($inputs['inputs']['version'])       ? (int)$main->antiInjection($inputs['inputs']['version'])          : 1;
         $release       = isset($inputs['inputs']['release'])       ? (int)$main->antiInjection($inputs['inputs']['release'])          : 1;
+        $table_name    = isset($inputs['inputs']['table_name'])    ? (string)$main->antiInjection($inputs['inputs']['table_name'])    : '';
         $date_register = isset($inputs['inputs']['date_register']) ? (string)$main->antiInjection($inputs['inputs']['date_register']) : date("y-m-d h:m:s");
         $date_update   = isset($inputs['inputs']['date_update'])   ? (string)$main->antiInjection($inputs['inputs']['date_update'])   : date("y-m-d h:m:s");
         $database_name = isset($inputs['inputs']['database_name']) ? (string)$main->antiInjection($inputs['inputs']['database_name']) : '';
@@ -84,7 +85,7 @@ try {
                     foreach($classes->findClasses($database_name) as $key => $result){
 
                         /** Salvo as classes **/
-                        $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $main->nameClass($result['table_name']), $main->descriptionClass($result['table_name']), $version, $release, $date_register, $date_update);
+                        $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $main->nameClass($result['table_name']), $main->descriptionClass($result['table_name']), $version, $release, $result['table_name'], $date_register, $date_update);
 
                     }
 

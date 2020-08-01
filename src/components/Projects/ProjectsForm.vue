@@ -2,247 +2,253 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-primary">Formulário</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-primary">Formulário</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link to="/" class="nav-link">
+
+                            Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 mt-3">
 
-                    <router-link to="/" class="btn btn-primary">
+            <div class="card card-default shadow-sm animate__animated animate__fadeIn mb-2" v-if="query.result.error.length > 0">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <h4 class="card-title">
 
-                </h4>
+                        <span class="badge badge-danger">Ops!</span> Alguns erros foram encontrados...
 
-            </div>
+                    </h4>
 
-            <div class="col-md-12">
+                    <h6 class="card-subtitle">
 
-                <div class="card card-default shadow-sm animate__animated animate__fadeIn mb-2" v-if="query.result.error.length > 0">
+                        Verifique os itens para prosseguir
 
-                    <div class="card-body">
+                    </h6>
 
-                        <h4 class="card-title">
+                    <hr>
 
-                            <span class="badge badge-danger">Ops!</span> Alguns erros foram encontrados...
+                    <ul class="list-unstyled">
 
-                        </h4>
+                        <li class="media" v-for="(result, index) in query.result.error" v-bind:key="index">
 
-                        <h6 class="card-subtitle">
+                            <div class="media-body">
 
-                            Verifique os itens para prosseguir
+                                {{ result }}
 
-                        </h6>
+                            </div>
 
-                        <hr>
+                        </li>
 
-                        <ul class="list-unstyled">
-
-                            <li class="media" v-for="(result, index) in query.result.error" v-bind:key="index">
-
-                                <div class="media-body">
-
-                                    {{ result }}
-
-                                </div>
-
-                            </li>
-
-                        </ul>
-
-                    </div>
+                    </ul>
 
                 </div>
 
-                <div class="card card-default shadow-sm animate__animated animate__fadeIn">
+            </div>
 
-                    <div class="card-body">
+            <div class="card card-default shadow-sm animate__animated animate__fadeIn">
 
-                        <div class="form-group row">
+                <div class="card-body">
 
-                            <label for="NomeDoProjeto" class="col-sm-2 col-form-label">Nome do Projeto</label>
+                    <div class="form-group row">
 
-                            <div class="col-sm-10">
+                        <label for="NomeDoProjeto" class="col-sm-2 col-form-label">Nome do Projeto</label>
 
-                                <input type="text" class="form-control" id="NomeDoProjeto" v-model="inputs.name">
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="NomeDoProjeto" v-model="inputs.name">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label for="DescricaoDoProjeto" class="col-sm-2 col-form-label">Descrição do Projeto</label>
+
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="DescricaoDoProjeto"  v-model="inputs.description">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label for="CaminhoParaSalvarOProjeto" class="col-sm-2 col-form-label">Caminho para Salvar o Projeto</label>
+
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="CaminhoParaSalvarOProjeto" v-model="inputs.path">
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+
+                                <label for="CaminhoDoBancoDeDados" class="col-form-label">Caminho do Banco de Dados</label>
+
+                                <input type="text" class="form-control" id="CaminhoDoBancoDeDados" v-model="inputs.database_local">
 
                             </div>
 
                         </div>
 
-                        <div class="form-group row">
+                        <div class="col-md-4">
 
-                            <label for="DescricaoDoProjeto" class="col-sm-2 col-form-label">Descrição do Projeto</label>
+                            <div class="form-group">
 
-                            <div class="col-sm-10">
+                                <label for="NomeDoBancoDeDados" class="col-form-label">Nome do Banco de Dados</label>
 
-                                <input type="text" class="form-control" id="DescricaoDoProjeto"  v-model="inputs.description">
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-
-                            <label for="CaminhoParaSalvarOProjeto" class="col-sm-2 col-form-label">Caminho para Salvar o Projeto</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="CaminhoParaSalvarOProjeto" v-model="inputs.path">
+                                <input type="text" class="form-control" id="NomeDoBancoDeDados" v-model="inputs.database_name">
 
                             </div>
 
                         </div>
 
-                        <hr>
+                        <div class="col-md-4">
 
-                        <div class="row">
+                            <div class="form-group">
 
-                            <div class="col-md-12">
+                                <label for="UsuarioDoBancoDeDados" class="col-form-label">Usuário do Banco de Dados</label>
 
-                                <div class="form-group">
+                                <input type="text" class="form-control" id="UsuarioDoBancoDeDados" v-model="inputs.database_user">
 
-                                    <label for="CaminhoDoBancoDeDados" class="col-form-label">Caminho do Banco de Dados</label>
+                            </div>
 
-                                    <input type="text" class="form-control" id="CaminhoDoBancoDeDados" v-model="inputs.database_local">
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label for="SenhaDoBancoDeDados" class="col-form-label">Senha do Banco de Dados</label>
+
+                                <input type="password" class="form-control" id="SenhaDoBancoDeDados" v-model="inputs.database_password">
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label for="Version" class="col-form-label">Versão</label>
+
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label for="Release" class="col-form-label">Release</label>
+
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label for="Situation" class="col-form-label">Situação</label>
+
+                                <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
+
+                                    <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
+
+                                        {{ result.name }}
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <div class="custom-control custom-checkbox">
+
+                                    <input type="checkbox" class="custom-control-input" id="GerarClassesAutomaticamente" v-model="inputs.generate_classes">
+
+                                    <label class="custom-control-label" for="GerarClassesAutomaticamente">Gerar Classes Automaticamente</label>
 
                                 </div>
 
                             </div>
 
-                            <div class="col-md-4">
+                        </div>
 
-                                <div class="form-group">
+                        <div class="col-md-4">
 
-                                    <label for="NomeDoBancoDeDados" class="col-form-label">Nome do Banco de Dados</label>
+                            <div class="form-group">
 
-                                    <input type="text" class="form-control" id="NomeDoBancoDeDados" v-model="inputs.database_name">
+                                <div class="custom-control custom-checkbox">
 
-                                </div>
+                                    <input type="checkbox" class="custom-control-input" id="EstruturaDaAplicacao" v-model="inputs.generate_methods">
 
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="UsuarioDoBancoDeDados" class="col-form-label">Usuário do Banco de Dados</label>
-
-                                    <input type="text" class="form-control" id="UsuarioDoBancoDeDados" v-model="inputs.database_user">
+                                    <label class="custom-control-label" for="EstruturaDaAplicacao">Gerar Métodos Automaticamente</label>
 
                                 </div>
 
                             </div>
 
-                            <div class="col-md-4">
+                        </div>
 
-                                <div class="form-group">
+                        <div class="col-md-12 text-right">
 
-                                    <label for="SenhaDoBancoDeDados" class="col-form-label">Senha do Banco de Dados</label>
+                            <div class="form-group">
 
-                                    <input type="password" class="form-control" id="SenhaDoBancoDeDados" v-model="inputs.database_password">
+                                <div class="btn btn btn-primary" v-on:click="Save()">
 
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="Version" class="col-form-label">Versão</label>
-
-                                    <input type="text" class="form-control" id="Version" v-model="inputs.version">
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="Release" class="col-form-label">Release</label>
-
-                                    <input type="text" class="form-control" id="Release" v-model="inputs.release">
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="Situation" class="col-form-label">Situação</label>
-
-                                    <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
-
-                                        <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
-
-                                            {{ result.name }}
-
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <div class="custom-control custom-checkbox">
-
-                                        <input type="checkbox" class="custom-control-input" id="GerarClassesAutomaticamente" v-model="inputs.generate_classes">
-
-                                        <label class="custom-control-label" for="GerarClassesAutomaticamente">Gerar Classes Automaticamente</label>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <div class="custom-control custom-checkbox">
-
-                                        <input type="checkbox" class="custom-control-input" id="EstruturaDaAplicacao" v-model="inputs.generate_methods">
-
-                                        <label class="custom-control-label" for="EstruturaDaAplicacao">Gerar Métodos Automaticamente</label>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-12 text-right">
-
-                                <div class="form-group">
-
-                                    <div class="btn btn btn-primary" v-on:click="Save()">
-
-                                        Salvar
-
-                                    </div>
+                                    Salvar
 
                                 </div>
 

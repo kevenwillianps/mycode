@@ -1,30 +1,40 @@
 <template>
 
-    <div class="row">
+    <div>
 
-        <div class="col-md-6 animate__animated animate__fadeIn">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <h4>
+            <a class="navbar-brand" href="#">
 
                 <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/Template de Métodos/ <span class="badge badge-primary">Gerar</span>
 
-            </h4>
+            </a>
 
-        </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
 
-        <div class="col-md-6 text-right animate__animated animate__fadeIn">
+                <span class="navbar-toggler-icon"></span>
 
-            <h4>
+            </button>
 
-                <router-link to="/methods/datagrid" class="btn btn-primary">
+            <div class="collapse navbar-collapse" id="method_navbar_header">
 
-                    Listagem
+                <ul class="navbar-nav ml-auto">
 
-                </router-link>
+                    <li class="nav-item">
 
-            </h4>
+                        <router-link v-bind:to="{name : 'methods-datagrid', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : 0}}" class="nav-link">
 
-        </div>
+                            <i class="fas fa-bars mr-1"></i> Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
 
         <div class="col-md-12 mt-3">
 

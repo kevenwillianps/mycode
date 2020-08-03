@@ -28,6 +28,7 @@ try {
         $project_id    = isset($inputs['inputs']['project_id'])    ? (int)$main->antiInjection($inputs['inputs']['project_id'])       : 0;
         $folder_id     = isset($inputs['inputs']['folder_id'])     ? (int)$main->antiInjection($inputs['inputs']['folder_id'])        : 0;
         $name          = isset($inputs['inputs']['name'])          ? (string)$main->antiInjection($inputs['inputs']['name'])          : '';
+        $name_space    = isset($inputs['inputs']['name_space'])    ? (string)$main->antiInjection($inputs['inputs']['name_space'])    : '';
         $description   = isset($inputs['inputs']['description'])   ? (string)$main->antiInjection($inputs['inputs']['description'])   : '';
         $version       = isset($inputs['inputs']['version'])       ? (string)$main->antiInjection($inputs['inputs']['version'])       : '';
         $release       = isset($inputs['inputs']['release'])       ? (string)$main->antiInjection($inputs['inputs']['release'])       : '';
@@ -84,7 +85,7 @@ try {
             );
         } else {
 
-            $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $description, $version, $release, $table_name, $date_register, $date_update);
+            $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $name_space, $description, $version, $release, $table_name, $date_register, $date_update);
 
             /** Result **/
             $result = array(

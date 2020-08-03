@@ -41,6 +41,7 @@ class Main
     private $inputsUpdate = null;
 
     private $className = null;
+    private $classNameSpace = null;
     private $description = null;
     private $version = null;
 
@@ -100,7 +101,6 @@ class Main
 
             $str = trim($str); //limpa espaços vazio
             $str = strip_tags($str); //tira tags html e php
-            $str = addslashes($str); //Adiciona barras invertidas a uma string
             $str = htmlspecialchars($str); //Evita ataques XSS
             return utf8_decode($str);
         } elseif ((!is_array($str)) && $long == 'S') {
@@ -164,13 +164,14 @@ class Main
     }
 
     /** Classe para deixar somente o nome com as primeiras letras maiúsculas **/
-    public function headerClass($className, $userName, $version, $description){
+    public function headerClass($className, $userName, $version, $description, $nameSpace){
 
         /** Parâmetros de entrada **/
-        $this->className   = (string)$className;
-        $this->userName    = (string)$userName;
-        $this->version     = (string)$version;
-        $this->description = (string)$description;
+        $this->className      = (string)$className;
+        $this->classNameSpace = (string)$nameSpace;
+        $this->userName       = (string)$userName;
+        $this->version        = (string)$version;
+        $this->description    = (string)$description;
 
         /** Escrita do código **/
         $this->string  = "<?php\r\n";
@@ -185,6 +186,19 @@ class Main
         $this->string .= " * @description $this->description\r\n";
         $this->string .= " * @access public\r\n";
         $this->string .= "*/\r\n";
+
+        /** Verifico se existe NameSpace */
+        if (!empty($this->classNameSpace))
+        {
+
+            $this->string .= "\r\n";
+            /** Escrevo o NameSpace */
+            $this->string .= "/** NameSpace da minha classe */\r\n";
+            $this->string .= "namespace " . $this->classNameSpace . ";\r\n";
+            $this->string .= "\r\n";
+
+        }
+
         $this->string .= "\r\n";
         $this->string .= "class " . $this->className . "\r\n";
         $this->string .= "{";

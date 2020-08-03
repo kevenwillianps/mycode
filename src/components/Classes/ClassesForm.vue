@@ -56,11 +56,47 @@
 
                     <div class="form-group row">
 
+                        <label for="NomeDaClasses" class="col-sm-2 col-form-label">NameSpace</label>
+
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="NameSpace" v-model="inputs.name_space">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
                         <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição da Classes</label>
 
                         <div class="col-sm-10">
 
                             <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label for="TableName" class="col-sm-2 col-form-label">
+
+                            Nome da tabela
+
+                        </label>
+
+                        <div class="col-sm-10">
+
+                            <select id="TableName" class="custom-select form-control" v-model="inputs.table_name">
+
+                                <option v-bind:value="result.table_name" v-for="(result, index) in query.result.tables" v-bind:key="index">
+
+                                    {{ result.table_name }}
+
+                                </option>
+
+                            </select>
 
                         </div>
 
@@ -187,9 +223,11 @@
                     project_id : this.$route.params.project_id,
                     folder_id : null,
                     name : null,
+                    name_space : null,
                     description : null,
                     version : null,
                     release : null,
+                    table_name : null,
                     date_register : null,
                     date_update : null,
 
@@ -202,6 +240,7 @@
                         error : [],
                         situations : [],
                         folders : [],
+                        tables : [],
 
                     }
 
@@ -331,6 +370,32 @@
 
             },
 
+            /** Método para listar registros **/
+            ListTables(){
+
+                /** Envio uma requisição ao backend **/
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FIND_TABLES', {
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.query.result.tables = response.data.result;
+
+                    })
+
+                    /** Caso tenha erro **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
         },
 
         mounted(){
@@ -344,6 +409,7 @@
 
             this.ListSituations();
             this.ListFolders();
+            this.ListTables();
 
         }
 

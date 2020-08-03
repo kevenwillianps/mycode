@@ -121,29 +121,17 @@ try {
                             }
 
                             /** Monto o cabeçalho da classe*/
-                            fwrite($document, $main->headerClass($rowClasses['class_name'], $user_name, $rowClasses['class_version'], $rowClasses['class_description']));
+                            fwrite($document, $main->headerClass($rowClasses['class_name'], $user_name, $rowClasses['class_version'], $rowClasses['class_description'], $rowClasses['name_space']));
 
                             /** Monto os parâmetros padrões da classe */
                             fwrite($document, $main->defaultParametersClass());
 
-                            /** Localizo todas as classes */
-                            foreach($classes->findClasses($row->database_name) as $keyTables => $resultTables)
+                            /** Localizo os campos da tabela */
+                            foreach ($classes->findParameters($row->database_name, $rowClasses['table_name']) as $keyParameter => $resultParameters)
                             {
 
-                                /** Verifico se os parâmetros é da classe atual */
-                                if($main->nameClass($resultTables['table_name']) == $rowClasses['class_name'])
-                                {
-
-                                    /** Localizo os campos da tabela */
-                                    foreach ($classes->findParameters($row->database_name, $resultTables['table_name']) as $keyParameter => $resultParameters)
-                                    {
-
-                                        /** Monto os parâmetros dinâmicos da classe */
-                                        fwrite($document, $main->parametersClass($resultParameters['COLUMN_NAME']));
-
-                                    }
-
-                                }
+                                /** Monto os parâmetros dinâmicos da classe */
+                                fwrite($document, $main->parametersClass($resultParameters['COLUMN_NAME']));
 
                             }
 

@@ -125,7 +125,24 @@ class Projects
         $this->stmt->execute();
 
         /** Retorno um objeto **/
-        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->stmt->fetchAll();
+
+    }
+
+    /** Localizo o banco de dados **/
+    public function showDatabases(){
+
+        /** Consulta SQL **/
+        $this->sql = "SHOW DATABASES";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchObject();
 
     }
 

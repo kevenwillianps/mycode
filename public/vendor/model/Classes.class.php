@@ -18,16 +18,17 @@ class Classes
     private $sql = null;
     private $stmt = null;
     private $database_name = null;
-    private $table_name = null;
     private $class_id = null;
     private $situation_id = null;
     private $user_id = null;
     private $project_id = null;
     private $folder_id = null;
     private $name = null;
+    private $name_space = null;
     private $description = null;
     private $version = null;
     private $release = null;
+    private $table_name = null;
     private $date_register = null;
     private $date_update = null;
 
@@ -126,6 +127,7 @@ class Classes
                         c.description as class_description, 
                         c.version as class_version, 
                         c.release as class_release, 
+                        c.name_space as name_space, 
                         f.name as folder_name 
                         from classes c
                         left join folders f on c.folder_id = f.folder_id
@@ -169,7 +171,7 @@ class Classes
     }
 
     /** Insere/autualiza um registro no banco de dados **/
-    public function save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $description, $version, $release, $table_name, $date_register, $date_update)
+    public function save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $name_space, $description, $version, $release, $table_name, $date_register, $date_update)
     {
 
         /** Parâmetros de entrada **/
@@ -179,6 +181,7 @@ class Classes
         $this->project_id    = (int)$project_id;
         $this->folder_id     = (int)$folder_id;
         $this->name          = (string)$name;
+        $this->name_space    = (string)$name_space;
         $this->description   = (string)$description;
         $this->version       = (string)$version;
         $this->release       = (string)$release;
@@ -190,12 +193,12 @@ class Classes
         if ($this->class_id == 0) {
 
             /** Consulta SQL **/
-            $this->sql = "INSERT INTO classes(`class_id`, `situation_id`, `user_id`, `project_id`, `folder_id`, `name`, `description`, `version`, `release`, `table_name`, `date_register`, `date_update`)VALUES(:class_id, :situation_id, :user_id, :project_id, :folder_id, :name, :description, :version, :release, :table_name, :date_register, :date_update)";
+            $this->sql = "INSERT INTO classes(`class_id`, `situation_id`, `user_id`, `project_id`, `folder_id`, `name`, `name_space`, `description`, `version`, `release`, `table_name`, `date_register`, `date_update`)VALUES(:class_id, :situation_id, :user_id, :project_id, :folder_id, :name, :name_space, :description, :version, :release, :table_name, :date_register, :date_update)";
 
         } else {
 
             /** Consulta SQL **/
-            $this->sql = "UPDATE classes set `class_id` = :class_id, `situation_id` = :situation_id, `user_id` = :user_id, `project_id` = :project_id, `folder_id` = :folder_id, `name` = :name, `description` = :description, `version` = :version, `release` = :release, `date_register` = :date_register, `date_update` = :date_update WHERE `class_id` = :class_id";
+            $this->sql = "UPDATE classes set `class_id` = :class_id, `situation_id` = :situation_id, `user_id` = :user_id, `project_id` = :project_id, `folder_id` = :folder_id, `name` = :name, `name_space` = :name_space, `description` = :description, `version` = :version, `release` = :release, `table_name` = :table_name, `date_register` = :date_register, `date_update` = :date_update WHERE `class_id` = :class_id";
         }
 
         /** Preparo o SQL **/
@@ -212,6 +215,7 @@ class Classes
             $this->stmt->bindParam(':folder_id', $this->folder_id, \PDO::PARAM_NULL);
         }
         $this->stmt->bindParam(':name', $this->name);
+        $this->stmt->bindParam(':name_space', $this->name_space);
         $this->stmt->bindParam(':description', $this->description);
         $this->stmt->bindParam(':version', $this->version);
         $this->stmt->bindParam(':release', $this->release);

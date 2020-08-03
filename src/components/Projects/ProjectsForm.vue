@@ -74,6 +74,42 @@
 
             </div>
 
+            <div class="card card-default shadow-sm animate__animated animate__fadeIn mb-2" v-if="query.result.success.length > 0">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+
+                        <span class="badge badge-success">Ops!</span> Sucesso...
+
+                    </h4>
+
+                    <h6 class="card-subtitle">
+
+                        Verifique os itens para prosseguir
+
+                    </h6>
+
+                    <hr>
+
+                    <ul class="list-unstyled">
+
+                        <li class="media" v-for="(result, index) in query.result.success" v-bind:key="index">
+
+                            <div class="media-body">
+
+                                {{ result }}
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
             <div class="card card-default shadow-sm animate__animated animate__fadeIn">
 
                 <div class="card-body">
@@ -134,9 +170,27 @@
 
                             <div class="form-group">
 
-                                <label for="NomeDoBancoDeDados" class="col-form-label">Nome do Banco de Dados</label>
+                                <label for="NomeDoBancoDeDados" class="col-form-label">
 
-                                <input type="text" class="form-control" id="NomeDoBancoDeDados" v-model="inputs.database_name">
+                                    Nome do Banco de Dados
+
+                                </label>
+
+                                <div class="input-group mb-3">
+
+                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" id="NomeDoBancoDeDados" v-model="inputs.database_name">
+
+                                    <div class="input-group-append">
+
+                                        <button class="btn btn-outline-primary" type="button" id="button-addon2" v-on:click="TestConnection()">
+
+                                            Testar Conexão
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -310,6 +364,7 @@
                     result : {
 
                         error : [],
+                        success : [],
                         situations : [],
 
                     }
@@ -321,6 +376,53 @@
         },
 
         methods : {
+
+            /** Testar conexão */
+            TestConnection()
+            {
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_TEST_CONNECTION',{
+
+                    inputs : this.inputs
+
+                })
+
+                    .then(response => {
+
+                        /** Verificação do retorno **/
+                        switch (response.data.cod){
+
+                            /** Erro **/
+                            case 0:
+
+                                this.query.result.error = response.data.result;
+                                break;
+
+                            /** Sucesso **/
+                            case 1:
+
+                                this.query.result.success = response.data.result;
+                                break;
+
+                            /** Usuário não autenticado **/
+                            case 404:
+
+                                /** Recarrego a página **/
+                                location.reload();
+                                break;
+
+                        }
+
+                    })
+
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
 
             /** Método para salvar registro **/
             Save(){

@@ -66,7 +66,7 @@
 
                             <div class="btn-group-toggle" data-toggle="buttons">
 
-                                <label class="btn btn-outline-primary active" v-bind:for="'check_' + result" v-on:click="AddOrRemoveMethodTemplateId(result.method_template_id)">
+                                <label class="btn btn-outline-primary btn-block" v-bind:for="'check_' + result" v-on:click="AddOrRemoveMethodTemplateId(result.method_template_id)">
 
                                     <input type="checkbox" v-bind:id="'check_' + result"> Marcar
 

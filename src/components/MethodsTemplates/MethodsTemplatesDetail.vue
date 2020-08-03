@@ -2,61 +2,71 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Template de Métodos/ <span class="badge badge-primary">Detalhes</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Template de Métodos/ <span class="badge badge-primary">Detalhes do Template de Método</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link to="/methods/templates/datagrid" class="nav-link">
+
+                            <i class="fa fa-bars mr-1"></i>Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/methods/templates/datagrid/" class="btn btn-default">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <h5 class="card-title">
 
-                </h4>
+                        <span class="badge badge-primary mr-1">
 
-            </div>
+                            <i class="fas fa-hashtag mr-1"></i>{{ query.result.method_template_id }}
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+                        </span>
 
-                <div class="card card-default shadow-sm">
+                        {{ query.result.name }}
 
-                    <div class="card-body">
+                    </h5>
 
-                        <h5 class="card-title">
+                    <h6 class="card-subtitle mb-2">
 
-                            <span class="badge badge-primary mr-1">
+                        {{ query.result.description }}
 
-                                <i class="fas fa-hashtag mr-1"></i>{{ query.result.method_template_id }}
+                    </h6>
 
-                            </span>
+                    <div class="card-text">
 
-                            {{ query.result.name }}
+                        <code>
 
-                        </h5>
+                            {{ query.result.code }}
 
-                        <h6 class="card-subtitle mb-2">
-
-                            {{ query.result.description }}
-
-                        </h6>
-
-                        <div class="form-group">
-
-                            <textarea rows="10" class="form-control" v-model="query.result.code"></textarea>
-
-                        </div>
+                        </code>
 
                     </div>
 

@@ -2,129 +2,423 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Template de Métodos/ <span class="badge badge-primary">Formulário</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Formulário</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link to="/methods/templates/datagrid" class="nav-link">
+
+                            <i class="fa fa-bars mr-1"></i>Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/methods/datagrid" class="btn btn-primary">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <div class="form-group row">
 
-                </h4>
+                        <label for="NomeDaClasses" class="col-sm-2 col-form-label">
 
-            </div>
+                            Nome do Método
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+                        </label>
 
-                <div class="card card-default shadow-sm">
+                        <div class="col-sm-10">
 
-                    <div class="card-body">
+                            <input type="text" class="form-control" id="NomeDaClasses" v-model="inputs.name">
 
-                        <div class="form-group row">
+                        </div>
 
-                            <label for="NomeDaClasses" class="col-sm-2 col-form-label">Nome do Método</label>
+                    </div>
 
-                            <div class="col-sm-10">
+                    <div class="form-group row">
 
-                                <input type="text" class="form-control" id="NomeDaClasses" v-model="inputs.name">
+                        <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição do Método</label>
+
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label for="VisibilidadeDoMetodo" class="col-sm-2 col-form-label">Visibilidade do Método</label>
+
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="VisibilidadeDoMetodo" v-model="inputs.type">
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label for="Version" class="col-form-label">Versão</label>
+
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
 
                             </div>
 
                         </div>
 
-                        <div class="form-group row">
+                        <div class="col-md-4">
 
-                            <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição do Método</label>
+                            <div class="form-group">
 
-                            <div class="col-sm-10">
+                                <label for="Release" class="col-form-label">Release</label>
 
-                                <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-
-                            <label for="VisibilidadeDoMetodo" class="col-sm-2 col-form-label">Visibilidade do Método</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="VisibilidadeDoMetodo" v-model="inputs.type">
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
 
                             </div>
 
                         </div>
 
-                        <hr>
+                        <div class="col-md-4">
 
-                        <div class="row">
+                            <div class="form-group">
 
-                            <div class="col-md-4">
+                                <label for="Situation" class="col-form-label">Situação</label>
 
-                                <div class="form-group">
+                                <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
 
-                                    <label for="Version" class="col-form-label">Versão</label>
+                                    <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
 
-                                    <input type="text" class="form-control" id="Version" v-model="inputs.version">
+                                        {{ result.name }}
 
-                                </div>
+                                    </option>
 
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="Release" class="col-form-label">Release</label>
-
-                                    <input type="text" class="form-control" id="Release" v-model="inputs.release">
-
-                                </div>
+                                </select>
 
                             </div>
 
-                            <div class="col-md-4">
+                        </div>
 
-                                <div class="form-group">
+                        <div class="col-md-12">
 
-                                    <label for="Situation" class="col-form-label">Situação</label>
+                            <a type="button" class="btn btn-primary btn-block" data-toggle="collapse" href="#marking" role="button" aria-expanded="false" aria-controls="marking">
 
-                                    <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
+                                Marcações
 
-                                        <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
+                            </a>
 
-                                            {{ result.name }}
+                            <div class="collapse mt-3" id="marking">
 
-                                        </option>
+                                <div class="card shadow-sm">
 
-                                    </select>
+                                    <div class="card-body">
 
-                                </div>
+                                        <ul class="list-unstyled">
 
-                            </div>
+                                            <li class="media">
 
-                            <div class="col-md-12">
+                                                <div class="media-body">
 
-                                <div class="form-group">
+                                                    <h5 class="mt-0 mb-1">
 
-                                    <label for="CaminhoDoBancoDeDados" class="col-form-label">Código do Método</label>
+                                                        <span class="badge badge-primary">
 
-                                    <textarea class="form-control" id="CaminhoDoBancoDeDados" rows="5" v-model="inputs.code"></textarea>
+                                                            [primary_key]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Chave primária
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: $chave_primaria;
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [inputs_parameters_method]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Parâmetros de entrada do método
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: $this->chave_primari = $chave_primaria;
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [sql_insert]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Sql de insert
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: 'INSERT INTO tabela (coluna_1, coluna_2) VALUES ('valor_', 'valor_2');'
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [sql_update]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Sql de update
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: 'UPDATE tabela SET coluna_1 = "valor_1";'
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [sql_select]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Sql de select
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: 'SELECT * FROM tabela;'
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [sql_delete]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Sql de delete
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: 'DELETE FROM tabela WHERE chave_primari = 1;'
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [inputs_parameters]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Parâmetros de entrada
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: $parametro_1, $parametro_2, $parametro_3, $parametro_4
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [default_parameters_class]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Parâmetros da classe
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: private $chave_primaria;
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li class="media">
+
+                                                <div class="media-body">
+
+                                                    <h5 class="mt-0 mb-1">
+
+                                                        <span class="badge badge-primary">
+
+                                                            [bind_param]
+
+                                                        </span>
+
+                                                    </h5>
+
+                                                    <h6 class="mt-0 mb-1">
+
+                                                        Bind Params
+
+                                                    </h6>
+
+                                                    <p>
+
+                                                        Exemplo.: $this->stmt->bindParam(':chave_primaria', $this->chave_primaria);
+
+                                                    </p>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
 
                                 </div>
 
@@ -132,13 +426,25 @@
 
                         </div>
 
-                        <div class="form-group text-right" v-on:click="Save()">
+                        <div class="col-md-12">
 
-                            <div class="btn btn btn-primary">
+                            <div class="form-group">
 
-                                Salvar
+                                <label for="CaminhoDoBancoDeDados" class="col-form-label">Código do Método</label>
+
+                                <textarea class="form-control" id="CaminhoDoBancoDeDados" rows="5" v-model="inputs.code"></textarea>
 
                             </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group text-right" v-on:click="Save()">
+
+                        <div class="btn btn btn-primary">
+
+                            Salvar
 
                         </div>
 

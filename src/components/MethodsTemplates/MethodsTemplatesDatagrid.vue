@@ -4,43 +4,51 @@
 
         <ModalConfirm title="Atenção!" message="Deseja excluir este registro ?" v-on:ConfirmRequest="Delete"></ModalConfirm>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Template de Métodos/ <span class="badge badge-primary">Listagem</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Template de Métodos/ <span class="badge badge-primary">Listagem</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{ name : 'methods-templates-form', params : { method_template_id : 0 }}" class="nav-link">
+
+                            <i class="fas fa-pencil-alt mr-1"></i>Novo
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link v-bind:to="{ name : 'methods-templates-form', params : { method_template_id : 0 }}" class="btn btn-primary">
+            <div class="row">
 
-                        <i class="fas fa-pencil-alt mr-1"></i>Novo
+                <div class="col-md-3 mb-3" v-for="(result, index) in query.result" v-bind:key="index">
 
-                    </router-link>
+                    <div class="card card-default shadow-sm">
 
-                </h4>
+                        <div class="card-body">
 
-            </div>
-
-            <div class="col-md-12 animate__animated animate__fadeIn">
-
-                <div class="row">
-
-                    <div class="col-md-3 mb-3" v-for="(result, index) in query.result" v-bind:key="index">
-
-                        <div class="card card-default shadow-sm">
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">
+                            <h5 class="card-title">
 
                                     <span class="badge badge-primary mr-1">
 
@@ -48,100 +56,98 @@
 
                                     </span>
 
-                                    {{ result.name }}
+                                {{ result.name }}
 
-                                </h5>
+                            </h5>
 
-                                <h6 class="card-subtitle mb-2">
+                            <h6 class="card-subtitle mb-2">
 
-                                    Método Template
+                                Método Template
 
-                                </h6>
+                            </h6>
 
-                                <div class="card-text">
+                            <div class="card-text">
 
-                                    {{ result.description}}
-
-                                </div>
+                                {{ result.description}}
 
                             </div>
 
-                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
+                        </div>
 
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_method_' + result.method_template_id" v-bind:aria-controls="'navbar_method_' + result.method_template_id" aria-expanded="false">
+                        <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
-                                    <span class="navbar-toggler-icon"></span>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_method_' + result.method_template_id" v-bind:aria-controls="'navbar_method_' + result.method_template_id" aria-expanded="false">
+
+                                <span class="navbar-toggler-icon"></span>
+
+                            </button>
+
+                            <div class="collapse navbar-collapse" v-bind:id="'navbar_method_' + result.method_template_id">
+
+                                <ul class="navbar-nav mr-auto">
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.method_template_id = result.method_template_id">
+
+                                            <i class="fas fa-fire-alt"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link class="nav-link" v-bind:to="{name : 'methods-templates-form', params : { method_template_id : result.method_template_id}}">
+
+                                            <i class="fas fa-pencil-alt"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link class="nav-link" v-bind:to="{name : 'methods-templates-detail', params : { method_template_id : result.method_template_id}}">
+
+                                            <i class="fa fa-search"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" type="button" data-toggle="collapse" v-bind:href="'#navbar_method_template_' + result.method_template_id" role="button" aria-expanded="false" aria-controls="collapseExample">
+
+                                            <i class="fas fa-hammer"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </nav>
+
+                        <div class="collapse card-body" v-bind:id="'navbar_method_template_' + result.method_template_id">
+
+                            <div class="card card-body">
+
+                                <div class="form-group">
+
+                                    <input type="text" class="form-control" v-model="inputs.database_name">
+
+                                </div>
+
+                                <button class="btn btn-primary" v-on:click="Build(), inputs.method_template_id = result.method_template_id">
+
+                                    Gerar
 
                                 </button>
 
-                                <div class="collapse navbar-collapse" v-bind:id="'navbar_method_' + result.method_template_id">
-
-                                    <ul class="navbar-nav mr-auto">
-
-                                        <li class="nav-item">
-
-                                            <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.method_template_id = result.method_template_id">
-
-                                                <i class="fas fa-fire-alt"></i>
-
-                                            </a>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link class="nav-link" v-bind:to="{name : 'methods-templates-form', params : { method_template_id : result.method_template_id}}">
-
-                                                <i class="fas fa-pencil-alt"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link class="nav-link" v-bind:to="{name : 'methods-templates-detail', params : { method_template_id : result.method_template_id}}">
-
-                                                <i class="fa fa-search"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <a class="nav-link" type="button" data-toggle="collapse" v-bind:href="'#navbar_method_template_' + result.method_template_id" role="button" aria-expanded="false" aria-controls="collapseExample">
-
-                                                <i class="fas fa-hammer"></i>
-
-                                            </a>
-
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                            </nav>
-
-                            <div class="collapse card-body" v-bind:id="'navbar_method_template_' + result.method_template_id">
-                                
-                                <div class="card card-body">
-                                    
-                                    <div class="form-group">
-
-                                        <input type="text" class="form-control" v-model="inputs.database_name">
-                                        
-                                    </div>
-
-                                    <button class="btn btn-primary" v-on:click="Build(), inputs.method_template_id = result.method_template_id">
-
-                                        Gerar
-
-                                    </button>
-                                    
-                                </div>
-                                
                             </div>
 
                         </div>

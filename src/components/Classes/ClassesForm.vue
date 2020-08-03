@@ -2,145 +2,149 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Formulário</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Formulário</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'classes-datagrid', params : { project_id : inputs.project_id}}" class="nav-link">
+
+                            <i class="fas fa-bars mr-1"></i> Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/classes/datagrid" class="btn btn-primary">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <div class="form-group row">
 
-                </h4>
+                        <label for="NomeDaClasses" class="col-sm-2 col-form-label">Nome da Classes</label>
 
-            </div>
+                        <div class="col-sm-10">
 
-            <hr>
-
-            <div class="col-md-12 animate__animated animate__fadeIn">
-
-                <div class="card card-default shadow-sm">
-
-                    <div class="card-body">
-
-                        <div class="form-group row">
-
-                            <label for="NomeDaClasses" class="col-sm-2 col-form-label">Nome da Classes</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="NomeDaClasses" v-model="inputs.name">
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-
-                            <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição da Classes</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
-
-                            </div>
+                            <input type="text" class="form-control" id="NomeDaClasses" v-model="inputs.name">
 
                         </div>
 
                     </div>
 
-                    <hr>
+                    <div class="form-group row">
 
-                    <div class="card-body">
+                        <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição da Classes</label>
 
-                        <div class="row">
+                        <div class="col-sm-10">
 
-                            <div class="col-md-3">
+                            <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
 
-                                <div class="form-group">
+                        </div>
 
-                                    <label for="Version" class="col-form-label">Versão</label>
+                    </div>
 
-                                    <input type="text" class="form-control" id="Version" v-model="inputs.version">
+                </div>
 
-                                </div>
+                <hr>
 
-                            </div>
+                <div class="card-body">
 
-                            <div class="col-md-3">
+                    <div class="row">
 
-                                <div class="form-group">
+                        <div class="col-md-3">
 
-                                    <label for="Release" class="col-form-label">Release</label>
+                            <div class="form-group">
 
-                                    <input type="text" class="form-control" id="Release" v-model="inputs.release">
+                                <label for="Version" class="col-form-label">Versão</label>
 
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-3">
-
-                                <div class="form-group">
-
-                                    <label for="Situation" class="col-form-label">Situação</label>
-
-                                    <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
-
-                                        <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
-
-                                            {{ result.name }}
-
-                                        </option>
-
-                                    </select>
-
-                                </div>
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
 
                             </div>
 
-                            <div class="col-md-3">
+                        </div>
 
-                                <div class="form-group">
+                        <div class="col-md-3">
 
-                                    <label for="Pasta" class="col-form-label">Pasta</label>
+                            <div class="form-group">
 
-                                    <select id="Pasta" class="custom-select form-control" v-model="inputs.folder_id">
+                                <label for="Release" class="col-form-label">Release</label>
 
-                                        <option v-bind:value="result.folder_id" v-for="(result, index) in query.result.folders" v-bind:key="index">
-
-                                            {{ result.name }}
-
-                                        </option>
-
-                                    </select>
-
-                                </div>
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
 
                             </div>
 
-                            <div class="col-md-12 text-right">
+                        </div>
 
-                                <div class="form-group">
+                        <div class="col-md-3">
 
-                                    <div class="btn btn btn-primary" v-on:click="Save()">
+                            <div class="form-group">
 
-                                        Salvar
+                                <label for="Situation" class="col-form-label">Situação</label>
 
-                                    </div>
+                                <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
+
+                                    <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
+
+                                        {{ result.name }}
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+
+                                <label for="Pasta" class="col-form-label">Pasta</label>
+
+                                <select id="Pasta" class="custom-select form-control" v-model="inputs.folder_id">
+
+                                    <option v-bind:value="result.folder_id" v-for="(result, index) in query.result.folders" v-bind:key="index">
+
+                                        {{ result.name }}
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 text-right">
+
+                            <div class="form-group">
+
+                                <div class="btn btn btn-primary" v-on:click="Save()">
+
+                                    Salvar
 
                                 </div>
 

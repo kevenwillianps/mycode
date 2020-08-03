@@ -24,7 +24,7 @@
 
                         <router-link to="/" class="nav-link">
 
-                            Listagem
+                            <i class="fa fa-bars mr-1"></i>Listagem
 
                         </router-link>
 

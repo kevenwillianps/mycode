@@ -50,9 +50,43 @@
 
         <div class="col-md-12 mt-3">
 
-            <div class="row">
+            <div class="animate__animated animate__fadeIn" v-if="query.result.methods <= 0">
 
-                <div class="col-md-3 mb-3" v-for="(result, index) in query.result.methods" v-bind:key="index">
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="media">
+
+                            <img src="image/svg/003-error.svg" width="70px" class="mr-3" alt="MyCMS - Keven Willian">
+
+                            <div class="media-body">
+
+                                <h3 class="mt-0">
+
+                                    Ops!
+
+                                </h3>
+
+                                <h5 class="text-muted">
+
+                                    Não foram localizado registros
+
+                                </h5>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row" v-else>
+
+                <div class="col-md-3 mb-3 animate__animated animate__fadeIn" v-for="(result, index) in query.result.methods" v-bind:key="index">
 
                     <div class="card card-default shadow-sm">
 

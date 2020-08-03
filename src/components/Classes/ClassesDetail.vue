@@ -2,67 +2,73 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Detalhes da Classe</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/ <span class="badge badge-primary">Detalhes da Classe</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'classes-datagrid', params : { project_id : inputs.project_id}}" class="nav-link">
+
+                            <i class="fas fa-bars mr-1"></i> Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/classes/datagrid/" class="btn btn-primary">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <h5 class="card-title">
 
-                </h4>
+                        <span class="badge badge-primary"><i class="fas fa-hashtag mr-1"></i>{{query.result.classes.class_id}}</span>{{query.result.classes.name}}
 
-            </div>
+                    </h5>
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+                    <h6 class="card-subtitle mb-2">
 
-                <div class="card card-default shadow-sm">
+                        Detalhes da classe
 
-                    <div class="card-body">
+                    </h6>
 
-                        <h5 class="card-title">
+                    <div v-for="(result, index) in query.result.methods" v-bind:key="index">
 
-                            <span class="badge badge-primary mr-1">#{{query.result.classes.class_id}}</span>{{query.result.classes.name}}
+                        <div class="card-text">
 
-                        </h5>
+                            Método: <span class="badge badge-primary">{{ result.name }}</span>
 
-                        <h6 class="card-subtitle mb-2">
+                        </div>
 
-                            Detalhes da classe
+                        <div class="card-text">
 
-                        </h6>
+                            <code class="mt-1">
 
-                        <div v-for="(result, index) in query.result.methods" v-bind:key="index">
+                                {{ result.code }}
 
-                            <div class="card-text">
-
-                                Método: <span class="badge badge-primary">{{ result.name }}</span>
-
-                            </div>
-
-                           <div class="form-group">
-
-                               <div class="card-code mt-1">
-
-                                   {{ result.code }}
-
-                               </div>
-
-                           </div>
+                            </code>
 
                         </div>
 

@@ -178,7 +178,7 @@
 
                             case 1:
 
-                                this.$router.replace({name : 'classes-datagrid'});
+                                this.$router.replace({name : 'methods-datagrid', params : {project_id : this.inputs.project_id, class_id : this.inputs.class_id }});
                                 break;
 
                             case 404:

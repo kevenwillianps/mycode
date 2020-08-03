@@ -2,143 +2,149 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Formulário</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Métodos/ <span class="badge badge-primary">Formulário</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'methods-datagrid', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : 0}}" class="nav-link">
+
+                            <i class="fas fa-bars mr-1"></i> Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/methods/datagrid" class="btn btn-primary">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <div class="form-group row">
 
-                </h4>
+                        <label for="NomeDaClasses" class="col-sm-2 col-form-label">Nome do Método</label>
 
-            </div>
+                        <div class="col-sm-10">
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+                            <input type="text" class="form-control" id="NomeDaClasses" v-model="inputs.name">
 
-                <div class="card card-default shadow-sm">
+                        </div>
 
-                    <div class="card-body">
+                    </div>
 
-                        <div class="form-group row">
+                    <div class="form-group row">
 
-                            <label for="NomeDaClasses" class="col-sm-2 col-form-label">Nome do Método</label>
+                        <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição do Método</label>
 
-                            <div class="col-sm-10">
+                        <div class="col-sm-10">
 
-                                <input type="text" class="form-control" id="NomeDaClasses" v-model="inputs.name">
+                            <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label for="VisibilidadeDoMetodo" class="col-sm-2 col-form-label">Visibilidade do Método</label>
+
+                        <div class="col-sm-10">
+
+                            <input type="text" class="form-control" id="VisibilidadeDoMetodo" v-model="inputs.type">
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label for="Version" class="col-form-label">Versão</label>
+
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
 
                             </div>
 
                         </div>
 
-                        <div class="form-group row">
+                        <div class="col-md-4">
 
-                            <label for="DescricaoDaClasses" class="col-sm-2 col-form-label">Descrição do Método</label>
+                            <div class="form-group">
 
-                            <div class="col-sm-10">
+                                <label for="Release" class="col-form-label">Release</label>
 
-                                <input type="text" class="form-control" id="DescricaoDaClasses" v-model="inputs.description">
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-
-                            <label for="VisibilidadeDoMetodo" class="col-sm-2 col-form-label">Visibilidade do Método</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="VisibilidadeDoMetodo" v-model="inputs.type">
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
 
                             </div>
 
                         </div>
 
-                        <hr>
+                        <div class="col-md-4">
 
-                        <div class="row">
+                            <div class="form-group">
 
-                            <div class="col-md-4">
+                                <label for="Situation" class="col-form-label">Situação</label>
 
-                                <div class="form-group">
+                                <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
 
-                                    <label for="Version" class="col-form-label">Versão</label>
+                                    <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
 
-                                    <input type="text" class="form-control" id="Version" v-model="inputs.version">
+                                        {{ result.name }}
 
-                                </div>
+                                    </option>
 
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="Release" class="col-form-label">Release</label>
-
-                                    <input type="text" class="form-control" id="Release" v-model="inputs.release">
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-
-                                    <label for="Situation" class="col-form-label">Situação</label>
-
-                                    <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
-
-                                        <option v-bind:value="result.situation_id" v-for="(result, index) in query.result.situations" v-bind:key="index">
-
-                                            {{ result.name }}
-
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-12">
-
-                                <div class="form-group">
-
-                                    <label for="CaminhoDoBancoDeDados" class="col-form-label">Código do Método</label>
-
-                                    <textarea class="form-control" id="CaminhoDoBancoDeDados" rows="5" v-model="inputs.code"></textarea>
-
-                                </div>
+                                </select>
 
                             </div>
 
                         </div>
 
-                        <div class="form-group text-right" v-on:click="Save()">
+                        <div class="col-md-12">
 
-                            <div class="btn btn btn-primary">
+                            <div class="form-group">
 
-                                Salvar
+                                <label for="CaminhoDoBancoDeDados" class="col-form-label">Código do Método</label>
+
+                                <textarea class="form-control" id="CaminhoDoBancoDeDados" rows="5" v-model="inputs.code"></textarea>
 
                             </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group text-right" v-on:click="Save()">
+
+                        <div class="btn btn btn-primary">
+
+                            Salvar
 
                         </div>
 
@@ -227,7 +233,7 @@
 
                             case 1:
 
-                                this.$router.replace({name : 'classes-datagrid'});
+                                this.$router.replace({name : 'methods-datagrid', params : {project_id : this.inputs.project_id, class_id : this.inputs.class_id }});
                                 break;
 
                             case 404:

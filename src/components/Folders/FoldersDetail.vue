@@ -2,129 +2,145 @@
 
     <div>
 
-        <div id="context-menu" class="animate__animated animate__fadeIn">
-
-            <div class="item">
-
-                <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0}}">
-
-                    <i class="fas fa-file-code"></i> Classe
-
-                </router-link>
-
-            </div>
-
-        </div>
-
         <ModalConfirm title="Atenção!" message="Deseja excluir este registro ?" v-on:ConfirmRequest="Delete"></ModalConfirm>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Pasta/ <span class="badge badge-primary">Arquivos</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Pasta/ <span class="badge badge-primary">Arquivos</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'classes-datagrid', params : {project_id : inputs.project_id}}" class="nav-link">
+
+                            <i class="fas fa-bars mr-1"></i>Listagem
+
+                        </router-link>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0 }}" class="nav-link">
+
+                            <i class="fas fa-pencil-alt mr-1"></i>Novo
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
+        </nav>
 
-                <div class="row">
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <div class="col-md-3 mb-3" v-for="(result, index) in query.result.classes" v-bind:key="index">
+            <div class="row">
 
-                        <div class="card card-default shadow-sm">
+                <div class="col-md-3 mb-3" v-for="(result, index) in query.result.classes" v-bind:key="index">
 
-                            <div class="card-body">
+                    <div class="card card-default shadow-sm">
 
-                                <h5 class="card-title">
+                        <div class="card-body">
 
-                                    <span class="badge badge-primary mr-1">
+                            <h5 class="card-title">
 
-                                        <i class="fas fa-hashtag mr-1"></i>{{result.class_id}}
+                            <span class="badge badge-primary mr-1">
 
-                                    </span>
+                                <i class="fas fa-hashtag mr-1"></i>{{result.class_id}}
 
-                                    {{ result.name }}
+                            </span>
 
-                                </h5>
+                                {{ result.name }}
 
-                                <h6 class="card-subtitle text-white-50 mb-2">
+                            </h5>
 
-                                    Classe
+                            <h6 class="card-subtitle text-white-50 mb-2">
 
-                                </h6>
+                                Classe
 
-                                <div class="card-text">
+                            </h6>
 
-                                    {{ result.description }}
+                            <div class="card-text">
 
-                                </div>
+                                {{ result.description }}
 
                             </div>
 
-                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
-
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_classes_' + result.folder_id" v-bind:aria-controls="'navbar_classes_' + result.folder_id" aria-expanded="false">
-
-                                    <span class="navbar-toggler-icon"></span>
-
-                                </button>
-
-                                <div class="collapse navbar-collapse" v-bind:id="'navbar_classes_' + result.folder_id">
-
-                                    <ul class="navbar-nav mr-auto">
-
-                                        <li class="nav-item">
-
-                                            <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.class_id = result.class_id">
-
-                                                <i class="fas fa-fire-alt"></i>
-
-                                            </a>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
-
-                                                <i class="fas fa-pencil-alt"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link v-bind:to="{name : 'methods-datagrid', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
-
-                                                <i class="far fa-eye"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <router-link v-bind:to="{name : 'classes-detail', params : {class_id : result.class_id}}" class="nav-link">
-
-                                                <i class="fa fa-search"></i>
-
-                                            </router-link>
-
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                            </nav>
-
                         </div>
+
+                        <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
+
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_classes_' + result.folder_id" v-bind:aria-controls="'navbar_classes_' + result.folder_id" aria-expanded="false">
+
+                                <span class="navbar-toggler-icon"></span>
+
+                            </button>
+
+                            <div class="collapse navbar-collapse" v-bind:id="'navbar_classes_' + result.folder_id">
+
+                                <ul class="navbar-nav mr-auto">
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.class_id = result.class_id">
+
+                                            <i class="fas fa-fire-alt"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
+
+                                            <i class="fas fa-pencil-alt"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link v-bind:to="{name : 'methods-datagrid', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
+
+                                            <i class="far fa-eye"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <router-link v-bind:to="{name : 'classes-detail', params : {class_id : result.class_id}}" class="nav-link">
+
+                                            <i class="fa fa-search"></i>
+
+                                        </router-link>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </nav>
 
                     </div>
 
@@ -139,17 +155,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
-    window.addEventListener("contextmenu",function(event){
-        event.preventDefault();
-        var contextElement = document.getElementById("context-menu");
-        contextElement.style.top = event.offsetY + "px";
-        contextElement.style.left = event.offsetX + "px";
-        contextElement.classList.add("active");
-    });
-    window.addEventListener("click",function(){
-        document.getElementById("context-menu").classList.remove("active");
-    });
 
     /** Importação de componentes **/
     import axios from 'axios';

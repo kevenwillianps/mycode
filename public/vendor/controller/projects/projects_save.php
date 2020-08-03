@@ -17,6 +17,7 @@ $projects = new Projects();
 
 try {
 
+    /** Verifico se existe usuário logado */
     if ($main->verifySession()){
 
         /** Capturo meus campos envios por json **/
@@ -72,7 +73,8 @@ try {
             array_push($message, 'O campo "Caminho do Banco de Dados", deve ser preenchido');
         }
         /** Verifico se o campo description foi preenchido **/
-        if (empty($database_name)) {
+        if (empty($database_name))
+        {
             array_push($message, 'O campo "Nome do Banco de Dados", deve ser preenchido');
         }
         /** Verifico se o campo date_register foi preenchido **/

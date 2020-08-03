@@ -113,7 +113,7 @@ class Projects
         $this->database_name = (string)$database_name;
 
         /** Consulta SQL **/
-        $this->sql = "SELECT * FROM information_schema.contactlist;";
+        $this->sql = "SELECT * FROM information_schema." . $this->database_name . ";";
 
         /** Preparo o Sql **/
         $this->stmt = $this->connection->connect()->prepare($this->sql);

@@ -5,6 +5,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: #f4f8f9;
+    margin-bottom: 20px;
 }
 
 p {
@@ -85,10 +86,6 @@ a:focus {
 
     border : 1px dashed #dee2e6;
 
-}
-
-.table-image td, .table-image th {
-    vertical-align: middle;
 }
 
 .navbar-card{

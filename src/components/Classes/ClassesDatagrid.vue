@@ -24,7 +24,7 @@
 
                     <li class="nav-item">
 
-                        <router-link v-bind:to="{name : 'folders-form', params : {project_id : inputs.project_id}}" class="nav-link">
+                        <router-link v-bind:to="{name : 'folders-form', params : {project_id : inputs.project_id, folder_id : 0 }}" class="nav-link">
 
                             <i class="fas fa-folder mr-1"></i>Pasta
 
@@ -34,7 +34,7 @@
 
                     <li class="nav-item">
 
-                        <router-link v-bind:to="{name : 'projects-form', params : {project_id : 0}}" class="nav-link">
+                        <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0 }}" class="nav-link">
 
                             <i class="fas fa-pencil-alt mr-1"></i>Novo
 

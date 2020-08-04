@@ -127,6 +127,7 @@ class Classes
                         c.description as class_description, 
                         c.version as class_version, 
                         c.release as class_release, 
+                        c.table_name as table_name, 
                         c.name_space as name_space, 
                         f.name as folder_name 
                         from classes c
@@ -256,7 +257,7 @@ class Classes
         $this->database_name = (string)$database_name;
 
         /** Consulta SQL **/
-        $this->sql = "SELECT table_schema, table_name, table_type FROM information_schema.tables WHERE table_schema = :database_name";
+        $this->sql = "SELECT table_schema, table_name, table_type FROM information_schema.tables WHERE table_schema = :database_name;";
 
         /** Preparo o Sql **/
         $this->stmt = $this->connection->connect()->prepare($this->sql);

@@ -178,7 +178,7 @@
 
                                 <div class="input-group mb-3">
 
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" id="NomeDoBancoDeDados" v-model="inputs.database_name">
+                                    <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" id="NomeDoBancoDeDados" v-model="inputs.database_name">
 
                                     <div class="input-group-append">
 
@@ -226,7 +226,7 @@
 
                                 <label for="Version" class="col-form-label">Versão</label>
 
-                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version" readonly>
 
                             </div>
 
@@ -238,7 +238,7 @@
 
                                 <label for="Release" class="col-form-label">Release</label>
 
-                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release" readonly>
 
                             </div>
 

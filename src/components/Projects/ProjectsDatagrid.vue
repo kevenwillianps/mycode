@@ -44,7 +44,49 @@
 
                 <div class="col-md-12 animate__animated animate__fadeIn">
 
-                    <div class="animate__animated animate__fadeIn" v-if="query.result <= 0">
+                    <div class="animate__animated animate__fadeIn mb-2" v-if="query.success">
+
+                        <div class="card">
+
+                            <div class="card-body shadow-sm">
+
+                                <h4 class="card-title">
+
+                                    <span class="badge badge-success">Sucesso...</span>
+
+                                </h4>
+
+                                <h6 class="card-subtitle">
+
+                                    Os arquivos do projeto foram gerados com sucesso
+
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="animate__animated animate__fadeIn" v-if="controls.progress_bar">
+
+                        <div class="card shadow-sm">
+
+                            <div class="card-body">
+
+                                <div class="progress">
+
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="animate__animated animate__fadeIn" v-else-if="query.result <= 0">
 
                         <div class="card shadow-sm">
 
@@ -216,8 +258,15 @@
                 query : {
 
                     result : [],
+                    success : false,
 
                 },
+
+                controls : {
+
+                    progress_bar : true,
+
+                }
 
             }
 
@@ -228,13 +277,35 @@
             /** Listagem de registros **/
             List(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
+                /** Escondo a mensagem de suscesos */
+                this.query.success = false;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_DATAGRID')
 
                     /** Caso tenha sucesso **/
                     .then(response => {
 
-                        this.query.result = response.data.result;
+                        /** */
+                        switch (response.data.cod)
+                        {
+
+                            case 1:
+
+                                this.query.result = response.data.result;
+
+                                window.setTimeout(() => {
+
+                                    this.controls.progress_bar = false;
+
+                                }, 1000);
+
+                                break;
+
+                        }
 
                     })
 
@@ -250,6 +321,9 @@
             /** Listagem de registros **/
             Delete(){
 
+                this.controls.progress_bar = true;
+                this.query.success = false;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_DELETE',{
 
@@ -261,7 +335,13 @@
                     .then(response => {
 
                         this.List();
-                        console.log('Sucesso -> ' + response.data);
+
+                        window.setTimeout(() => {
+
+                            this.controls.progress_bar = false;
+                            console.log('Sucesso -> ' + response.data);
+
+                        }, 1000);
 
                     })
 
@@ -277,6 +357,8 @@
             /** Listagem de registros **/
             Build(project_id){
 
+                this.controls.progress_bar = true;
+                this.query.success = false;
                 this.inputs.project_id = project_id;
 
                 /** Envio de requisição **/
@@ -289,8 +371,25 @@
                     /** Caso tenha sucesso **/
                     .then(response => {
 
-                        this.List();
-                        console.log('Sucesso -> ' + response.data);
+                        switch (response.data.cod)
+                        {
+
+                            case 1:
+
+                                window.setTimeout(() => {
+
+                                    this.query.success = true;
+                                    this.controls.progress_bar = false;
+                                    console.log('Sucesso -> ' + response.data);
+
+                                }, 1000);
+                                break;
+
+                            case 0:
+                                console.log('Erro -> ' + response.data);
+                                break;
+
+                        }
 
                     })
 

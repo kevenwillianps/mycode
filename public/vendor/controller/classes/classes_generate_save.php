@@ -83,10 +83,11 @@ try {
                 {
 
                     /** Localizo as classes **/
-                    foreach($classes->findClasses($database_name) as $key => $result){
+                    foreach($classes->findClasses($database_name) as $key => $result)
+                    {
 
                         /** Salvo as classes **/
-                        $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $main->nameClass($result['table_name']), $name_space, $main->descriptionClass($result['table_name']), $version, $release, $result['table_name'], $date_register, $date_update);
+                        $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $main->nameClass($result['TABLE_NAME']), $name_space, $main->descriptionClass($result['TABLE_NAME']), $version, $release, $result['TABLE_NAME'], $date_register, $date_update);
 
                     }
 

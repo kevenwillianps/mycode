@@ -17,41 +17,59 @@ $main = new Main();
 $projects = new Projects();
 $arrayUtf8Encode = new ArrayUtf8Encode();
 
-try {
+/** Verifico se existe sessão */
+if ($main->verifySession())
+{
 
-    if ($main->verifySession()){
+    try
+    {
 
         /** Result **/
         $result = array(
-            "result" => $arrayUtf8Encode->utf8Converter($projects->all())
-        );
 
-    }else{
+            'cod' => 1,
+            'result' => $arrayUtf8Encode->utf8Converter($projects->all())
 
-        /** Preparo o formulario para retorno **/
-        $result = array(
-            "cod" => 404,
-            "message" => "Usuário não autenticado",
         );
 
     }
+    catch(Exception $e)
+    {
+        /** Preparo o formulario para retorno **/
+        $result = array(
 
-    /** Envio **/
-    echo json_encode($result);
+            'cod' => 0,
+            'message' => $e->getMessage()
 
-    /** Paro o procedimento **/
-    exit;
-} catch (Exception $e) {
+        );
+
+    }
+    finally
+    {
+
+        /** Envio **/
+        echo json_encode($result);
+        /** Paro o procedimento **/
+        exit;
+
+    }
+
+}
+else
+{
 
     /** Preparo o formulario para retorno **/
     $result = array(
-        "cod" => 0,
-        "message" => $e->getMessage()
+
+        "cod" => 404,
+        "message" => "Usuário não autenticado",
+
     );
 
     /** Envio **/
     echo json_encode($result);
-
     /** Paro o procedimento **/
     exit;
+
 }
+

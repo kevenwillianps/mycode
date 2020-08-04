@@ -242,7 +242,9 @@ class Main
     public function footerClass(){
 
         /** Escrita do código **/
-        $this->string = "}";
+        $this->string  = "\r\n";
+        $this->string .= "}\r\n";
+        $this->string .= "\r\n";
 
         /** Retorno o código gerado **/
         return $this->string;

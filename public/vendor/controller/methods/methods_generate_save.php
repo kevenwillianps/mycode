@@ -75,10 +75,12 @@ try {
             $row = $projects->get($project_id);
 
             /** Verifico se existe o registro **/
-            if (isset($row)) {
+            if (isset($row))
+            {
 
                 /** Verfico se o registro é válido **/
-                if ($row->project_id > 0) {
+                if ($row->project_id > 0)
+                {
 
                     /** Localizo as classes **/
                     foreach($classes_result as $keyClasses => $resultClasses)
@@ -101,7 +103,7 @@ try {
 
                             'name' => 'Save',
                             'description' => 'Método utilizado para salvar os registros',
-                            'code' => $main->methodSave($tables_result[$keyClasses]['table_name'], $classes->findParameters($database_name, $tables_result[$keyClasses]['table_name'])),
+                            'code' => $main->methodSave($tables_result[$keyClasses]['TABLE_NAME'], $classes->findParameters($database_name, $tables_result[$keyClasses]['TABLE_NAME'])),
 
                         );
                         array_push($defaultMethods, $arraySave); /** Monto uma array com os métodos padrões */
@@ -118,7 +120,7 @@ try {
 
                             'name' => 'Get',
                             'description' => 'Método utilizado para pegar um registro em especifíco',
-                            'code' => $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
+                            'code' => $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['TABLE_NAME'])->COLUMN_NAME, $tables_result[$keyClasses]['TABLE_NAME']),
 
                         );
                         array_push($defaultMethods, $arrayGet);
@@ -127,7 +129,7 @@ try {
 
                             'name' => 'Delete',
                             'description' => 'Método para excluir um registro',
-                            'code' => $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['table_name'])->COLUMN_NAME, $tables_result[$keyClasses]['table_name']),
+                            'code' => $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['TABLE_NAME'])->COLUMN_NAME, $tables_result[$keyClasses]['TABLE_NAME']),
 
                         );
                         array_push($defaultMethods, $arrayDelete);

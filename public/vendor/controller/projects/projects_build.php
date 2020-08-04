@@ -45,7 +45,8 @@ try {
         $message = array();
 
         /** Verifico se o campo class_id foi preenchido */
-        if ($project_id <= 0) {
+        if ($project_id <= 0)
+        {
 
             array_push($message, '$project_id - O seguinte campo deve ser preenchido/selecionado');
 

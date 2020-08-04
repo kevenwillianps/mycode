@@ -90,9 +90,9 @@
 
                             <select id="TableName" class="custom-select form-control" v-model="inputs.table_name">
 
-                                <option v-bind:value="result.table_name" v-for="(result, index) in query.result.tables" v-bind:key="index">
+                                <option v-bind:value="result.TABLE_NAME" v-for="(result, index) in query.result.tables" v-bind:key="index">
 
-                                    {{ result.table_name }}
+                                    {{ result.TABLE_NAME }}
 
                                 </option>
 

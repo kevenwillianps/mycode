@@ -9,6 +9,7 @@
 /** Realizo a importação de classes */
 use \vendor\model\Main;
 use \vendor\model\Folder;
+use \vendor\model\FoldersAuxiliary;
 use \vendor\model\Classes;
 use \vendor\model\Methods;
 use \vendor\model\Projects;
@@ -16,6 +17,7 @@ use \vendor\model\Projects;
 /** Instânciamento das classes importadas */
 $main = new Main();
 $folder = new Folder();
+$foldersAuxiliary = new FoldersAuxiliary();
 $classes = new Classes();
 $methods = new Methods();
 $projects = new Projects();
@@ -86,6 +88,15 @@ try {
 
                             /** Crio as pastas do projeto */
                             mkdir($path . $resultFolders['name'], 0777, true);
+
+                            /** Verifico a Existência de pastas */
+                            foreach ($foldersAuxiliary->all($row->project_id, $resultFolders['folder_id']) as $keyFoldersAuxiliary => $resultFoldersAuxiliary)
+                            {
+
+                                /** Crio as pastas do projeto */
+                                mkdir($path . $resultFolders['name'] . '/' . $resultFoldersAuxiliary['name'], 0777, true);
+
+                            }
 
                         }
 

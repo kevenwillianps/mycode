@@ -4,6 +4,9 @@ import ProjectsForm from './components/Projects/ProjectsForm'
 import FoldersForm from './components/Folders/FoldersForm'
 import FoldersDetail from './components/Folders/FoldersDetail'
 
+import FoldersAuxiliaryForm from './components/FoldersAuxiliary/FoldersAuxiliaryForm'
+import FoldersAuxiliaryDetail from './components/FoldersAuxiliary/FoldersAuxiliaryDetail'
+
 import ClassesForm from './components/Classes/ClassesForm'
 import ClassesDatagrid from './components/Classes/ClassesDatagrid'
 import ClassesDetail from './components/Classes/ClassesDetail'
@@ -61,6 +64,24 @@ const routes = [
         path: '/folders/details/:project_id/:folder_id',
         component: FoldersDetail,
         name: 'folders-detail',
+
+    },
+
+    {
+
+        /** Página Inicial **/
+        path: '/folders/auxiliary/form/:project_id/:folder_id/:folder_auxiliary_id',
+        component: FoldersAuxiliaryForm,
+        name: 'folders-auxiliary-form',
+
+    },
+
+    {
+
+        /** Página Inicial **/
+        path: '/folders/auxiliary/details/:project_id/:folder_id',
+        component: FoldersAuxiliaryDetail,
+        name: 'folders-auxiliary-detail',
 
     },
 

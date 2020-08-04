@@ -42,16 +42,6 @@
 
                     </li>
 
-                    <li class="nav-item">
-
-                        <router-link v-bind:to="{name : 'folders-auxiliary-form', params : {project_id : inputs.project_id, folder_id : inputs.folder_id, folder_auxiliary_id : 0}}" class="nav-link">
-
-                            <i class="fas fa-pencil-alt mr-1"></i>SubPasta
-
-                        </router-link>
-
-                    </li>
-
                 </ul>
 
             </div>

@@ -62,6 +62,8 @@
 
             <div class="row">
 
+                <FoldersAuxiliaryDatagrid v-bind:project-id="inputs.project_id" v-bind:folder-id="inputs.folder_id"></FoldersAuxiliaryDatagrid>
+
                 <div class="col-md-3 mb-3" v-for="(result, index) in query.result.classes" v-bind:key="index">
 
                     <div class="card card-default shadow-sm">
@@ -169,6 +171,7 @@
     /** Importação de componentes **/
     import axios from 'axios';
     import ModalConfirm from '../Geral/ModalConfirm';
+    import FoldersAuxiliaryDatagrid from '../FoldersAuxiliary/FoldersAuxiliaryDatagrid';
 
     export default {
 
@@ -178,6 +181,7 @@
         components : {
 
             ModalConfirm,
+            FoldersAuxiliaryDatagrid
 
         },
 

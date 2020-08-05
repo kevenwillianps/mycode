@@ -406,6 +406,12 @@
                 this.EditForm();
 
             }
+            
+            if (this.$route.params.folder_id > 0){
+
+
+
+            }
 
             this.ListSituations();
             this.ListFolders();

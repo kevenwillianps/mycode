@@ -9,12 +9,12 @@
 
 /** Importo as classes que irei utilizar **/
 use \vendor\model\Main;
-use \vendor\model\Folder;
+use \vendor\model\FoldersAuxiliary;
 use \vendor\model\ArrayUtf8Encode;
 
 /** Instânciamento das classes **/
 $main = new Main();
-$folder = new Folder();
+$folderAuxiliary = new FoldersAuxiliary();
 $arrayUtf8Encode = new ArrayUtf8Encode();
 
 try {
@@ -26,18 +26,29 @@ try {
 
         /** Parâmetros de entrada **/
         $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
+        $folder_id = isset($inputs['inputs']['folder_id']) ? (int)$main->antiInjection($inputs['inputs']['folder_id']) : 0;
 
         /** Controle de erros **/
         $message = array();
 
         /** Validação de campos obrigatórios **/
         /** Verifico se o campo class_id foi preenchido **/
-        if ($project_id <= 0) {
+        if ($project_id <= 0)
+        {
+
             array_push($message, '$project_id - O seguinte campo deve ser preenchido/selecionado');
+
+        }
+        if ($folder_id <= 0)
+        {
+
+            array_push($message, '$folder_id - O seguinte campo deve ser preenchido/selecionado');
+
         }
 
         /** Verifico se existem erros **/
-        if (count($message) > 0) {
+        if (count($message) > 0)
+        {
 
             /** Preparo o formulario para retorno **/
             $result = array(
@@ -46,11 +57,15 @@ try {
                 "message" => $message
 
             );
+
         } else {
 
             /** Result **/
             $result = array(
-                "result" => $arrayUtf8Encode->utf8Converter($folder->all($project_id))
+
+                /** Executo o método */
+                "result" => $arrayUtf8Encode->utf8Converter($folderAuxiliary->all($project_id, $folder_id))
+
             );
 
         }
@@ -59,8 +74,10 @@ try {
 
         /** Preparo o formulario para retorno **/
         $result = array(
+
             "cod" => 404,
             "message" => "Usuário não autenticado",
+
         );
 
     }
@@ -70,12 +87,15 @@ try {
 
     /** Paro o procedimento **/
     exit;
+
 } catch (Exception $e) {
 
     /** Preparo o formulario para retorno **/
     $result = array(
+
         "cod" => 0,
         "message" => $e->getMessage()
+
     );
 
     /** Envio **/

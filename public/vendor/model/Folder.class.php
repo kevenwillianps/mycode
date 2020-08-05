@@ -87,7 +87,7 @@ class Folder
         $this->project_id = (int)$project_id;
 
         /** Consulta SQL **/
-        $sql = "select * from folders where project_id = :project_id";
+        $sql = "select * from folders where project_id = :project_id and folder_auxiliary_id is null;";
 
         /** Preparo o Sql **/
         $stmt = $this->connection->connect()->prepare($sql);

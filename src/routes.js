@@ -106,7 +106,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/classes/form/:project_id/:class_id',
+        path: '/classes/form/:project_id/:class_id/:folder_id',
         component: ClassesForm,
         name: 'classes-form',
 

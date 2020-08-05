@@ -24,7 +24,7 @@
 
                         <h6 class="card-subtitle mb-2">
 
-                            Pasta
+                            Sub-Pasta
 
                         </h6>
 
@@ -32,13 +32,13 @@
 
                     <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_folder_' + result.folder_id" v-bind:aria-controls="'navbar_folder_' + result.folder_id" aria-expanded="false">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_folder_auxiliary' + result.folder_id" v-bind:aria-controls="'navbar_folder_auxiliary' + result.folder_id" aria-expanded="false">
 
                             <span class="navbar-toggler-icon"></span>
 
                         </button>
 
-                        <div class="collapse navbar-collapse" v-bind:id="'navbar_folder_' + result.folder_id">
+                        <div class="collapse navbar-collapse" v-bind:id="'navbar_folder_auxiliary_' + result.folder_id">
 
                             <ul class="navbar-nav mr-auto">
 
@@ -54,7 +54,7 @@
 
                                 <li class="nav-item">
 
-                                    <router-link v-bind:to="{name : 'folders-form', params : {project_id : projectId, folder_id : result.folder_id}}" class="nav-link">
+                                    <router-link v-bind:to="{name : 'folders-auxiliary-form', params : {folder_id : folderId}}" class="nav-link">
 
                                         <i class="fas fa-pencil-alt"></i>
 
@@ -64,7 +64,7 @@
 
                                 <li class="nav-item">
 
-                                    <router-link v-bind:to="{name : 'folders-detail', params : {project_id : projectId, folder_id : result.folder_id}}" class="nav-link">
+                                    <router-link v-bind:to="{name : 'folders-auxiliary-detail', params : {project_id : projectId, folder_id : folderId}}" class="nav-link">
 
                                         <i class="far fa-eye"></i>
 
@@ -96,11 +96,12 @@
     export default {
 
         /** Nome do componente atual **/
-        name: "FoldersDatagrid",
+        name: "FoldersAuxiliaryDatagrid",
 
         props : {
 
             projectId : null,
+            folderId : null,
 
         },
 
@@ -117,7 +118,7 @@
 
                 inputs : {
 
-                    folder_id : [],
+                    folder_id : null,
                     project_id : null,
 
                 }
@@ -132,9 +133,10 @@
             List(){
 
                 this.inputs.project_id = this.projectId;
+                this.inputs.folder_id = this.folderId;
 
                 /** Envio uma requisição ao backend **/
-                axios.post('router.php?TABLE=FOLDERS&ACTION=FOLDERS_DATAGRID', {
+                axios.post('router.php?TABLE=FOLDERS_AUXILIARY&ACTION=FOLDERS_AUXILIARY_DATAGRID', {
 
                     inputs : this.inputs,
 
@@ -162,7 +164,7 @@
                 this.inputs.folder_id = folder_id;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=FOLDERS&ACTION=FOLDERS_DELETE',{
+                axios.post('router.php?TABLE=FOLDERS_AUXILIARY&ACTION=FOLDERS_AUXILIARY_DELETE',{
 
                     inputs : this.inputs
 
@@ -193,7 +195,7 @@
             this.List();
 
             /** Informo que o componente foi montado com sucesso **/
-            console.log('Componente "FoldersDatagrid", montado com sucesso!');
+            console.log('Componente "FoldersAuxiliaryDatagrid", montado com sucesso!');
 
         }
 

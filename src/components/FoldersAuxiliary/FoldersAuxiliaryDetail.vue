@@ -34,7 +34,7 @@
 
                     <li class="nav-item">
 
-                        <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0 }}" class="nav-link">
+                        <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0, folder_id : inputs.folder_id }}" class="nav-link">
 
                             <i class="fas fa-pencil-alt mr-1"></i>Novo
 
@@ -208,7 +208,7 @@
 
                 })
 
-                /** Caso tenha sucesso **/
+                    /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.query.result.classes = response.data.result;

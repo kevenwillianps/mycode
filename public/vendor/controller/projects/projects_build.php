@@ -25,7 +25,8 @@ $projects = new Projects();
 try {
 
     /** Verifico se existe sessão do usuário */
-    if ($main->verifySession()){
+    if ($main->verifySession())
+    {
 
         /** Capturo meus campos envios por json */
         $inputs = json_decode(file_get_contents('php://input'), true);
@@ -34,12 +35,6 @@ try {
         $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
         $user_name = isset($inputs['inputs']['user_name']) ? (string)$main->antiInjection($inputs['inputs']['user_name']) : $_SESSION['MYCODE-USER-NAME'];
 
-        /** Pego o ano atual */
-        $year = date('Y');
-        /** Pego o mês atual */
-        $month = date('m');
-        /** Pego o dia atual */
-        $day = date('d');
         /** Caminho raiz dos documentos */
         $path = "document/{$project_id}/";
 
@@ -55,7 +50,8 @@ try {
         }
 
         /** Verifico se existem erros */
-        if (count($message) > 0) {
+        if (count($message) > 0)
+        {
 
             /** Preparo o formulario para retorno */
             $result = array(
@@ -79,7 +75,7 @@ try {
                 {
 
                     /** Crio a pasta do projeto */
-                    if (mkdir($path, 0777, true))
+                    if (!is_dir($path) ? mkdir($path, 0777, true) : false)
                     {
 
                         /** Verifico a Existência de pastas */
@@ -89,11 +85,11 @@ try {
                             /** Crio as pastas do projeto */
                             mkdir($path . $resultFolders['name'], 0777, true);
 
-                            /** Verifico a Existência de pastas */
+                            /** Verifico a existência de SubPastas */
                             foreach ($foldersAuxiliary->all($row->project_id, $resultFolders['folder_id']) as $keyFoldersAuxiliary => $resultFoldersAuxiliary)
                             {
 
-                                /** Crio as pastas do projeto */
+                                /** Crio as SubPastas */
                                 mkdir($path . $resultFolders['name'] . '/' . $resultFoldersAuxiliary['name'], 0777, true);
 
                             }
@@ -212,11 +208,13 @@ try {
 
     }else{
 
+        array_push($message, "Usuário não autenticado");
+
         /** Preparo o formulario para retorno */
         $result = array(
 
             "cod" => 404,
-            "result" => "Usuário não autenticado",
+            "result" => $message,
 
         );
 

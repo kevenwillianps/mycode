@@ -32,8 +32,11 @@ try {
 
         /** Validação de campos obrigatórios **/
         /** Verifico se o campo class_id foi preenchido **/
-        if ($project_id <= 0) {
+        if ($project_id <= 0)
+        {
+
             array_push($message, '$project_id - O seguinte campo deve ser preenchido/selecionado');
+
         }
 
         /** Verifico se existem erros **/
@@ -50,7 +53,9 @@ try {
 
             /** Result **/
             $result = array(
+
                 "result" => $arrayUtf8Encode->utf8Converter($folder->all($project_id))
+
             );
 
         }
@@ -59,8 +64,10 @@ try {
 
         /** Preparo o formulario para retorno **/
         $result = array(
+
             "cod" => 404,
             "message" => "Usuário não autenticado",
+
         );
 
     }
@@ -70,12 +77,15 @@ try {
 
     /** Paro o procedimento **/
     exit;
+
 } catch (Exception $e) {
 
     /** Preparo o formulario para retorno **/
     $result = array(
+
         "cod" => 0,
         "message" => $e->getMessage()
+
     );
 
     /** Envio **/
@@ -83,4 +93,5 @@ try {
 
     /** Paro o procedimento **/
     exit;
+
 }

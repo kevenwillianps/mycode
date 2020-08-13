@@ -46,7 +46,7 @@ class UserFunction
         $stmt = $this->connection->connect()->prepare($sql);
 
         /** Preencho os parâmetros do sql **/
-        $stmt->bindValue(':user_function_id', $this->user_function_id);
+        $stmt->bindParam(':user_function_id', $this->user_function_id);
 
         /** Executo o Sql **/
         $stmt->execute();
@@ -88,10 +88,14 @@ class UserFunction
 
             /** Consulta SQL **/
             $sql = "INSERT INTO user_functions(user_function_id, name, description, date_register, date_update)VALUES(:user_function_id, :name, :description, :date_register, :date_update)";
-        } else {
+
+        }
+        else
+        {
 
             /** Consulta SQL **/
             $sql = "UPDATE user_functions set user_function_id = :user_function_id, name = :name, description = :description, date_register = :date_register, date_update  = :date_update WHERE user_function_id = :user_function_id";
+
         }
 
         /** Preparo o sql para execução **/
@@ -106,6 +110,7 @@ class UserFunction
 
         /** retorno e executo o sql **/
         return $stmt->execute();
+
     }
 
     /** Excluo um registro específico **/

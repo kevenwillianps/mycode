@@ -2,69 +2,75 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Situações/ <span class="badge badge-primary">Formulário</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Situações/ <span class="badge badge-light">Formulário</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link to="/situations/form/" class="nav-link">
+
+                            <i class="fas fa-bars mr-1"></i>Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/situations/datagrid" class="btn btn-primary">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <div class="form-group row">
 
-                </h4>
+                        <label for="NomeDeUsuario" class="col-sm-2 col-form-label">Nome</label>
 
-            </div>
+                        <div class="col-sm-10">
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
-
-                <div class="card card-default shadow-sm">
-
-                    <div class="card-body">
-
-                        <div class="form-group row">
-
-                            <label for="NomeDeUsuario" class="col-sm-2 col-form-label">Nome</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="NomeDeUsuario" v-model="inputs.name">
-
-                            </div>
+                            <input type="text" class="form-control" id="NomeDeUsuario" v-model="inputs.name">
 
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <label for="EmailDoUsuario" class="col-sm-2 col-form-label">Descrição</label>
+                    <div class="form-group row">
 
-                            <div class="col-sm-10">
+                        <label for="EmailDoUsuario" class="col-sm-2 col-form-label">Descrição</label>
 
-                                <input type="text" class="form-control" id="EmailDoUsuario" v-model="inputs.description">
+                        <div class="col-sm-10">
 
-                            </div>
+                            <input type="text" class="form-control" id="EmailDoUsuario" v-model="inputs.description">
 
                         </div>
 
-                        <div class="form-group text-right">
+                    </div>
 
-                            <div class="btn btn btn-primary" v-on:click="Save()">
+                    <div class="form-group text-right">
 
-                                Salvar
+                        <div class="btn btn btn-primary" v-on:click="Save()">
 
-                            </div>
+                            Salvar
 
                         </div>
 
@@ -77,7 +83,7 @@
         </div>
 
     </div>
-    
+
 </template>
 
 <script type="text/ecmascript-6">
@@ -87,7 +93,7 @@
     export default {
 
         /** Nome do componente atual **/
-        name: "SituationForms",
+        name: "ClassesForm",
 
         data(){
 
@@ -95,7 +101,7 @@
 
                 inputs : {
 
-                    situation_id : this.$route.params.situation_id,
+                    situation_id : this.$route.params.situations_id,
                     name : null,
                     description : null,
                     date_register : null,
@@ -131,7 +137,44 @@
 
             },
 
+            /** Método para editar o registro **/
+            EditForm(){
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=SITUATIONS&ACTION=SITUATIONS_EDIT_FORM',{
+
+                    inputs : this.inputs
+
+                })
+
+                /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.inputs = response.data.result;
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
         },
+
+        mounted(){
+
+            /** Verifico se é cadastro ou alteração **/
+            if (this.$route.params.situation_id > 0){
+
+                this.EditForm();
+
+            }
+
+        }
 
     }
 

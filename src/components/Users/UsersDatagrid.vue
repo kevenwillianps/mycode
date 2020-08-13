@@ -2,43 +2,105 @@
 
     <div>
 
-        <div class="row">
+        <ModalConfirm title="Atenção!" message="Deseja excluir este registro ?" v-on:ConfirmRequest="Delete"></ModalConfirm>
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-                <h4>
+            <a class="navbar-brand" href="#">
 
-                    <i class="far fa-folder-open mr-1"></i>Usuários/ <span class="badge badge-primary">Listagem</span>
+                <i class="far fa-folder-open mr-1"></i>Usuários/ <span class="badge badge-primary">Listagem</span>
 
-                </h4>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link to="/users/form/" class="nav-link">
+
+                            <i class="fas fa-pencil-alt mr-1"></i>Novo
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 mt-3">
 
-                    <router-link to="/users/form/" class="btn btn-primary">
+            <div class="animate__animated animate__fadeIn" v-if="controls.progress_bar">
 
-                        Cadastro
+                <div class="card shadow-sm">
 
-                    </router-link>
+                    <div class="card-body">
 
-                </h4>
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="col-md-12">
+            <div class="animate__animated animate__fadeIn" v-else-if="query.result <= 0">
 
-                <div class="row">
+                <div class="card shadow-sm">
 
-                    <div class="col-md-3 mb-3 animate__animated animate__fadeIn" v-for="(result, index) in query.result" v-bind:key="index">
+                    <div class="card-body">
 
-                        <div class="card card-default shadow-sm">
+                        <div class="media">
 
-                            <div class="card-body">
+                            <img src="image/svg/003-error.svg" width="70px" class="mr-3" alt="MyCMS - Keven Willian">
 
-                                <h5 class="card-title">
+                            <div class="media-body">
+
+                                <h3 class="mt-0">
+
+                                    Ops!
+
+                                </h3>
+
+                                <h5 class="text-muted">
+
+                                    Não foram localizado registros
+
+                                </h5>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row" v-else>
+
+                <div class="col-md-3 mb-3 animate__animated animate__fadeIn" v-for="(result, index) in query.result" v-bind:key="index">
+
+                    <div class="card card-default shadow-sm">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
 
                                     <span class="badge badge-primary mr-1">
 
@@ -46,64 +108,62 @@
 
                                     </span>
 
-                                    {{ result.user_name }}
+                                {{ result.user_name }}
 
-                                </h5>
+                            </h5>
 
-                                <h6 class="card-subtitle mb-2">
+                            <h6 class="card-subtitle mb-2">
 
-                                    {{ result.user_function }}
+                                {{ result.user_function }}
 
-                                </h6>
+                            </h6>
 
-                                <div class="card-text">
+                            <div class="card-text">
 
-                                    <i class="fas fa-at"></i> {{ result.email }} <br>
-                                    <i class="far fa-clock"></i> {{ result.date_register }}
-
-                                </div>
+                                <i class="fas fa-at"></i> {{ result.email }} <br>
+                                <i class="far fa-clock"></i> {{ result.date_register }}
 
                             </div>
 
-                            <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
-
-                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-
-                                    <span class="navbar-toggler-icon"></span>
-
-                                </button>
-
-                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                                    <ul class="navbar-nav mr-auto">
-
-                                        <li class="nav-item">
-
-                                            <a class="nav-link" href="#">
-
-                                                <i class="fas fa-fire-alt"></i>
-
-                                            </a>
-
-                                        </li>
-
-                                        <li class="nav-item">
-
-                                            <a class="nav-link" href="#">
-
-                                                <i class="fas fa-pencil-alt"></i>
-
-                                            </a>
-
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                            </nav>
-
                         </div>
+
+                        <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
+
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+                                <span class="navbar-toggler-icon"></span>
+
+                            </button>
+
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                                <ul class="navbar-nav mr-auto">
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.user_id = result.user_id">
+
+                                            <i class="fas fa-fire-alt"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" href="#">
+
+                                            <i class="fas fa-pencil-alt"></i>
+
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </nav>
 
                     </div>
 
@@ -121,19 +181,38 @@
 
     /** Importo os componentes que irei utilizar **/
     import axios from 'axios';
+    import ModalConfirm from '../Geral/ModalConfirm';
 
     export default {
 
         name: "UsersDatagrid",
 
+        components : {
+
+            ModalConfirm
+
+        },
+
         data (){
 
             return {
+
+                inputs : {
+
+                    user_id : 0,
+
+                },
 
                 /** Grupo de variavei s para guardar consultas sql's **/
                 query : {
 
                     result : [],
+
+                },
+
+                controls : {
+
+                    progress_bar : true,
 
                 }
 
@@ -146,6 +225,9 @@
             /** Método para listar registros **/
             List(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio uma requisição ao backend **/
                 axios.post('router.php?TABLE=USERS&ACTION=USERS_DATAGRID')
 
@@ -154,16 +236,64 @@
 
                         this.query.result = response.data.result;
 
+                        /** Delay de execução */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
+
                     })
 
                     /** Caso tenha erro **/
+                    .catch(response => {
+
+                        /** Habilito a barra de progresso */
+                        this.controls.progress_bar = false;
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Listagem de registros **/
+            Delete(){
+
+                this.controls.progress_bar = true;
+                this.query.success = false;
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=USERS&ACTION=USERS_DELETE',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        console.log('Sucesso -> ' + response.data);
+                        this.List();
+
+                        /** Delay de execução */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
+
+                    })
+
+                    /** Caso tenha falha **/
                     .catch(response => {
 
                         console.log('Erro -> ' + response.data);
 
                     });
 
-            }
+            },
 
         },
 

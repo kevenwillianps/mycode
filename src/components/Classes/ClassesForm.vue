@@ -110,7 +110,7 @@
 
                     <div class="row">
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
 
                             <div class="form-group">
 
@@ -122,7 +122,7 @@
 
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
 
                             <div class="form-group">
 
@@ -134,7 +134,7 @@
 
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
 
                             <div class="form-group">
 
@@ -154,27 +154,85 @@
 
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-12">
 
-                            <div class="form-group">
+                            <div class="card shadow-sm">
 
-                                <label for="Pasta" class="col-form-label">Pasta</label>
+                                <div class="card-body">
 
-                                <select id="Pasta" class="custom-select form-control" v-model="inputs.folder_id">
+                                    <div class="form-group">
 
-                                    <option v-bind:value="result.folder_id" v-for="(result, index) in query.result.folders" v-bind:key="index">
+                                        <ul class="list-unstyled">
 
-                                        {{ result.name }}
+                                            <li class="media mb-4" v-for="(result, index) in query.result.folders" v-bind:key="index">
 
-                                    </option>
+                                                <div class="media-body">
 
-                                </select>
+                                                    <h5 class="mt-0">
+
+                                                        Pasta Principal
+
+                                                    </h5>
+
+                                                    <div class="custom-control custom-radio">
+
+                                                        <input type="radio" class="custom-control-input" v-bind:id="'folder_' + result.folder_id" v-model="inputs.folder_id" v-bind:value="result.folder_id" />
+
+                                                        <label class="custom-control-label" v-bind:for="'folder_' + result.folder_id">
+
+                                                            {{ result.name }}
+
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div v-for="(result_auxiliary, index_auxiliary) in query.result.folders_auxiliary" v-bind:key="index_auxiliary">
+
+                                                        <div class="media ml-3 mt-3" v-if="result_auxiliary.folder_auxiliary_id === result.folder_id">
+
+                                                            <div class="media-body">
+
+                                                                <h6 class="mt-0">
+
+                                                                    Sub Pasta
+
+                                                                </h6>
+
+                                                                <div class="custom-control custom-radio">
+
+                                                                    <input type="radio" class="custom-control-input" v-bind:id="'folder_auxiliary_' + result_auxiliary.folder_id" v-model="inputs.folder_id" v-bind:value="result_auxiliary.folder_id"/>
+
+                                                                    <label class="custom-control-label" v-bind:for="'folder_auxiliary_' + result_auxiliary.folder_id">
+
+                                                                        {{ result_auxiliary.name }}
+
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <hr>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-right mt-3">
 
                             <div class="form-group">
 
@@ -240,6 +298,9 @@
                         error : [],
                         situations : [],
                         folders : [],
+                        count_folders : 0,
+                        folders_auxiliary : [],
+                        count_folders_auxiliary : 0,
                         tables : [],
 
                     }
@@ -358,6 +419,34 @@
                     .then(response => {
 
                         this.query.result.folders = response.data.result;
+                        this.query.result.count_folders = response.data.result.length;
+
+                    })
+
+                    /** Caso tenha erro **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Método para listar registros **/
+            ListFoldersAuxiliary(){
+
+                /** Envio uma requisição ao backend **/
+                axios.post('router.php?TABLE=FOLDERS_AUXILIARY&ACTION=FOLDERS_AUXILIARY_ALL', {
+
+                    inputs : this.inputs,
+
+                })
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.query.result.folders_auxiliary = response.data.result;
+                        this.query.result.count_folders_auxiliary = response.data.result.length;
 
                     })
 
@@ -406,15 +495,10 @@
                 this.EditForm();
 
             }
-            
-            if (this.$route.params.folder_id > 0){
-
-
-
-            }
 
             this.ListSituations();
             this.ListFolders();
+            this.ListFoldersAuxiliary();
             this.ListTables();
 
         }

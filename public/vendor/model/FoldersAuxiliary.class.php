@@ -106,6 +106,30 @@ class FoldersAuxiliary
 
     }
 
+    /** Lista todos os registros **/
+    public function allUnfiltered($project_id)
+    {
+
+        /** Parâmetro de entrada **/
+        $this->project_id = (int)$project_id;
+
+        /** Consulta SQL **/
+        $sql = "select * from folders where project_id = :project_id and folder_auxiliary_id is not null";
+
+        /** Preparo o Sql **/
+        $stmt = $this->connection->connect()->prepare($sql);
+
+        /** Preencho os parâmetros do SQl **/
+        $stmt->bindParam(':project_id', $this->project_id);
+
+        /** Executo o SQl **/
+        $stmt->execute();
+
+        /** Retorno um objeto **/
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
     /** Insere/autualiza um registro no banco de dados **/
     public function save($folder_id, $project_id, $folder_auxiliary_id, $name, $date_register, $date_update)
     {

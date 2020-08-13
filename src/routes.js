@@ -106,7 +106,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/classes/form/:project_id/:class_id/:folder_id',
+        path: '/classes/form/:project_id/:class_id',
         component: ClassesForm,
         name: 'classes-form',
 
@@ -205,7 +205,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/user/functions/form',
+        path: '/user/functions/form/:user_function_id',
         component: UserFunctionsForm,
         name: 'user-functions-form',
 
@@ -223,7 +223,7 @@ const routes = [
     {
 
         /** Página Inicial **/
-        path: '/situations/form',
+        path: '/situations/form/:situation_id',
         component: SituationsForm,
         name: 'situations-form',
 

@@ -2,121 +2,127 @@
 
     <div>
 
-        <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-default mb-0">
 
-            <div class="col-md-6 animate__animated animate__fadeIn">
+            <a class="navbar-brand" href="#">
 
-                <h4>
+                <i class="far fa-folder-open mr-1"></i>Usuários/ <span class="badge badge-primary">Formulário</span>
 
-                    <i class="far fa-folder-open mr-1"></i>Usuários/ <span class="badge badge-light">Formulário</span>
+            </a>
 
-                </h4>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#method_navbar_header" aria-controls="method_navbar_header" aria-expanded="false" aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="method_navbar_header">
+
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+
+                        <router-link to="/users/datagrid/" class="nav-link">
+
+                            <i class="fas fa-bars mr-1"></i>Listagem
+
+                        </router-link>
+
+                    </li>
+
+                </ul>
 
             </div>
 
-            <div class="col-md-6 text-right animate__animated animate__fadeIn">
+        </nav>
 
-                <h4>
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
 
-                    <router-link to="/users/datagrid" class="btn btn-primary">
+            <div class="card card-default shadow-sm">
 
-                        Listagem
+                <div class="card-body">
 
-                    </router-link>
+                    <div class="form-group row">
 
-                </h4>
+                        <label for="NomeDeUsuario" class="col-sm-2 col-form-label">Nome do Usuário</label>
 
-            </div>
+                        <div class="col-sm-10">
 
-            <div class="col-md-12 animate__animated animate__fadeIn">
-
-                <div class="card card-default shadow-sm">
-
-                    <div class="card-body">
-
-                        <div class="form-group row">
-
-                            <label for="NomeDeUsuario" class="col-sm-2 col-form-label">Nome do Usuário</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="NomeDeUsuario" v-model="inputs.name">
-
-                            </div>
+                            <input type="text" class="form-control" id="NomeDeUsuario" v-model="inputs.name">
 
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <label for="EmailDoUsuario" class="col-sm-2 col-form-label">Email do Usuário</label>
+                    <div class="form-group row">
 
-                            <div class="col-sm-10">
+                        <label for="EmailDoUsuario" class="col-sm-2 col-form-label">Email do Usuário</label>
 
-                                <input type="text" class="form-control" id="EmailDoUsuario" v-model="inputs.email">
+                        <div class="col-sm-10">
 
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-
-                            <label for="SenhaDoUsuario" class="col-sm-2 col-form-label">Senha do Usuário</label>
-
-                            <div class="col-sm-10">
-
-                                <input type="password" class="form-control" id="SenhaDoUsuario" v-model="inputs.password">
-
-                            </div>
+                            <input type="text" class="form-control" id="EmailDoUsuario" v-model="inputs.email">
 
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <label for="Cargo" class="col-sm-2 col-form-label">Cargo</label>
+                    <div class="form-group row">
 
-                            <div class="col-sm-10">
+                        <label for="SenhaDoUsuario" class="col-sm-2 col-form-label">Senha do Usuário</label>
 
-                                <select id="Cargo" class="custom-select form-control" v-model="inputs.user_function_id">
+                        <div class="col-sm-10">
 
-                                    <option v-bind:value="result.user_function_id" v-for="(result, index) in query.user_functions" v-bind:key="index">
-
-                                        {{ result.name }}
-
-                                    </option>
-
-                                </select>
-
-                            </div>
+                            <input type="password" class="form-control" id="SenhaDoUsuario" v-model="inputs.password">
 
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <label for="Situation" class="col-sm-2 col-form-label">Situação</label>
+                    <div class="form-group row">
 
-                            <div class="col-sm-10">
+                        <label for="Cargo" class="col-sm-2 col-form-label">Cargo</label>
 
-                                <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
+                        <div class="col-sm-10">
 
-                                    <option v-bind:value="result.situation_id" v-for="(result, index) in query.situations" v-bind:key="index">
+                            <select id="Cargo" class="custom-select form-control" v-model="inputs.user_function_id">
 
-                                        {{ result.name }}
+                                <option v-bind:value="result.user_function_id" v-for="(result, index) in query.user_functions" v-bind:key="index">
 
-                                    </option>
+                                    {{ result.name }}
 
-                                </select>
+                                </option>
 
-                            </div>
+                            </select>
 
                         </div>
 
-                        <div class="form-group text-right">
+                    </div>
 
-                            <div class="btn btn btn-primary" v-on:click="Save()">
+                    <div class="form-group row">
 
-                                Salvar
+                        <label for="Situation" class="col-sm-2 col-form-label">Situação</label>
 
-                            </div>
+                        <div class="col-sm-10">
+
+                            <select id="Situation" class="custom-select form-control" v-model="inputs.situation_id">
+
+                                <option v-bind:value="result.situation_id" v-for="(result, index) in query.situations" v-bind:key="index">
+
+                                    {{ result.name }}
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group text-right">
+
+                        <div class="btn btn btn-primary" v-on:click="Save()">
+
+                            Salvar
 
                         </div>
 
@@ -212,7 +218,7 @@
 
             ListUserFunctions(){
 
-                axios.post('router.php?TABLE=USERS_FUNCTION&ACTION=USERS_FUNCTION_DATAGRID')
+                axios.post('router.php?TABLE=USER_FUNCTIONS&ACTION=USER_FUNCTIONS_DATAGRID')
 
                     .then(response => {
 

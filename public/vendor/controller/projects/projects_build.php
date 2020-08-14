@@ -78,24 +78,6 @@ try {
                     if (!is_dir($path) ? mkdir($path, 0777, true) : false)
                     {
 
-                        /** Verifico a Existência de pastas */
-                        foreach ($folder->all($row->project_id) as $keyFolders => $resultFolders)
-                        {
-
-                            /** Crio as pastas do projeto */
-                            mkdir($path . $resultFolders['name'], 0777, true);
-
-                            /** Verifico a existência de SubPastas */
-                            foreach ($foldersAuxiliary->all($row->project_id, $resultFolders['folder_id']) as $keyFoldersAuxiliary => $resultFoldersAuxiliary)
-                            {
-
-                                /** Crio as SubPastas */
-                                mkdir($path . $resultFolders['name'] . '/' . $resultFoldersAuxiliary['name'], 0777, true);
-
-                            }
-
-                        }
-
                         /** Monto o arquivo de autoload */
                         $main->fileAutoload($path,  'autoload.php');
 
@@ -115,6 +97,18 @@ try {
                             /** Verifico a qual pasta a classe pertence */
                             if (!empty($rowClasses['folder_name']))
                             {
+
+                                /** Crio as pastas do projeto */
+                                mkdir($path . $rowClasses['folder_name'], 0777, true);
+
+                                /** Verifico a existência de SubPastas */
+                                foreach ($foldersAuxiliary->all($row->project_id, $rowClasses['folder_name']) as $keyFoldersAuxiliary => $resultFoldersAuxiliary)
+                                {
+
+                                    /** Crio as SubPastas */
+                                    mkdir($path . $rowClasses['name'] . '/' . $resultFoldersAuxiliary['name'], 0777, true);
+
+                                }
 
                                 /** Crio o arquivo */
                                 $document = fopen($path . '/' . $rowClasses['folder_name'] . '/' . $rowClasses['class_name'] . '.class.php', "a+");

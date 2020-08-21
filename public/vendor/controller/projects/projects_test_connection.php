@@ -33,7 +33,8 @@ try {
         $message = array();
 
         /** Verifico se o campo name foi preenchido **/
-        if (empty($database_local)) {
+        if (empty($database_local))
+        {
             array_push($message, 'O campo "Caminho do Banco de Dados", deve ser preenchido');
         }
         /** Verifico se o campo description foi preenchido **/
@@ -42,7 +43,8 @@ try {
             array_push($message, 'O campo "Nome do Banco de Dados", deve ser preenchido');
         }
         /** Verifico se o campo date_register foi preenchido **/
-        if (empty($database_user)) {
+        if (empty($database_user))
+        {
             array_push($message, 'O campo "Usuário do Banco de Dados", deve ser preenchido');
         }
 
@@ -57,25 +59,47 @@ try {
 
             );
 
-        } else {
+        }
+        else
+        {
 
-            try
+            /** Método para listar todos os bancos de dados */
+            $result = $projects->findDatabase();
+
+            /** Verifico se foi localizado registros */
+            if (isset($result))
             {
 
-                $projects->findDatabase($database_name);
-
-            }
-            catch (\PDOException $PDOException)
-            {
-
-                if ($PDOException->getCode() == '42S02')
+                /** Realizo a leitura de todos registros retornados */
+                foreach ($result as $key => $row)
                 {
 
-                    echo $PDOException->getMessage();
+                    /** Verifico se o banco de dados existe ou não */
+                    if (strcmp($row->Database, $database_name) == 0)
+                    {
 
-                    array_push($message, 'Banco de dados "' . $database_name . '" não localizados');
+                        /** Coloco a mensagem na array */
+                        array_push($message, 'Banco de dados localizado');
 
-                    /** Result **/
+                        /** Preparo o formulario para retorno **/
+                        $result = array(
+
+                            "cod" => 1,
+                            "result" => $message,
+
+                        );
+
+                    }
+
+                }
+
+                /** Verifico se o banco de dados foi localizado */
+                if (count($message) == 0){
+
+                    /** Coloco a mensagem na array */
+                    array_push($message, 'Não foi possivel localizar o banco de dados');
+
+                    /** Preparo o formulario para retorno **/
                     $result = array(
 
                         "cod" => 0,
@@ -86,15 +110,14 @@ try {
                 }
 
             }
-
-            if (count($message) <= 0)
+            else
             {
 
                 /** Preparo o formulario para retorno **/
                 $result = array(
 
-                    "cod" => 1,
-                    "result" => "Banco de dados localizado",
+                    "cod" => 0,
+                    "result" => "Não foram localizados registros",
 
                 );
 

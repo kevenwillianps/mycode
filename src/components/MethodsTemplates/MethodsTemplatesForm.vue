@@ -92,7 +92,7 @@
 
                                 <label for="Version" class="col-form-label">Versão</label>
 
-                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version" disabled>
 
                             </div>
 
@@ -104,7 +104,7 @@
 
                                 <label for="Release" class="col-form-label">Release</label>
 
-                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release" disabled>
 
                             </div>
 

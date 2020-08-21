@@ -272,7 +272,11 @@
 
                                     <input type="checkbox" class="custom-control-input" id="GerarClassesAutomaticamente" v-model="inputs.generate_classes">
 
-                                    <label class="custom-control-label" for="GerarClassesAutomaticamente">Gerar Classes Automaticamente</label>
+                                    <label class="custom-control-label" for="GerarClassesAutomaticamente">
+
+                                        Gerar Classes Automaticamente
+
+                                    </label>
 
                                 </div>
 
@@ -284,11 +288,27 @@
 
                             <div class="form-group">
 
-                                <div class="custom-control custom-checkbox">
+                                <div class="custom-control custom-checkbox" v-if="inputs.generate_classes">
 
-                                    <input type="checkbox" class="custom-control-input" id="EstruturaDaAplicacao" v-model="inputs.generate_methods">
+                                    <input type="checkbox" class="custom-control-input" id="GerarMetodosAutomaticamente" v-model="inputs.generate_methods">
 
-                                    <label class="custom-control-label" for="EstruturaDaAplicacao">Gerar Métodos Automaticamente</label>
+                                    <label class="custom-control-label" for="GerarMetodosAutomaticamente">
+
+                                        Gerar Métodos Automaticamente
+
+                                    </label>
+
+                                </div>
+
+                                <div class="custom-control custom-checkbox" v-else>
+
+                                    <input type="checkbox" class="custom-control-input" id="GerarMetodosAutomaticamente" disabled>
+
+                                    <label class="custom-control-label" for="GerarMetodosAutomaticamente">
+
+                                        Gerar Métodos Automaticamente
+
+                                    </label>
 
                                 </div>
 
@@ -354,6 +374,7 @@
                     date_register : null,
                     date_update : null,
 
+                    /** Controlle de envio */
                     generate_classes : false,
                     generate_methods : false,
 
@@ -381,6 +402,10 @@
             TestConnection()
             {
 
+                /** Limpo as mensagens retornadas anteriormente */
+                this.query.result.error = [];
+                this.query.result.success = [];
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_TEST_CONNECTION',{
 
@@ -388,6 +413,7 @@
 
                 })
 
+                    /** Caso tenha sucesso */
                     .then(response => {
 
                         /** Verificação do retorno **/
@@ -416,6 +442,7 @@
 
                     })
 
+                    /** Caso tenha erro */
                     .catch(response => {
 
                         console.log('Erro -> ' + response.data);
@@ -426,6 +453,10 @@
 
             /** Método para salvar registro **/
             Save(){
+
+                /** Limpo as mensagens retornadas anteriormente */
+                this.query.result.error = [];
+                this.query.result.success = [];
 
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_SAVE',{

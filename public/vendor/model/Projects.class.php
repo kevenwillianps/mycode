@@ -107,25 +107,19 @@ class Projects
     }
 
     /** Localizo o banco de dados **/
-    public function findDatabase($database_name){
-
-        /** Parâmetro de entrada **/
-        $this->database_name = (string)$database_name;
+    public function findDatabase(){
 
         /** Consulta SQL **/
-        $this->sql = "SELECT * FROM information_schema." . $this->database_name . ";";
+        $this->sql = "SHOW DATABASES";
 
         /** Preparo o Sql **/
         $this->stmt = $this->connection->connect()->prepare($this->sql);
-
-        /** Preencho os parâmetros do SQl **/
-        $this->stmt->bindParam(':database_name', $this->database_name);
 
         /** Executo o SQl **/
         $this->stmt->execute();
 
         /** Retorno um objeto **/
-        return $this->stmt->fetchAll();
+        return $this->stmt->fetchAll(\PDO::FETCH_OBJ);
 
     }
 

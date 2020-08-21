@@ -22,19 +22,19 @@ try {
         /** Capturo meus campos envios por json **/
         $inputs = json_decode(file_get_contents('php://input'), true);
 
-        $class_id      = isset($inputs['inputs']['class_id'])      ? (int)$main->antiInjection($inputs['inputs']['class_id'])         : 0;
-        $situation_id  = isset($inputs['inputs']['situation_id'])  ? (int)$main->antiInjection($inputs['inputs']['situation_id'])     : 0;
-        $user_id       = isset($inputs['inputs']['user_id'])       ? (int)$main->antiInjection($inputs['inputs']['user_id'])          : $_SESSION['MYCODE-USER-ID'];
-        $project_id    = isset($inputs['inputs']['project_id'])    ? (int)$main->antiInjection($inputs['inputs']['project_id'])       : 0;
-        $folder_id     = isset($inputs['inputs']['folder_id'])     ? (int)$main->antiInjection($inputs['inputs']['folder_id'])        : 0;
-        $name          = isset($inputs['inputs']['name'])          ? (string)$main->antiInjection($inputs['inputs']['name'])          : '';
-        $name_space    = isset($inputs['inputs']['name_space'])    ? (string)$main->antiInjection($inputs['inputs']['name_space'])    : '';
-        $description   = isset($inputs['inputs']['description'])   ? (string)$main->antiInjection($inputs['inputs']['description'])   : '';
-        $version       = isset($inputs['inputs']['version'])       ? (string)$main->antiInjection($inputs['inputs']['version'])       : '';
-        $release       = isset($inputs['inputs']['release'])       ? (string)$main->antiInjection($inputs['inputs']['release'])       : '';
-        $table_name    = isset($inputs['inputs']['table_name'])    ? (string)$main->antiInjection($inputs['inputs']['table_name'])    : '';
-        $date_register = isset($inputs['inputs']['date_register']) ? (string)$main->antiInjection($inputs['inputs']['date_register']) : date("y-m-d h:m:s");
-        $date_update   = isset($inputs['inputs']['date_update'])   ? (string)$main->antiInjection($inputs['inputs']['date_update'])   : date("y-m-d h:m:s");
+        $class_id      = isset($inputs['inputs']['class_id'])      ? (int)$main->antiInjection($inputs['inputs']['class_id'])                     : 0;
+        $situation_id  = isset($inputs['inputs']['situation_id'])  ? (int)$main->antiInjection($inputs['inputs']['situation_id'])                 : 0;
+        $user_id       = isset($inputs['inputs']['user_id'])       ? (int)$main->antiInjection($inputs['inputs']['user_id'])                      : $_SESSION['MYCODE-USER-ID'];
+        $project_id    = isset($inputs['inputs']['project_id'])    ? (int)$main->antiInjection($inputs['inputs']['project_id'])                   : 0;
+        $folder_id     = isset($inputs['inputs']['folder_id'])     ? (int)$main->antiInjection($inputs['inputs']['folder_id'])                    : 0;
+        $name          = isset($inputs['inputs']['name'])          ? (string)$main->antiInjection($inputs['inputs']['name'])                      : '';
+        $name_space    = isset($inputs['inputs']['name_space'])    ? (string)$main->antiInjection($inputs['inputs']['name_space'])                : '';
+        $description   = isset($inputs['inputs']['description'])   ? (string)$main->antiInjection($inputs['inputs']['description'])               : '';
+        $version       = isset($inputs['inputs']['version'])       ? (string)$main->antiInjection(date('Y') . '.' . date('m')) : date('Y') . '.' . date('m');
+        $release       = isset($inputs['inputs']['release'])       ? (string)$main->antiInjection((int)$inputs['inputs']['release'] + 1)      : ((int)$inputs['inputs']['release'] + 1);
+        $table_name    = isset($inputs['inputs']['table_name'])    ? (string)$main->antiInjection($inputs['inputs']['table_name'])                : '';
+        $date_register = isset($inputs['inputs']['date_register']) ? (string)$main->antiInjection($inputs['inputs']['date_register'])             : date("y-m-d h:m:s");
+        $date_update   = isset($inputs['inputs']['date_update'])   ? (string)$main->antiInjection($inputs['inputs']['date_update'])               : date("y-m-d h:m:s");
 
         /** Controle de Erros **/
         $message = array();

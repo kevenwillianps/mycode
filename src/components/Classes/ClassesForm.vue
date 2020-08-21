@@ -116,7 +116,7 @@
 
                                 <label for="Version" class="col-form-label">Versão</label>
 
-                                <input type="text" class="form-control" id="Version" v-model="inputs.version">
+                                <input type="text" class="form-control" id="Version" v-model="inputs.version" disabled>
 
                             </div>
 
@@ -128,7 +128,7 @@
 
                                 <label for="Release" class="col-form-label">Release</label>
 
-                                <input type="text" class="form-control" id="Release" v-model="inputs.release">
+                                <input type="text" class="form-control" id="Release" v-model="inputs.release" disabled>
 
                             </div>
 
@@ -159,6 +159,12 @@
                             <div class="card shadow-sm">
 
                                 <div class="card-body">
+
+                                    <h5 class="card-title">
+
+                                        Hirearquia de pastas cadastradas
+
+                                    </h5>
 
                                     <div class="form-group">
 

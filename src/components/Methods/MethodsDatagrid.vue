@@ -48,7 +48,29 @@
 
         </nav>
 
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-3"  v-if="controls.progress_bar">
+
+           <div class="animate__animated animate__fadeIn">
+
+               <div class="card shadow-sm">
+
+                   <div class="card-body">
+
+                       <div class="progress">
+
+                           <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+           </div>
+
+        </div>
+
+        <div class="col-md-12 mt-3" v-else>
 
             <div class="animate__animated animate__fadeIn" v-if="query.result.methods <= 0">
 
@@ -217,6 +239,12 @@
 
                 },
 
+                controls : {
+
+                    progress_bar : false,
+
+                }
+
             }
 
         },
@@ -225,6 +253,9 @@
 
             /** Listo os registros **/
             List(){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 /** Envio uma requisição **/
                 axios.post('router.php?TABLE=METHODS&ACTION=METHODS_DATAGRID', {
@@ -237,6 +268,14 @@
                     .then(response => {
 
                         this.query.result.methods = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -252,6 +291,9 @@
             /** Listagem de registros **/
             Delete(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=METHODS&ACTION=METHODS_DELETE',{
 
@@ -259,11 +301,20 @@
 
                 })
 
-                /** Caso tenha sucesso **/
+                    /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.List();
-                        console.log('Sucesso -> ' + response.data);
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            console.log('Sucesso -> ' + response.data);
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 

@@ -50,7 +50,25 @@
 
         <div class="col-md-12 mt-3">
 
-            <div class="row">
+            <div class="animate__animated animate__fadeIn" v-if="controls.progress_bar">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row" v-else>
 
                 <FoldersDatagrid v-bind:project-id="inputs.project_id"></FoldersDatagrid>
 
@@ -237,6 +255,12 @@
 
                 },
 
+                controls : {
+
+                    progress_bar : false,
+
+                }
+
             }
 
         },
@@ -245,6 +269,9 @@
 
             /** Listo os registros **/
             List(){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 /** Envio uma requisição **/
                 axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DATAGRID', {
@@ -256,7 +283,16 @@
                     /** Caso tenha sucesso **/
                     .then(response => {
 
+                        /** Guardo os dados */
                         this.query.result.classes = response.data.result;
+
+                        /** Tempo de Delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -272,6 +308,9 @@
             /** Listagem de registros **/
             Delete(){
 
+                /** Desabilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DELETE',{
 
@@ -282,8 +321,18 @@
                     /** Caso tenha sucesso **/
                     .then(response => {
 
+                        /** Listo os dados */
                         this.List();
                         console.log('Sucesso -> ' + response.data);
+
+                        /** Tempo de Delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
+
 
                     })
 

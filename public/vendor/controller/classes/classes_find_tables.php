@@ -28,15 +28,17 @@ try {
 
         /** Parâmetros de entrada  **/
         $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
+        $database_name = isset($inputs['inputs']['database_name']) ? (string)$main->antiInjection($inputs['inputs']['database_name']) : '';
 
         /** Controle de erros **/
         $message = array();
 
         /** Verifico se o campo é válido **/
-        if ($project_id <= 0)
+        if (($project_id <= 0) || (empty($database_name)))
         {
 
-            array_push($message, 'O campo "$project_id", deve ser preenchido');
+            /** Preencho a array de erros */
+            array_push($message, 'O campo "$project_id" ou "$database_name", deve ser preenchido');
 
         }
 
@@ -53,27 +55,51 @@ try {
 
         } else {
 
-            $rowProject = $projects->get($project_id);
+            /** Verifico se irei verificar pelo ID do projeto */
+            if ($project_id > 0){
 
-            if (isset($rowProject))
-            {
+                /** Pego o projeto */
+                $rowProject = $projects->get($project_id);
 
-                if ($rowProject->project_id > 0)
+                /** Verifico se foi localizdo o projeto */
+                if (isset($rowProject))
                 {
 
-                    /** Retorno **/
-                    $result = array(
+                    /** Verifico se é um registro válido */
+                    if ($rowProject->project_id > 0)
+                    {
 
-                        "cod" => 1,
-                        "result" => $arrayUtf8Encode->utf8Converter($classes->findClasses($rowProject->database_name))
+                        /** Retorno **/
+                        $result = array(
 
-                    );
+                            "cod" => 1,
+                            "result" => $arrayUtf8Encode->utf8Converter($classes->findClasses($rowProject->database_name))
+
+                        );
+
+                    }
+                    else
+                    {
+
+                        /** Preencho a array de erros */
+                        array_push($message, 'Registro inválido');
+
+                        /** Retorno **/
+                        $result = array(
+
+                            "cod" => 0,
+                            "result" => $message
+
+                        );
+
+                    }
 
                 }
                 else
                 {
 
-                    array_push($message, 'Registro inválido');
+                    /** Preencho a array de erros */
+                    array_push($message, 'Registro não localizado');
 
                     /** Retorno **/
                     $result = array(
@@ -86,16 +112,14 @@ try {
                 }
 
             }
-            else
+            elseif (!empty($database_name)) /** Verifico se irei gerar pelo nome do banco de dados */
             {
-
-                array_push($message, 'Registro não localizado');
 
                 /** Retorno **/
                 $result = array(
 
-                    "cod" => 0,
-                    "result" => $message
+                    "cod" => 1,
+                    "result" => $arrayUtf8Encode->utf8Converter($classes->findClasses($database_name))
 
                 );
 

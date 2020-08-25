@@ -36,7 +36,29 @@
 
         </nav>
 
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-3" v-if="controls.progress_bar">
+
+            <div class="animate__animated animate__fadeIn">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12 mt-3" v-else>
 
             <div class="card card-default shadow-sm animate__animated animate__fadeIn mb-2" v-if="query.result.error.length > 0">
 
@@ -316,7 +338,45 @@
 
                         </div>
 
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12">
+
+                            <div class="card shadow-sm">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+
+                                        Listagem de Tabela do Banco de Dados
+
+                                    </h5>
+
+                                    <ul class="list-unstyled">
+
+                                        <li class="media" v-for="(table, index) in query.result.tables" v-bind:key="index">
+
+                                            <div class="media-body">
+
+                                                <h5 class="mt-0 mb-1">
+
+                                                    {{ table.TABLE_NAME }}
+
+                                                </h5>
+
+                                                {{ table.TABLE_TYPE }}
+
+                                            </div>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 text-right mt-3">
 
                             <div class="form-group">
 
@@ -387,8 +447,15 @@
                         error : [],
                         success : [],
                         situations : [],
+                        tables : [],
 
                     }
+
+                },
+
+                controls : {
+
+                    progress_bar : false,
 
                 }
 
@@ -401,6 +468,9 @@
             /** Testar conexão */
             TestConnection()
             {
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 /** Limpo as mensagens retornadas anteriormente */
                 this.query.result.error = [];
@@ -422,13 +492,18 @@
                             /** Erro **/
                             case 0:
 
+                                /** Guardo a mensagem de erro */
                                 this.query.result.error = response.data.result;
                                 break;
 
                             /** Sucesso **/
                             case 1:
 
+                                /** Pego os resultados retornados */
                                 this.query.result.success = response.data.result;
+
+                                /** Listo a tabelas existente*/
+                                this.FindTables();
                                 break;
 
                             /** Usuário não autenticado **/
@@ -439,6 +514,92 @@
                                 break;
 
                         }
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
+
+                    })
+
+                    /** Caso tenha erro */
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Listar Tabelas */
+            FindTables()
+            {
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FIND_TABLES',{
+
+                    inputs : this.inputs
+
+                })
+
+                    /** Caso tenha sucesso */
+                    .then(response => {
+
+                        /** Verificação do retorno **/
+                        switch (response.data.cod){
+
+                            /** Erro **/
+                            case 0:
+
+                                /** Guardo a mensagem de erro */
+                                this.query.result.error = response.data.result;
+
+                                /** Defino um delay */
+                                window.setTimeout(() => {
+
+                                    /** Desabilito a barra de progresso */
+                                    this.controls.progress_bar = false;
+
+                                }, 1000);
+                                break;
+
+                            /** Sucesso **/
+                            case 1:
+
+                                /** Guardo os resultados retornados */
+                                this.query.result.tables = response.data.result;
+
+                                /** Defino um delay */
+                                window.setTimeout(() => {
+
+                                    /** Desabilito a barra de progresso */
+                                    this.controls.progress_bar = false;
+
+                                }, 1000);
+                                break;
+
+                            /** Usuário não autenticado **/
+                            case 404:
+
+                                /** Recarrego a página **/
+                                location.reload();
+                                break;
+
+                        }
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -454,15 +615,16 @@
             /** Método para salvar registro **/
             Save(){
 
+                /** habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Limpo as mensagens retornadas anteriormente */
                 this.query.result.error = [];
                 this.query.result.success = [];
 
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_SAVE',{
-
                     inputs : this.inputs
-
                 })
 
                     /** Caso tenha sucesso **/
@@ -503,6 +665,14 @@
 
                         }
 
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
+
                     })
 
                     /** Caso tenha falha **/
@@ -516,6 +686,9 @@
 
             /** Método para salvar registro **/
             SaveClasses(project_id, database_name, generate_methods){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 this.inputs.project_id = project_id;
                 this.inputs.database_name = database_name;
@@ -541,14 +714,19 @@
 
                             /** Sucesso **/
                             case 1:
-                                
+
+                                /** Verifico se vai gerar o métodos automaticamente */
                                 if (generate_methods){
 
+                                    /** Gero os métodos automaticamente */
                                     this.SaveMethods(response.data.classes, response.data.tables);
 
+                                }else {
+
+                                    /** Redirecionamento de rots */
+                                    this.$router.replace({name : 'projects-datagrid'});
+
                                 }
-                                
-                                this.$router.replace({name : 'projects-datagrid'});
                                 break;
 
                             /** Usuário não autenticado **/
@@ -558,6 +736,14 @@
                                 break;
 
                         }
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -572,6 +758,9 @@
 
             /** Método para salvar registro **/
             SaveMethods(classes, tables){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 this.inputs.classes = classes;
                 this.inputs.tables = tables;
@@ -592,12 +781,14 @@
                             /** Erro **/
                             case 0:
 
+                                /** Guardo os dados de erros */
                                 this.query.result.error = response.data.result;
                                 break;
 
                             /** Sucesso **/
                             case 1:
 
+                                /** Redirecionamento de rotas */
                                 this.$router.replace({name : 'projects-datagrid'});
                                 break;
 
@@ -608,6 +799,14 @@
                                 break;
 
                         }
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -623,6 +822,9 @@
             /** Método para editar o registro **/
             EditForm(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_EDIT_FORM',{
 
@@ -633,7 +835,16 @@
                     /** Caso tenha sucesso **/
                     .then(response => {
 
+                        /** Guardo os dados */
                         this.inputs = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -649,13 +860,25 @@
             /** Método para listar registros **/
             ListSituations(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio uma requisição ao backend **/
                 axios.post('router.php?TABLE=SITUATIONS&ACTION=SITUATIONS_DATAGRID')
 
                     /** Caso tenha sucesso **/
                     .then(response => {
 
+                        /** Guardo os dados */
                         this.query.result.situations = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -679,6 +902,7 @@
 
             }
 
+            /** Listagem de registros */
             this.ListSituations();
 
         }

@@ -36,7 +36,29 @@
 
         </nav>
 
-        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
+        <div class="col-md-12 mt-3"  v-if="controls.progress_bar">
+
+            <div class="animate__animated animate__fadeIn">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3" v-else>
 
             <div class="card card-default shadow-sm">
 
@@ -199,6 +221,12 @@
 
                     }
 
+                },
+
+                controls : {
+
+                    progress_bar : false,
+
                 }
 
             }
@@ -209,6 +237,9 @@
 
             /** Método para salvar registro **/
             Save(){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 /** Criptografo em base64 o código escrito **/
                 this.inputs.code = btoa(this.inputs.code);
@@ -228,12 +259,30 @@
 
                             case 0:
 
+                                /** Guardo a mensagem de erro */
                                 this.query.result.error = response.data.result;
+
+                                /** Defino um delay */
+                                window.setTimeout(() => {
+
+                                    /** Desabilito a barra de progresso */
+                                    this.controls.progress_bar = false;
+
+                                }, 1000);
                                 break;
 
                             case 1:
 
-                                this.$router.replace({name : 'methods-datagrid', params : {project_id : this.inputs.project_id, class_id : this.inputs.class_id }});
+                                /** Defino um delay */
+                                window.setTimeout(() => {
+
+                                    /** Redirecionamento de rota */
+                                    this.$router.replace({name : 'methods-datagrid', params : {project_id : this.inputs.project_id, class_id : this.inputs.class_id }});
+
+                                    /** Desabilito a barra de progresso */
+                                    this.controls.progress_bar = false;
+
+                                }, 1000);
                                 break;
 
                             case 404:
@@ -257,6 +306,9 @@
             /** Método para editar o registro **/
             EditForm(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=METHODS&ACTION=METHODS_EDIT_FORM',{
 
@@ -267,9 +319,19 @@
                     /** Caso tenha sucesso **/
                     .then(response => {
 
+                        /** Guardo o resultado */
                         this.inputs = response.data.result;
+
                         /** Descriptografo em base64 o código escrito **/
                         this.inputs.code = atob(this.inputs.code);
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -285,13 +347,25 @@
             /** Método para listar registros **/
             ListSituations(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio uma requisição ao backend **/
                 axios.post('router.php?TABLE=SITUATIONS&ACTION=SITUATIONS_DATAGRID')
 
                     /** Caso tenha sucesso **/
                     .then(response => {
 
+                        /** Guardo o resultado */
                         this.query.result.situations = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 

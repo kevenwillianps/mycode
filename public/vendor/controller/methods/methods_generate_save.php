@@ -111,7 +111,7 @@ try {
 
                             'name' => 'All',
                             'description' => 'Método utilizado para listar todos os registros',
-                            'code' => $main->methodAll($tables_result[$keyClasses]['table_name']),
+                            'code' => $main->methodAll($tables_result[$keyClasses]['TABLE_NAME']),
 
                         );
                         array_push($defaultMethods, $arrayAll);

@@ -156,7 +156,7 @@
 
                                         <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.method_id = result.method_id">
 
-                                            <i class="fas fa-fire-alt"></i>
+                                            <i class="fas fa-fire-alt mr-1"></i>Excluir
 
                                         </a>
 
@@ -166,7 +166,7 @@
 
                                         <router-link class="nav-link" v-bind:to="{name : 'methods-form', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
 
-                                            <i class="fas fa-pencil-alt"></i>
+                                            <i class="fas fa-pencil-alt mr-1"></i>Alterar
 
                                         </router-link>
 
@@ -176,7 +176,7 @@
 
                                         <router-link class="nav-link" v-bind:to="{name : 'methods-detail', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : result.method_id}}">
 
-                                            <i class="fa fa-search"></i>
+                                            <i class="fa fa-search mr-1"></i>Detalhes
 
                                         </router-link>
 

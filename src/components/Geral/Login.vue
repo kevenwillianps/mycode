@@ -2,35 +2,19 @@
 
     <div>
 
-        <div class="container">
-
-            <div class="row">
-
-                <div class="mx-auto col-md-6 animate__animated animate__fadeIn">
-
-                    <div class="container mt-3 animate animate__fadeIn" v-if="form.progress_bar">
-
-                        <div class="card shadow-sm">
-
-                            <div class="card-body">
-
-                                <Progress percent="100"></Progress>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
         <div class="container mt-3">
 
            <div class="mx-auto col-md-6 animate__animated animate__fadeIn">
+
+               <div class="card shadow-sm mb-3 animate animate__fadeIn" v-if="form.progress_bar">
+
+                   <div class="card-body">
+
+                       <Progress percent="100"></Progress>
+
+                   </div>
+
+               </div>
 
                <div v-bind:class="'shadow-sm alert ' + alert.class" role="alert" v-if="alert.message">
 

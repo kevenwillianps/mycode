@@ -158,7 +158,7 @@
 
                                                 <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.class_id = result.class_id">
 
-                                                    <i class="fas fa-fire-alt"></i>
+                                                    <i class="fas fa-fire-alt mr-1"></i>Excluir
 
                                                 </a>
 
@@ -168,7 +168,7 @@
 
                                                 <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
 
-                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <i class="fas fa-pencil-alt mr-1"></i>Alterar
 
                                                 </router-link>
 
@@ -178,7 +178,7 @@
 
                                                 <router-link v-bind:to="{name : 'methods-datagrid', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
 
-                                                    <i class="far fa-eye"></i>
+                                                    <i class="far fa-eye mr-1"></i>Ver
 
                                                 </router-link>
 
@@ -188,7 +188,7 @@
 
                                                 <router-link v-bind:to="{name : 'classes-detail', params : {class_id : result.class_id}}" class="nav-link">
 
-                                                    <i class="fa fa-search"></i>
+                                                    <i class="fa fa-search mr-1"></i>Detalhes
 
                                                 </router-link>
 

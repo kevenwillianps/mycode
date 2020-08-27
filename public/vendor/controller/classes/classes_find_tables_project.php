@@ -21,20 +21,19 @@ $arrayUtf8Encode = new ArrayUtf8Encode();
 
 try {
 
-    /** Verifico se o usuário esta logado */
     if ($main->verifySession()){
 
         /** Capturo meus campos envios por json **/
         $inputs = json_decode(file_get_contents('php://input'), true);
 
         /** Parâmetros de entrada  **/
-        $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
+        $database_name = isset($inputs['inputs']['database_name']) ? (string)$main->antiInjection($inputs['inputs']['database_name']) : '';
 
         /** Controle de erros **/
         $message = array();
 
         /** Verifico se o campo é válido **/
-        if ($project_id <= 0)
+        if (empty($database_name))
         {
 
             /** Preencho a array de erros */
@@ -55,58 +54,13 @@ try {
 
         } else {
 
-            /** Pego o projeto */
-            $rowProject = $projects->get($project_id);
+            /** Retorno **/
+            $result = array(
 
-            /** Verifico se foi localizdo o projeto */
-            if (isset($rowProject))
-            {
+                "cod" => 1,
+                "result" => $arrayUtf8Encode->utf8Converter($classes->findClasses($database_name))
 
-                /** Verifico se é um registro válido */
-                if ($rowProject->project_id > 0)
-                {
-
-                    /** Retorno **/
-                    $result = array(
-
-                        "cod" => 1,
-                        "result" => $arrayUtf8Encode->utf8Converter($classes->findClasses($rowProject->database_name))
-
-                    );
-
-                }
-                else
-                {
-
-                    /** Preencho a array de erros */
-                    array_push($message, 'Registro inválido');
-
-                    /** Retorno **/
-                    $result = array(
-
-                        "cod" => 0,
-                        "result" => $message
-
-                    );
-
-                }
-
-            }
-            else
-            {
-
-                /** Preencho a array de erros */
-                array_push($message, 'Registro não localizado');
-
-                /** Retorno **/
-                $result = array(
-
-                    "cod" => 0,
-                    "result" => $message
-
-                );
-
-            }
+            );
 
         }
 

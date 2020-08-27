@@ -32,16 +32,7 @@
 
                     </li>
 
-                    <li class="nav-item">
-
-                        <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : 0 }}" class="nav-link">
-
-                            <i class="fas fa-pencil-alt mr-1"></i>Novo
-
-                        </router-link>
-
-                    </li>
-
+                    <!--
                     <li class="nav-item">
 
                         <router-link v-bind:to="{name : 'folders-auxiliary-form', params : {project_id : inputs.project_id, folder_id : inputs.folder_id, folder_auxiliary_id : 0}}" class="nav-link">
@@ -51,6 +42,7 @@
                         </router-link>
 
                     </li>
+                    -->
 
                 </ul>
 
@@ -58,7 +50,29 @@
 
         </nav>
 
-        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
+        <div class="col-md-12 mt-3" v-if="controls.progress_bar">
+
+            <div class="animate__animated animate__fadeIn">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3" v-else>
 
             <div class="row">
 
@@ -82,7 +96,7 @@
 
                             </h5>
 
-                            <h6 class="card-subtitle text-white-50 mb-2">
+                            <h6 class="card-subtitle mb-2">
 
                                 Classe
 
@@ -112,7 +126,7 @@
 
                                         <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.class_id = result.class_id">
 
-                                            <i class="fas fa-fire-alt"></i>
+                                            <i class="fas fa-fire-alt mr-1"></i>Excluir
 
                                         </a>
 
@@ -122,7 +136,7 @@
 
                                         <router-link v-bind:to="{name : 'classes-form', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
 
-                                            <i class="fas fa-pencil-alt"></i>
+                                            <i class="fas fa-pencil-alt mr-1"></i>Alterar
 
                                         </router-link>
 
@@ -132,7 +146,7 @@
 
                                         <router-link v-bind:to="{name : 'methods-datagrid', params : {project_id : inputs.project_id, class_id : result.class_id}}" class="nav-link">
 
-                                            <i class="far fa-eye"></i>
+                                            <i class="far fa-eye mr-1"></i>Ver
 
                                         </router-link>
 
@@ -142,7 +156,7 @@
 
                                         <router-link v-bind:to="{name : 'classes-detail', params : {class_id : result.class_id}}" class="nav-link">
 
-                                            <i class="fa fa-search"></i>
+                                            <i class="fa fa-search mr-1"></i>Detalhes
 
                                         </router-link>
 
@@ -196,6 +210,12 @@
 
                 },
 
+                controls : {
+
+                    progress_bar : false,
+
+                },
+
                 query : {
 
                     result: {
@@ -215,6 +235,9 @@
             /** Listo os registros **/
             List(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio uma requisição **/
                 axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FILES_IN_FOLDER', {
 
@@ -222,10 +245,18 @@
 
                 })
 
-                /** Caso tenha sucesso **/
+                    /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.query.result.classes = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -241,6 +272,9 @@
             /** Listagem de registros **/
             Delete(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DELETE',{
 
@@ -253,6 +287,14 @@
 
                         this.List();
                         console.log('Sucesso -> ' + response.data);
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 

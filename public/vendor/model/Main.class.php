@@ -101,7 +101,6 @@ class Main
 
             $str = trim($str); //limpa espaços vazio
             $str = strip_tags($str); //tira tags html e php
-            $str = htmlspecialchars($str); //Evita ataques XSS
             return utf8_decode($str);
         } elseif ((!is_array($str)) && $long == 'S') {
             return utf8_decode($str);

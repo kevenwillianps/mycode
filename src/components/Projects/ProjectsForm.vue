@@ -338,7 +338,7 @@
 
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" v-if="query.result.tables.length > 0">
 
                             <div class="card shadow-sm">
 
@@ -346,7 +346,7 @@
 
                                     <h5 class="card-title">
 
-                                        Listagem de Tabela do Banco de Dados
+                                        <span class="badge badge-primary">Listagem de Tabela do Banco de Dados</span>
 
                                     </h5>
 
@@ -542,7 +542,7 @@
                 this.controls.progress_bar = true;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FIND_TABLES',{
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FIND_TABLES_PROJECT',{
 
                     inputs : this.inputs
 

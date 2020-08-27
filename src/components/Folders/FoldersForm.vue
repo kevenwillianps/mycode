@@ -36,7 +36,29 @@
 
         </nav>
 
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-3" v-if="controls.progress_bar">
+
+            <div class="animate__animated animate__fadeIn">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12 mt-3" v-else>
 
             <div class="card card-default animate__animated animate__fadeIn shadow-sm">
 
@@ -97,6 +119,13 @@
                     date_update : null,
 
                 },
+
+                controls : {
+
+                    progress_bar : false,
+
+                }
+
             }
 
         },
@@ -104,6 +133,9 @@
         methods : {
 
             Save(){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
 
                 axios.post('router.php?TABLE=FOLDERS&ACTION=FOLDERS_SAVE', {
 
@@ -113,8 +145,27 @@
 
                     .then(response => {
 
-                        this.$router.replace({name : 'classes-datagrid', params : {project_id : this.inputs.project_id}});
-                        console.log('Sucesso -> ' + response.data);
+                        /** Redirecionamento de rota */
+                        this.$router.replace({
+
+                            name : 'classes-datagrid',
+                            params : {
+
+                                project_id : this.inputs.project_id,
+
+                            }
+
+                        });
+
+                        console.log(response);
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -129,6 +180,9 @@
             /** Método para editar o registro **/
             EditForm(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=FOLDERS&ACTION=FOLDERS_EDIT_FORM',{
 
@@ -136,10 +190,18 @@
 
                 })
 
-                /** Caso tenha sucesso **/
+                    /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.inputs = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -163,6 +225,7 @@
 
             }
 
+            /** Listagem de registros */
             this.ListSituations();
 
         }

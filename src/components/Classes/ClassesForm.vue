@@ -172,17 +172,17 @@
 
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" v-if="query.result.folders.length > 0">
 
                             <div class="card shadow-sm">
 
                                 <div class="card-body">
 
-                                    <h5 class="card-title">
+                                    <h4 class="card-title">
 
-                                        Hirearquia de pastas cadastradas
+                                        <span class="badge badge-primary">Hirearquia de pastas cadastradas</span>
 
-                                    </h5>
+                                    </h4>
 
                                     <div class="form-group">
 

@@ -10,10 +10,12 @@
 /** Realizo a importação de classes **/
 use \vendor\model\Main;
 use \vendor\model\Projects;
+use \vendor\model\ProjectLogs;
 
 /** Instânciamento das classes importadas **/
 $main = new Main();
 $projects = new Projects();
+$projectLogs = new ProjectLogs();
 
 /** Verifico se existe sessão */
 if ($main->verifySession())
@@ -122,17 +124,77 @@ if ($main->verifySession())
         else
         {
 
-            /** Executo o método */
-            $projects->save($project_id, $situation_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update);
+            /** Busco o registro solicitado **/
+            $row = $projects->get($project_id);
 
-            /** Result **/
-            $result = array(
+            /** Verifico se existe o registro **/
+            if (isset($row))
+            {
 
-                "cod" => 1,
-                "project_id" => $projects->getLast()->project_id,
-                "result" => "Informações atualizadas com sucesso!"
+                /** Verfico se o registro é válido **/
+                if ($row->project_id > 0)
+                {
 
-            );
+                    /** Salvo o log */
+                    if ($projectLogs->save(0, $row->project_id, $row->user_id, $row->name, $row->description, $row->version, $row->release, $row->database_local, $row->database_name, $row->database_user, $row->database_password, $row->path, $row->date_register, $row->date_update))
+                    {
+
+                        /** Executo o método */
+                        $projects->save($project_id, $situation_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update);
+
+                        /** Result **/
+                        $result = array(
+
+                            "cod" => 1,
+                            "project_id" => $projects->getLast()->project_id,
+                            "result" => "Informações atualizadas com sucesso!"
+
+                        );
+
+                    } else {
+
+                        /** Adiciono a mensagem de sucesso */
+                        array_push($message, "Não foi possivel salvar o log");
+
+                        /** Result **/
+                        $result = array(
+
+                            "cod" => 0,
+                            "message" => $message
+
+                        );
+
+                    }
+
+                } else {
+
+                    /** Adiciono a mensagem de erro */
+                    array_push($message, "Registro inválido");
+
+                    /** Result **/
+                    $result = array(
+
+                        "cod" => 0,
+                        "message" => $message
+
+                    );
+
+                }
+
+            } else {
+
+                /** Adiciono a mensagem de erro */
+                array_push($message, "Não foi possível localizar o registro");
+
+                /** Result **/
+                $result = array(
+
+                    "cod" => 0,
+                    "message" => $message
+
+                );
+
+            }
 
         }
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by MyCode
  * user: KEVEN
@@ -11,17 +10,14 @@
 /** Realizo a importação de classes **/
 use \vendor\model\Main;
 use \vendor\model\Methods;
-use \vendor\model\MethodLogs;
 
 /** Instânciamento das classes importadas **/
 $main = new Main();
 $methods = new Methods();
-$methodLogs = new MethodLogs();
 
 try {
 
-    if ($main->verifySession())
-    {
+    if ($main->verifySession()){
 
         /** Capturo meus campos envios por json **/
         $inputs = json_decode(file_get_contents('php://input'), true);
@@ -101,28 +97,22 @@ try {
             {
 
                 /** Verfico se o registro é válido **/
-                if ($row->method_id > 0)
-                {
+                if ($row->method_id > 0) {
 
-                    /** Salvo o log */
-                    if ($methodLogs->save(0, $row->method_id, $row->user_id, $row->class_id, $row->name, $row->description, $row->type, $row->code, $row->version, $row->release, $row->date_register, $row->date_update))
-                    {
+                    /** Executo o método de exclusão **/
+                    if ($methods->delete($row->method_id)) {
 
-                        /** Salvo o método */
-                        $methods->save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update);
+                        array_push($message, "Registro Excluído com Sucesso!");
 
                         /** Result **/
                         $result = array(
 
                             "cod" => 1,
-                            "message" => "Método salvo com sucesso!"
+                            "message" => $message
 
                         );
-
                     } else {
-
-                        /** Adiciono a mensagem de sucesso */
-                        array_push($message, "Não foi possivel salvar o log");
+                        array_push($message, "Erro ao executar método");
 
                         /** Result **/
                         $result = array(
@@ -131,12 +121,9 @@ try {
                             "message" => $message
 
                         );
-
                     }
-
+                    
                 } else {
-
-                    /** Adiciono a mensagem de erro */
                     array_push($message, "Registro inválido");
 
                     /** Result **/
@@ -146,12 +133,8 @@ try {
                         "message" => $message
 
                     );
-
                 }
-
             } else {
-
-                /** Adiciono a mensagem de erro */
                 array_push($message, "Não foi possível localizar o registro");
 
                 /** Result **/
@@ -161,8 +144,15 @@ try {
                     "message" => $message
 
                 );
-
             }
+
+            $methods->save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update);
+
+            /** Result **/
+            $result = array(
+                "cod" => 1,
+                "message" => "Informações atualizadas com sucesso!"
+            );
 
         }
 
@@ -170,10 +160,8 @@ try {
 
         /** Preparo o formulario para retorno **/
         $result = array(
-
             "cod" => 404,
             "message" => "Usuário não autenticado",
-
         );
 
     }
@@ -188,10 +176,8 @@ try {
 
     /** Preparo o formulario para retorno **/
     $result = array(
-
         "cod" => 0,
         "message" => $e->getMessage()
-
     );
 
     /** Envio **/

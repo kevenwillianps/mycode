@@ -1,5 +1,6 @@
 import ProjectsDatagrid from './components/Projects/ProjectsDatagrid'
 import ProjectsForm from './components/Projects/ProjectsForm'
+import ProjectsHistory from './components/Projects/ProjectsHistory'
 
 import FoldersForm from './components/Folders/FoldersForm'
 import FoldersDetail from './components/Folders/FoldersDetail'
@@ -46,6 +47,15 @@ const routes = [
         path: '/projects/form/:project_id',
         component: ProjectsForm,
         name: 'projects-form',
+
+    },
+
+    {
+
+        /** Página Inicial **/
+        path: '/projects/history/:project_id',
+        component: ProjectsHistory,
+        name: 'projects-history',
 
     },
 

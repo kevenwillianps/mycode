@@ -22,6 +22,16 @@
 
                     <li class="nav-item">
 
+                        <router-link v-bind:to="{name : 'projects-history', params : { project_id : inputs.project_id }}" class="nav-link">
+
+                            <i class="fas fa-history"></i>Histórico
+
+                        </router-link>
+
+                    </li>
+
+                    <li class="nav-item">
+
                         <router-link to="/" class="nav-link">
 
                             <i class="fa fa-bars mr-1"></i>Listagem
@@ -376,6 +386,56 @@
 
                         </div>
 
+                        <div class="col-md-12 animate__animated animate__fadeIn" v-if="query.result.methods_templates.length > 0 && inputs.generate_classes && inputs.generate_methods">
+
+                            <div class="card shadow-sm">
+
+                                <div class="card-body">
+
+                                    <h5 class="card-title">
+
+                                        <span class="badge badge-primary">
+
+                                            Métodos Disponiveis para Gerar
+
+                                        </span>
+
+                                    </h5>
+
+                                    <div class="form-group" v-for="(result, index) in query.result.methods_templates" v-bind:key="index">
+
+                                        <div class="custom-control custom-checkbox">
+
+                                            <input type="checkbox" class="custom-control-input" v-bind:id="'check_method_template_' + result.method_template_id" v-on:click="AddOrRemoveMethodTemplateId(result.method_template_id)">
+
+                                            <label class="custom-control-label" v-bind:for="'check_method_template_' + result.method_template_id">
+
+                                                {{ result.name }}
+
+                                            </label>
+
+                                            -
+
+                                            <span class="text-muted">
+
+                                                <small>
+
+                                                    {{ result.description }}
+
+                                                </small>
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                         <div class="col-md-12 text-right mt-3">
 
                             <div class="form-group">
@@ -440,6 +500,12 @@
 
                 },
 
+                method_template : {
+
+                    id : [],
+
+                },
+
                 query : {
 
                     result : {
@@ -448,6 +514,7 @@
                         success : [],
                         situations : [],
                         tables : [],
+                        methods_templates : [],
 
                     }
 
@@ -464,6 +531,24 @@
         },
 
         methods : {
+
+            /** Adiciono ou removo um elemento da array **/
+            AddOrRemoveMethodTemplateId(method_template_id){
+
+                /** Verifico se existe o elemento na array **/
+                if (this.method_template.id.indexOf(method_template_id) > -1){
+
+                    /** Removo o elemento da array **/
+                    this.method_template.id.splice(this.method_template.id.indexOf(method_template_id), 1);
+
+                }else{
+
+                    /** Adiciono elemento na array **/
+                    this.method_template.id.push(method_template_id);
+
+                }
+
+            },
 
             /** Testar conexão */
             TestConnection()
@@ -624,7 +709,7 @@
 
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_SAVE',{
-                    inputs : this.inputs
+                    inputs : this.inputs,
                 })
 
                     /** Caso tenha sucesso **/
@@ -768,7 +853,8 @@
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=METHODS&ACTION=METHODS_GENERATE_SAVE',{
 
-                    inputs : this.inputs
+                    inputs : this.inputs,
+                    method_template : this.method_template
 
                 })
 
@@ -891,6 +977,40 @@
 
             },
 
+            /** Método para listar registros **/
+            ListMethodsTemplates(){
+
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
+                /** Envio uma requisição ao backend **/
+                axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_DATAGRID')
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        /** Guardo os dados */
+                        this.query.result.methods_templates = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
+
+                    })
+
+                    /** Caso tenha erro **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
         },
 
         mounted(){
@@ -903,6 +1023,7 @@
             }
 
             /** Listagem de registros */
+            this.ListMethodsTemplates();
             this.ListSituations();
 
         }

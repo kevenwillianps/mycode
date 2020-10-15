@@ -21,6 +21,7 @@ $projects = new Projects();
 
 try {
 
+    /** Verifico se o usuário esta autenticado */
     if ($main->verifySession()){
 
         /** Capturo meus campos envios por json **/
@@ -85,70 +86,6 @@ try {
                     /** Localizo as classes **/
                     foreach($classes_result as $keyClasses => $resultClasses)
                     {
-
-                        /** Monto uma array com os métodos padrões */
-                        $defaultMethods = array();
-
-                        /** Monto uma array com os métodos padrões */
-                        $arrayConstruct = array(
-
-                            'name' => 'Construct',
-                            'description' => 'Método utilizado na construção da classe',
-                            'code' => $main->methodConstruct(),
-
-                        );
-                        array_push($defaultMethods, $arrayConstruct);
-                        /** Monto uma array com os métodos padrões */
-                        $arraySave = array(
-
-                            'name' => 'Save',
-                            'description' => 'Método utilizado para salvar os registros',
-                            'code' => $main->methodSave($tables_result[$keyClasses]['TABLE_NAME'], $classes->findParameters($database_name, $tables_result[$keyClasses]['TABLE_NAME'])),
-
-                        );
-                        array_push($defaultMethods, $arraySave); /** Monto uma array com os métodos padrões */
-                        $arrayAll = array(
-
-                            'name' => 'All',
-                            'description' => 'Método utilizado para listar todos os registros',
-                            'code' => $main->methodAll($tables_result[$keyClasses]['TABLE_NAME']),
-
-                        );
-                        array_push($defaultMethods, $arrayAll);
-                        /** Monto uma array com os métodos padrões */
-                        $arrayGet = array(
-
-                            'name' => 'Get',
-                            'description' => 'Método utilizado para pegar um registro em especifíco',
-                            'code' => $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['TABLE_NAME'])->COLUMN_NAME, $tables_result[$keyClasses]['TABLE_NAME']),
-
-                        );
-                        array_push($defaultMethods, $arrayGet);
-                        /** Monto uma array com os métodos padrões */
-                        $arrayDelete = array(
-
-                            'name' => 'Delete',
-                            'description' => 'Método para excluir um registro',
-                            'code' => $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['TABLE_NAME'])->COLUMN_NAME, $tables_result[$keyClasses]['TABLE_NAME']),
-
-                        );
-                        array_push($defaultMethods, $arrayDelete);
-                        /** Monto uma array com os métodos padrões */
-                        $arrayDestruct = array(
-
-                            'name' => 'Destruct',
-                            'description' => 'Método utilizado quando chegar ao final da classe',
-                            'code' => $main->methodDestruct(),
-
-                        );
-                        array_push($defaultMethods, $arrayDestruct);
-
-                        foreach ($defaultMethods as $keyDefaultMethods => $resultDefaultMethods){
-
-                            /** Salvo ps método **/
-                            $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], $defaultMethods[$keyDefaultMethods]['name'], $defaultMethods[$keyDefaultMethods]['description'], $type, base64_encode($defaultMethods[$keyDefaultMethods]['code']), $version, $release, $date_register, $date_update);
-
-                        }
 
                         /** Result **/
                         $result = array(

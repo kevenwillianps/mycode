@@ -43,6 +43,52 @@ class ProjectLogs
         $this->connection->connect();
     }
 
+    /** Lista todos os registros **/
+    public function all($project_id)
+    {
+
+        /** Parâmetros de Entrada */
+        $this->project_id = (int)$project_id;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM project_logs WHERE project_id = :project_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do Sql */
+        $this->stmt->bindParam(':project_id', $this->project_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /** Lista todos os registros **/
+    public function get($project_log_id)
+    {
+
+        /** Parâmetros de Entrada */
+        $this->project_log_id = (int)$project_log_id;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM project_logs WHERE project_log_id = :project_log_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do Sql */
+        $this->stmt->bindParam(':project_log_id', $this->project_log_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchObject();
+    }
+
     /** Insere/autualiza um registro no banco de dados **/
     public function save($project_log_id, $project_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update)
     {

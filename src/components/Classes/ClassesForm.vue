@@ -516,44 +516,6 @@
             },
 
             /** Método para listar registros **/
-            ListFoldersAuxiliary(){
-
-                /** habilito a barra de progresso */
-                this.controls.progress_bar = true;
-
-                /** Envio uma requisição ao backend **/
-                axios.post('router.php?TABLE=FOLDERS_AUXILIARY&ACTION=FOLDERS_AUXILIARY_ALL', {
-
-                    inputs : this.inputs,
-
-                })
-
-                    /** Caso tenha sucesso **/
-                    .then(response => {
-
-                        this.query.result.folders_auxiliary = response.data.result;
-                        this.query.result.count_folders_auxiliary = response.data.result.length;
-
-                        /** Defino um delay */
-                        window.setTimeout(() => {
-
-                            /** habilito a barra de progresso */
-                            this.controls.progress_bar = false;
-
-                        }, 1000);
-
-                    })
-
-                    /** Caso tenha erro **/
-                    .catch(response => {
-
-                        console.log('Erro -> ' + response.data);
-
-                    });
-
-            },
-
-            /** Método para listar registros **/
             ListTables(){
 
                 /** habilito a barra de progresso */
@@ -605,8 +567,6 @@
             this.ListSituations();
             /** Listagem de registros */
             this.ListFolders();
-            /** Listagem de registros */
-            this.ListFoldersAuxiliary();
             /** Listagem de registros */
             this.ListTables();
 

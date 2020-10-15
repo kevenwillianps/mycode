@@ -200,7 +200,7 @@ try {
                     else
                     {
 
-                        /** Decodifico minha strign */
+                        /** Decodifico minha string */
                         $code = base64_decode($code);
 
                         /** Marco a Chave Primária */
@@ -210,16 +210,16 @@ try {
                         $code = str_replace('[inputs_parameters_method]', $marking->markingParametersMethod($classes->findParameters($rowProject->database_name, $rowClass->table_name)), $code);
 
                         /** Marco os parâmetros de entrada **/
-                        $code = str_replace('[sql_insert]', $marking->markingSqlInsert($classes->findParameters($rowProject->database_name, $rowClass->table_name), $rowProject->database_name), $code);
+                        $code = str_replace('[sql_insert]', $marking->markingSqlInsert($classes->findParameters($rowProject->database_name, $rowClass->table_name), $rowClass->table_name), $code);
 
                         /** Marco os parâmetros de entrada **/
-                        $code = str_replace('[sql_update]', $marking->markingSqlUpdate($classes->findParameters($rowProject->database_name, $rowClass->table_name), $rowProject->database_name), $code);
+                        $code = str_replace('[sql_update]', $marking->markingSqlUpdate($classes->findParameters($rowProject->database_name, $rowClass->table_name), $rowClass->table_name), $code);
 
                         /** Marco o Sql de pesquisa */
                         $code = str_replace('[sql_select]', $marking->markingSqlSelect($rowProject->database_name), $code);
 
                         /** Marco o Sql de exclusão */
-                        $code = str_replace('[sql_delete]', $marking->markingSqlDelete($classes->findPrimaryKey($rowProject->database_name, $rowClass->table_name)->COLUMN_NAME, $rowProject->database_name), $code);
+                        $code = str_replace('[sql_delete]', $marking->markingSqlDelete($classes->findPrimaryKey($rowProject->database_name, $rowClass->table_name)->COLUMN_NAME, $rowClass->table_name), $code);
 
                         /** Marco o Sql de exclusão */
                         $code = str_replace('[inputs_parameters]', $marking->markingParameters($classes->findParameters($rowProject->database_name, $rowClass->table_name)), $code);

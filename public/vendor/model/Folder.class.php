@@ -15,7 +15,6 @@ class Folder
 
     /** Variaveis que irei utilizar na classe **/
     private $connection = null;
-    private $situation_id = 0;
     private $folder_id = 0;
     private $project_id = 0;
     private $name = null;
@@ -87,7 +86,7 @@ class Folder
         $this->project_id = (int)$project_id;
 
         /** Consulta SQL **/
-        $sql = "select * from folders where project_id = :project_id and folder_auxiliary_id is null;";
+        $sql = "select * from folders where project_id = :project_id;";
 
         /** Preparo o Sql **/
         $stmt = $this->connection->connect()->prepare($sql);
@@ -143,10 +142,12 @@ class Folder
 
             /** Consulta SQL **/
             $sql = "INSERT INTO folders(folder_id, project_id, name, date_register, date_update)VALUES(:folder_id, :project_id, :name, :date_register, :date_update)";
+
         } else {
 
             /** Consulta SQL **/
             $sql = "UPDATE folders set folder_id = :folder_id, project_id = :project_id, name = :name, date_register = :date_register, date_update = :date_update WHERE folder_id = :folder_id";
+
         }
 
         /** Preparo o SQL **/

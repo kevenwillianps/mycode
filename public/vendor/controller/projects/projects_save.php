@@ -124,37 +124,56 @@ if ($main->verifySession())
         else
         {
 
-            /** Busco o registro solicitado **/
-            $row = $projects->get($project_id);
-
-            /** Verifico se existe o registro **/
-            if (isset($row))
+            /** Verifico se vou salvar o log */
+            if ($project_id > 0)
             {
 
-                /** Verfico se o registro é válido **/
-                if ($row->project_id > 0)
+                /** Busco o registro solicitado **/
+                $row = $projects->get($project_id);
+
+                /** Verifico se existe o registro **/
+                if (isset($row))
                 {
 
-                    /** Salvo o log */
-                    if ($projectLogs->save(0, $row->project_id, $row->user_id, $row->name, $row->description, $row->version, $row->release, $row->database_local, $row->database_name, $row->database_user, $row->database_password, $row->path, $row->date_register, $row->date_update))
+                    /** Verfico se o registro é válido **/
+                    if ($row->project_id > 0)
                     {
 
-                        /** Executo o método */
-                        $projects->save($project_id, $situation_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update);
+                        /** Salvo o log */
+                        if ($projectLogs->save(0, $row->project_id, $row->user_id, $row->name, $row->description, $row->version, $row->release, $row->database_local, $row->database_name, $row->database_user, $row->database_password, $row->path, $row->date_register, $row->date_update))
+                        {
 
-                        /** Result **/
-                        $result = array(
+                            /** Executo o método */
+                            $projects->save($project_id, $situation_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update);
 
-                            "cod" => 1,
-                            "project_id" => $projects->getLast()->project_id,
-                            "result" => "Informações atualizadas com sucesso!"
+                            /** Result **/
+                            $result = array(
 
-                        );
+                                "cod" => 1,
+                                "project_id" => $projects->getLast()->project_id,
+                                "result" => "Informações atualizadas com sucesso!"
+
+                            );
+
+                        } else {
+
+                            /** Adiciono a mensagem de sucesso */
+                            array_push($message, "Não foi possivel salvar o log");
+
+                            /** Result **/
+                            $result = array(
+
+                                "cod" => 0,
+                                "message" => $message
+
+                            );
+
+                        }
 
                     } else {
 
-                        /** Adiciono a mensagem de sucesso */
-                        array_push($message, "Não foi possivel salvar o log");
+                        /** Adiciono a mensagem de erro */
+                        array_push($message, "Registro inválido");
 
                         /** Result **/
                         $result = array(
@@ -169,7 +188,7 @@ if ($main->verifySession())
                 } else {
 
                     /** Adiciono a mensagem de erro */
-                    array_push($message, "Registro inválido");
+                    array_push($message, "Não foi possível localizar o registro");
 
                     /** Result **/
                     $result = array(
@@ -181,16 +200,19 @@ if ($main->verifySession())
 
                 }
 
-            } else {
+            }
+            else
+            {
 
-                /** Adiciono a mensagem de erro */
-                array_push($message, "Não foi possível localizar o registro");
+                /** Executo o método */
+                $projects->save($project_id, $situation_id, $user_id, $name, $description, $version, $release, $database_local, $database_name, $database_user, $database_password, $path, $date_register, $date_update);
 
                 /** Result **/
                 $result = array(
 
-                    "cod" => 0,
-                    "message" => $message
+                    "cod" => 1,
+                    "project_id" => $projects->getLast()->project_id,
+                    "result" => "Informações atualizadas com sucesso!"
 
                 );
 

@@ -112,7 +112,7 @@ try {
                             $str = str_replace('[sql_update]', $marking->markingSqlUpdate($classes->findParameters($database_name, $resultClasses['table_name']), $database_name), $str);
 
                             /** Marco o Sql de pesquisa */
-                            $str = str_replace('[sql_select]', $marking->markingSqlSelect($database_name), $str);
+                            $str = str_replace('[sql_select]', $marking->markingSqlSelect($resultClasses['table_name']), $str);
 
                             /** Marco o Sql de exclusão */
                             $str = str_replace('[sql_delete]', $marking->markingSqlDelete($classes->findPrimaryKey($database_name, $resultClasses['table_name'])->COLUMN_NAME, $database_name), $str);

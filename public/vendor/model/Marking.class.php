@@ -15,6 +15,7 @@ class Marking
     private $string;
     private $inputs;
     private $databaseName;
+    private $tableName;
     private $parameters;
     private $inputsInsert;
     private $inputsUpdate;
@@ -142,25 +143,25 @@ class Marking
     }
 
     /** Crio o Sql para delete */
-    public function markingSqlDelete($primary_key, $databaseName)
+    public function markingSqlDelete($primary_key, $tableName)
     {
 
         /** Parâmetros de entrada **/
         $this->primaryKey = (string)$primary_key;
-        $this->databaseName = (string)$databaseName;
+        $this->tableName = (string)$tableName;
 
         /** Retorno o resultado */
-        return 'DELETE FROM ' . $this->databaseName . ' WHERE `' . $this->primaryKey . '` = :' . $this->primaryKey . ';';
+        return 'DELETE FROM ' . $this->tableName . ' WHERE `' . $this->primaryKey . '` = :' . $this->primaryKey . ';';
 
     }
 
     /** Crio o Sql para insert */
-    public function markingSqlInsert($inputs, $databaseName)
+    public function markingSqlInsert($inputs, $tableName)
     {
 
         /** Parâmetros de entrada **/
-        $this->inputs       = (array)$inputs;
-        $this->databaseName = (string)$databaseName;
+        $this->inputs    = (array)$inputs;
+        $this->tableName = (string)$tableName;
 
         /** Limpo as variaveis */
         $this->parameters = null;
@@ -178,7 +179,7 @@ class Marking
         }
 
         /** Retorno o resultado */
-        return 'INSERT INTO ' . $this->databaseName . '(' . substr($this->inputsInsert, 0, -2) . ') VALUES (' . substr($this->parameters, 0, -2) . ');';
+        return 'INSERT INTO ' . $this->tableName . '(' . substr($this->inputsInsert, 0, -2) . ') VALUES (' . substr($this->parameters, 0, -2) . ');';
 
     }
 

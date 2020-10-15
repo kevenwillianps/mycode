@@ -24,6 +24,16 @@
 
                     <li class="nav-item">
 
+                        <a type="button" v-on:click="GenerateDefault()" class="nav-link">
+
+                            <i class="fas fa-pencil-alt mr-1"></i>Gerar
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
                         <router-link v-bind:to="{ name : 'methods-templates-form', params : { method_template_id : 0 }}" class="nav-link">
 
                             <i class="fas fa-pencil-alt mr-1"></i>Novo
@@ -214,6 +224,29 @@
                     .then(response => {
 
                         this.query.result = response.data.result;
+
+                    })
+
+                    /** Caso tenha falha **/
+                    .catch(response => {
+
+                        console.log('Erro -> ' + response.data);
+
+                    });
+
+            },
+
+            /** Listagem de registros **/
+            GenerateDefault(){
+
+                /** Envio de requisição **/
+                axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_GENERATE_DEFAULT')
+
+                    /** Caso tenha sucesso **/
+                    .then(response => {
+
+                        this.List();
+                        console.log('Sucesso -> ' + response.data);
 
                     })
 

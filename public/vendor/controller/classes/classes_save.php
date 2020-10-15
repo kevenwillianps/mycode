@@ -87,35 +87,53 @@ try {
             );
         } else {
 
-            /** Busco o registro solicitado **/
-            $row = $classes->get($class_id);
-
-            /** Verifico se existe o registro **/
-            if (isset($row))
+            if ($class_id > 0)
             {
 
-                /** Verfico se o registro é válido **/
-                if ($row->class_id > 0)
+                /** Busco o registro solicitado **/
+                $row = $classes->get($class_id);
+
+                /** Verifico se existe o registro **/
+                if (isset($row))
                 {
 
-                    /** Salvo o log */
-                    if ($classLog->save(0, $row->class_id, $row->user_id, $row->project_id, $row->folder_id, $row->name, $row->name_space, $row->description, $row->version, $row->release, $row->table_name, $row->date_register, $row->date_update))
+                    /** Verfico se o registro é válido **/
+                    if ($row->class_id > 0)
                     {
 
-                        $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $name_space, $description, $version, $release, $table_name, $date_register, $date_update);
+                        /** Salvo o log */
+                        if ($classLog->save(0, $row->class_id, $row->user_id, $row->project_id, $row->folder_id, $row->name, $row->name_space, $row->description, $row->version, $row->release, $row->table_name, $row->date_register, $row->date_update))
+                        {
 
-                        /** Result **/
-                        $result = array(
+                            $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $name_space, $description, $version, $release, $table_name, $date_register, $date_update);
 
-                            "cod" => 1,
-                            "result" => "Informações atualizadas com sucesso!"
+                            /** Result **/
+                            $result = array(
 
-                        );
+                                "cod" => 1,
+                                "result" => "Informações atualizadas com sucesso!"
+
+                            );
+
+                        } else {
+
+                            /** Adiciono a mensagem de sucesso */
+                            array_push($message, "Não foi possivel salvar o log");
+
+                            /** Result **/
+                            $result = array(
+
+                                "cod" => 0,
+                                "message" => $message
+
+                            );
+
+                        }
 
                     } else {
 
-                        /** Adiciono a mensagem de sucesso */
-                        array_push($message, "Não foi possivel salvar o log");
+                        /** Adiciono a mensagem de erro */
+                        array_push($message, "Registro inválido");
 
                         /** Result **/
                         $result = array(
@@ -130,7 +148,7 @@ try {
                 } else {
 
                     /** Adiciono a mensagem de erro */
-                    array_push($message, "Registro inválido");
+                    array_push($message, "Não foi possível localizar o registro");
 
                     /** Result **/
                     $result = array(
@@ -142,16 +160,17 @@ try {
 
                 }
 
-            } else {
+            }
+            else
+            {
 
-                /** Adiciono a mensagem de erro */
-                array_push($message, "Não foi possível localizar o registro");
+                $classes->save($class_id, $situation_id, $user_id, $project_id, $folder_id, $name, $name_space, $description, $version, $release, $table_name, $date_register, $date_update);
 
                 /** Result **/
                 $result = array(
 
-                    "cod" => 0,
-                    "message" => $message
+                    "cod" => 1,
+                    "result" => "Informações atualizadas com sucesso!"
 
                 );
 

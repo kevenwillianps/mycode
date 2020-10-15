@@ -64,11 +64,15 @@
 
                         <div class="card-text">
 
-                            <code class="mt-1">
+                             <pre>
 
-                                {{ result.code }}
+                                <code class="php mt-1">
 
-                            </code>
+                                    {{ result.code }}
+
+                                </code>
+
+                            </pre>
 
                         </div>
 

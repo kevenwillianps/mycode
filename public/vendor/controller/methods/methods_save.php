@@ -93,36 +93,54 @@ try {
 
         } else {
 
-            /** Busco o registro solicitado **/
-            $row = $methods->get($method_id);
-
-            /** Verifico se existe o registro **/
-            if (isset($row))
+            if ($method_id > 0)
             {
 
-                /** Verfico se o registro é válido **/
-                if ($row->method_id > 0)
+                /** Busco o registro solicitado **/
+                $row = $methods->get($method_id);
+
+                /** Verifico se existe o registro **/
+                if (isset($row))
                 {
 
-                    /** Salvo o log */
-                    if ($methodLogs->save(0, $row->method_id, $row->user_id, $row->class_id, $row->name, $row->description, $row->type, $row->code, $row->version, $row->release, $row->date_register, $row->date_update))
+                    /** Verfico se o registro é válido **/
+                    if ($row->method_id > 0)
                     {
 
-                        /** Salvo o método */
-                        $methods->save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update);
+                        /** Salvo o log */
+                        if ($methodLogs->save(0, $row->method_id, $row->user_id, $row->class_id, $row->name, $row->description, $row->type, $row->code, $row->version, $row->release, $row->date_register, $row->date_update))
+                        {
 
-                        /** Result **/
-                        $result = array(
+                            /** Salvo o método */
+                            $methods->save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update);
 
-                            "cod" => 1,
-                            "message" => "Método salvo com sucesso!"
+                            /** Result **/
+                            $result = array(
 
-                        );
+                                "cod" => 1,
+                                "message" => "Método salvo com sucesso!"
+
+                            );
+
+                        } else {
+
+                            /** Adiciono a mensagem de sucesso */
+                            array_push($message, "Não foi possivel salvar o log");
+
+                            /** Result **/
+                            $result = array(
+
+                                "cod" => 0,
+                                "message" => $message
+
+                            );
+
+                        }
 
                     } else {
 
-                        /** Adiciono a mensagem de sucesso */
-                        array_push($message, "Não foi possivel salvar o log");
+                        /** Adiciono a mensagem de erro */
+                        array_push($message, "Registro inválido");
 
                         /** Result **/
                         $result = array(
@@ -137,7 +155,7 @@ try {
                 } else {
 
                     /** Adiciono a mensagem de erro */
-                    array_push($message, "Registro inválido");
+                    array_push($message, "Não foi possível localizar o registro");
 
                     /** Result **/
                     $result = array(
@@ -149,16 +167,18 @@ try {
 
                 }
 
-            } else {
+            }
+            else
+            {
 
-                /** Adiciono a mensagem de erro */
-                array_push($message, "Não foi possível localizar o registro");
+                /** Salvo o método */
+                $methods->save($method_id, $situation_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update);
 
                 /** Result **/
                 $result = array(
 
-                    "cod" => 0,
-                    "message" => $message
+                    "cod" => 1,
+                    "message" => "Método salvo com sucesso!"
 
                 );
 

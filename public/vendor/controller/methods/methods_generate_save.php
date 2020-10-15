@@ -10,12 +10,16 @@
 /** Realizo a importação de classes **/
 use \vendor\model\Main;
 use \vendor\model\Methods;
+use \vendor\model\Marking;
+use \vendor\model\MethodsTemplates;
 use \vendor\model\Classes;
 use \vendor\model\Projects;
 
 /** Instânciamento das classes importadas **/
 $main = new Main();
 $methods = new Methods();
+$marking = new Marking();
+$methodTemplate = new MethodsTemplates;
 $classes = new Classes();
 $projects = new Projects();
 
@@ -27,10 +31,11 @@ try {
         $inputs = json_decode(file_get_contents('php://input'), true);
 
         /** Parâmetros de entrada **/
-        $project_id     = isset($inputs['inputs']['project_id'])    ? (int)$main->antiInjection($inputs['inputs']['project_id'])         : 0;
-        $database_name  = isset($inputs['inputs']['database_name']) ? (string)$main->antiInjection($inputs['inputs']['database_name'])   : '';
-        $tables_result  = isset($inputs['inputs']['tables'])        ? (array)$main->antiInjection($inputs['inputs']['tables'])           : '';
-        $classes_result = isset($inputs['inputs']['classes'])       ? (array)$main->antiInjection($inputs['inputs']['classes'])          : '';
+        $project_id     = isset($inputs['inputs']['project_id'])      ? (int)$main->antiInjection($inputs['inputs']['project_id'])         : 0;
+        $database_name  = isset($inputs['inputs']['database_name'])   ? (string)$main->antiInjection($inputs['inputs']['database_name'])   : '';
+        $tables_result  = isset($inputs['inputs']['tables'])          ? (array)$main->antiInjection($inputs['inputs']['tables'])           : '';
+        $classes_result = isset($inputs['inputs']['classes'])         ? (array)$main->antiInjection($inputs['inputs']['classes'])          : '';
+        $method_template_id = isset($inputs['method_template']['id']) ? (array)$main->antiInjection($inputs['method_template']['id'])      : '';
 
         $method_id     = isset($inputs['inputs']['method_id'])     ? (int)$main->antiInjection($inputs['inputs']['method_id'])          : 0;
         $situation_id  = isset($inputs['inputs']['situation_id'])  ? (int)$main->antiInjection($inputs['inputs']['situation_id'])       : 1;
@@ -83,80 +88,81 @@ try {
                 {
 
                     /** Localizo as classes **/
-                    foreach($classes_result as $keyClasses => $resultClasses)
+                    foreach($method_template_id as $keyMethodTemplateId => $resultMethodTemplateId)
                     {
 
-                        /** Monto uma array com os métodos padrões */
-                        $defaultMethods = array();
+                        /** Busco o método desejado */
+                        $resultMethodTemplate = $methodTemplate->get($resultMethodTemplateId);
 
-                        /** Monto uma array com os métodos padrões */
-                        $arrayConstruct = array(
+                        /** Verifico se o registro foi localizado */
+                        if (isset($resultMethodTemplate))
+                        {
 
-                            'name' => 'Construct',
-                            'description' => 'Método utilizado na construção da classe',
-                            'code' => $main->methodConstruct(),
+                            /** Localizo as classes **/
+                            foreach($classes_result as $keyClasses => $resultClasses)
+                            {
 
-                        );
-                        array_push($defaultMethods, $arrayConstruct);
-                        /** Monto uma array com os métodos padrões */
-                        $arraySave = array(
+                                /** Decodifico minha strign */
+                                $str = base64_decode($resultMethodTemplate->code);
 
-                            'name' => 'Save',
-                            'description' => 'Método utilizado para salvar os registros',
-                            'code' => $main->methodSave($tables_result[$keyClasses]['TABLE_NAME'], $classes->findParameters($database_name, $tables_result[$keyClasses]['TABLE_NAME'])),
+                                /** Marco a Chave Primária */
+                                $str = str_replace('[primary_key]', $marking->markingPrimaryKey($classes->findPrimaryKey($database_name, $resultClasses['table_name'])->COLUMN_NAME), $str);
 
-                        );
-                        array_push($defaultMethods, $arraySave); /** Monto uma array com os métodos padrões */
-                        $arrayAll = array(
+                                /** Marco os parâmetros de entrada **/
+                                $str = str_replace('[inputs_parameters_method]', $marking->markingParametersMethod($classes->findParameters($database_name, $resultClasses['table_name'])), $str);
 
-                            'name' => 'All',
-                            'description' => 'Método utilizado para listar todos os registros',
-                            'code' => $main->methodAll($tables_result[$keyClasses]['TABLE_NAME']),
+                                /** Marco os parâmetros de entrada **/
+                                $str = str_replace('[sql_insert]', $marking->markingSqlInsert($classes->findParameters($database_name, $resultClasses['table_name']), $database_name), $str);
 
-                        );
-                        array_push($defaultMethods, $arrayAll);
-                        /** Monto uma array com os métodos padrões */
-                        $arrayGet = array(
+                                /** Marco os parâmetros de entrada **/
+                                $str = str_replace('[sql_update]', $marking->markingSqlUpdate($classes->findParameters($database_name, $resultClasses['table_name']), $database_name), $str);
 
-                            'name' => 'Get',
-                            'description' => 'Método utilizado para pegar um registro em especifíco',
-                            'code' => $main->methodGet($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['TABLE_NAME'])->COLUMN_NAME, $tables_result[$keyClasses]['TABLE_NAME']),
+                                /** Marco o Sql de pesquisa */
+                                $str = str_replace('[sql_select]', $marking->markingSqlSelect($resultClasses['table_name']), $str);
 
-                        );
-                        array_push($defaultMethods, $arrayGet);
-                        /** Monto uma array com os métodos padrões */
-                        $arrayDelete = array(
+                                /** Marco o Sql de exclusão */
+                                $str = str_replace('[sql_delete]', $marking->markingSqlDelete($classes->findPrimaryKey($database_name, $resultClasses['table_name'])->COLUMN_NAME, $database_name), $str);
 
-                            'name' => 'Delete',
-                            'description' => 'Método para excluir um registro',
-                            'code' => $main->methodDelete($classes->findPrimaryKey($database_name, $tables_result[$keyClasses]['TABLE_NAME'])->COLUMN_NAME, $tables_result[$keyClasses]['TABLE_NAME']),
+                                /** Marco o Sql de exclusão */
+                                $str = str_replace('[inputs_parameters]', $marking->markingParameters($classes->findParameters($database_name, $resultClasses['table_name'])), $str);
 
-                        );
-                        array_push($defaultMethods, $arrayDelete);
-                        /** Monto uma array com os métodos padrões */
-                        $arrayDestruct = array(
+                                /** Marco os Parâmetros padrões */
+                                $str = str_replace('[default_parameters_class]', $marking->markingDefaultParameters(), $str);
 
-                            'name' => 'Destruct',
-                            'description' => 'Método utilizado quando chegar ao final da classe',
-                            'code' => $main->methodDestruct(),
+                                /** Marco os Parâmetros padrões */
+                                $str = str_replace('[bind_param]', $marking->markingBindParams($classes->findParameters($database_name, $resultClasses['table_name'])), $str);
 
-                        );
-                        array_push($defaultMethods, $arrayDestruct);
+                                /** Codifico para base64 */
+                                $str = base64_encode($str);
 
-                        foreach ($defaultMethods as $keyDefaultMethods => $resultDefaultMethods){
+                                /** Salvo o método */
+                                $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], $resultMethodTemplate->name, $resultMethodTemplate->description, $resultMethodTemplate->type, $str, $resultMethodTemplate->version, $resultMethodTemplate->release, $date_register, $date_update);
 
-                            /** Salvo ps método **/
-                            $methods->save($method_id, $situation_id, $user_id, $resultClasses['class_id'], $defaultMethods[$keyDefaultMethods]['name'], $defaultMethods[$keyDefaultMethods]['description'], $type, base64_encode($defaultMethods[$keyDefaultMethods]['code']), $version, $release, $date_register, $date_update);
+                                /** Result **/
+                                $result = array(
+
+                                    "cod" => 1,
+                                    "result" => "Informações atualizadas com sucesso!",
+
+                                );
+
+                            }
 
                         }
+                        else
+                        {
 
-                        /** Result **/
-                        $result = array(
+                            array_push($message, "Não foi possivél localizar o método");
 
-                            "cod" => 1,
-                            "result" => "Informações atualizadas com sucesso!",
+                            /** Preparo o formulario para retorno **/
+                            $result = array(
 
-                        );
+                                "cod" => 0,
+                                "result" => $message,
+
+                            );
+
+                        }
 
                     }
 

@@ -1,0 +1,209 @@
+DROP TABLE IF EXISTS `situations`;
+CREATE TABLE IF NOT EXISTS `situations` (
+  `situation_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`situation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `user_functions`;
+CREATE TABLE IF NOT EXISTS `user_functions` (
+  `user_function_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_function_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_function_id` int(10) UNSIGNED NOT NULL,
+  `situation_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `email` varchar(191) COLLATE utf8_bin NOT NULL,
+  `password` varchar(60) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  FOREIGN KEY `situation_id` (`situation_id`) REFERENCES `situations` (`situation_id`),
+  FOREIGN KEY `user_function_id` (`user_function_id`) REFERENCES `user_functions` (`user_function_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `projects`;
+CREATE TABLE IF NOT EXISTS `projects` (
+  `project_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `situation_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `database_local` varchar(191) COLLATE utf8_bin NOT NULL,
+  `database_name` varchar(30) COLLATE utf8_bin NOT NULL,
+  `database_user` varchar(10) COLLATE utf8_bin NOT NULL,
+  `database_password` varchar(10) COLLATE utf8_bin NOT NULL,
+  `path` varchar(191) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`project_id`),
+  FOREIGN KEY `situation_id` (`situation_id`) REFERENCES `situations` (`situation_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `project_logs`;
+CREATE TABLE IF NOT EXISTS `project_logs` (
+  `project_log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `database_local` varchar(191) COLLATE utf8_bin NOT NULL,
+  `database_name` varchar(30) COLLATE utf8_bin NOT NULL,
+  `database_user` varchar(10) COLLATE utf8_bin NOT NULL,
+  `database_password` varchar(10) COLLATE utf8_bin NOT NULL,
+  `path` varchar(191) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`project_log_id`),
+  FOREIGN KEY `project_id` (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE,
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `folders`;
+CREATE TABLE IF NOT EXISTS `folders` (
+  `folder_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `folder_auxiliary_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`folder_id`),
+  FOREIGN KEY `project_id` (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE,
+  FOREIGN KEY `folder_auxiliary_id` (`folder_auxiliary_id`) REFERENCES `folders` (`folder_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `classes`;
+CREATE TABLE IF NOT EXISTS `classes` (
+  `class_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `situation_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `folder_id` int(10) UNSIGNED,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `name_space` varchar(191) COLLATE utf8_bin NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(191) COLLATE utf8_bin NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`class_id`),
+  FOREIGN KEY `situation_id` (`situation_id`) REFERENCES `situations` (`situation_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`),
+  FOREIGN KEY `project_id` (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE,
+  FOREIGN KEY `folder_id` (`folder_id`) REFERENCES `folders` (`folder_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `class_logs`;
+CREATE TABLE IF NOT EXISTS `class_logs` (
+  `class_log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `class_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `folder_id` int(10) UNSIGNED,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `name_space` varchar(191) COLLATE utf8_bin NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(191) COLLATE utf8_bin NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`class_log_id`),
+  FOREIGN KEY `class_id` (`class_id`) REFERENCES `classes` (`class_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`),
+  FOREIGN KEY `project_id` (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE,
+  FOREIGN KEY `folder_id` (`folder_id`) REFERENCES `folders` (`folder_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `methods`;
+CREATE TABLE IF NOT EXISTS `methods` (
+  `method_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `situation_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `class_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `type` varchar(45) COLLATE utf8_bin NOT NULL,
+  `code` longtext COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`method_id`),
+  FOREIGN KEY `situation_id` (`situation_id`) REFERENCES `situations` (`situation_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`),
+  FOREIGN KEY `class_id` (`class_id`) REFERENCES `classes` (`class_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `method_logs`;
+CREATE TABLE IF NOT EXISTS `method_logs` (
+  `method_log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `method_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `class_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `type` varchar(45) COLLATE utf8_bin NOT NULL,
+  `code` longtext COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`method_log_id`),
+  FOREIGN KEY `method_id` (`method_id`) REFERENCES `methods` (`method_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`),
+  FOREIGN KEY `class_id` (`class_id`) REFERENCES `classes` (`class_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `methods_templates`;
+CREATE TABLE IF NOT EXISTS `methods_templates` (
+  `method_template_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `situation_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `type` varchar(45) COLLATE utf8_bin NOT NULL,
+  `code` longtext COLLATE utf8_bin NOT NULL,
+  `version` varchar(4) COLLATE utf8_bin NOT NULL,
+  `release` varchar(4) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`method_template_id`),
+  FOREIGN KEY `situation_id` (`situation_id`) REFERENCES `situations` (`situation_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+DROP TABLE IF EXISTS `parameters`;
+CREATE TABLE IF NOT EXISTS `parameters` (
+  `parameter_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `situation_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `method_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8_bin NOT NULL,
+  `description` varchar(191) COLLATE utf8_bin NOT NULL,
+  `type` varchar(45) COLLATE utf8_bin NOT NULL,
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`parameter_id`),
+  FOREIGN KEY `situation_id` (`situation_id`) REFERENCES `situations` (`situation_id`),
+  FOREIGN KEY `user_id` (`user_id`) REFERENCES `users` (`user_id`),
+  FOREIGN KEY `method_id` (`method_id`) REFERENCES `methods` (`method_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

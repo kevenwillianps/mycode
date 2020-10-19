@@ -11,8 +11,10 @@ import FoldersAuxiliaryDetail from './components/FoldersAuxiliary/FoldersAuxilia
 import ClassesForm from './components/Classes/ClassesForm'
 import ClassesDatagrid from './components/Classes/ClassesDatagrid'
 import ClassesDetail from './components/Classes/ClassesDetail'
+import ClassesHistory from './components/Classes/ClassesHistory'
 
 import MethodsForm from './components/Methods/MethodsForm'
+import MethodsHistory from './components/Methods/MethodsHistory'
 import MethodsDatagrid from './components/Methods/MethodsDatagrid'
 import MethodsDetail from './components/Methods/MethodsDetail'
 import MethodsFormTemplateBuild from './components/Methods/MethodsFormTemplateBuild'
@@ -125,6 +127,15 @@ const routes = [
     {
 
         /** Página Inicial **/
+        path: '/classes/history/:project_id/:class_id',
+        component: ClassesHistory,
+        name: 'class-history',
+
+    },
+
+    {
+
+        /** Página Inicial **/
         path: '/methods/datagrid/:project_id/:class_id',
         component: MethodsDatagrid,
         name: 'methods-datagrid',
@@ -137,6 +148,15 @@ const routes = [
         path: '/methods/form/:project_id/:class_id/:method_id',
         component: MethodsForm,
         name: 'methods-form',
+
+    },
+
+    {
+
+        /** Página Inicial **/
+        path: '/methods/history/:project_id/:class_id/:method_id',
+        component: MethodsHistory,
+        name: 'methods-history',
 
     },
 

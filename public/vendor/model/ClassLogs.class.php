@@ -43,6 +43,52 @@ class ClassLogs
 
     }
 
+    /** Lista todos os registros **/
+    public function all($class_id)
+    {
+
+        /** Parâmetros de Entrada */
+        $this->class_id = (int)$class_id;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM class_logs WHERE class_id = :class_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do Sql */
+        $this->stmt->bindParam(':class_id', $this->class_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /** Lista todos os registros **/
+    public function get($class_log_id)
+    {
+
+        /** Parâmetros de Entrada */
+        $this->class_log_id = (int)$class_log_id;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM class_logs WHERE class_log_id = :class_log_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do Sql */
+        $this->stmt->bindParam(':class_log_id', $this->class_log_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchObject();
+    }
+
     /** Insere/autualiza um registro no banco de dados **/
     public function save($class_log_id, $class_id, $user_id, $project_id, $folder_id, $name, $name_space, $description, $version, $release, $table_name, $date_register, $date_update)
     {

@@ -8,7 +8,7 @@
 
             <a class="navbar-brand" href="#">
 
-                <i class="far fa-folder-open mr-1"></i>Projetos/ <span class="badge badge-primary">Listagem</span>
+                <i class="far fa-folder-open mr-1"></i>Projetos/Classes/Histórico/ <span class="badge badge-primary">Listagem</span>
 
             </a>
 
@@ -132,7 +132,7 @@
 
                                     <span class="badge badge-primary">
 
-                                        <i class="fas fa-hashtag mr-1"></i>{{result.project_id}}
+                                        <i class="fas fa-hashtag mr-1"></i>{{result.class_log_id}}
 
                                     </span>
 
@@ -156,39 +156,19 @@
 
                                 <nav class="navbar navbar-card navbar-expand-lg navbar-light bg-transparent card-footer">
 
-                                    <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_project_' + result.project_id" v-bind:aria-controls="'#navbar_project_' + result.project_id" aria-expanded="false">
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse" v-bind:data-target="'#navbar_project_' + result.class_id" v-bind:aria-controls="'#navbar_project_' + result.class_id" aria-expanded="false">
 
                                         <span class="navbar-toggler-icon"></span>
 
                                     </button>
 
-                                    <div class="collapse navbar-collapse" v-bind:id="'navbar_project_' + result.project_id">
+                                    <div class="collapse navbar-collapse" v-bind:id="'navbar_project_' + result.class_id">
 
                                         <ul class="navbar-nav mr-auto">
 
                                             <li class="nav-item">
 
-                                                <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.project_id = result.project_id">
-
-                                                    <i class="fas fa-fire-alt mr-1"></i>Excluir
-
-                                                </a>
-
-                                            </li>
-
-                                            <li class="nav-item">
-
-                                                <router-link v-bind:to="{name : 'projects-form', params : { project_id : result.project_id }}" class="nav-link">
-
-                                                    <i class="fas fa-pencil-alt mr-1"></i>Alterar
-
-                                                </router-link>
-
-                                            </li>
-
-                                            <li class="nav-item">
-
-                                                <router-link v-bind:to="{name : 'classes-datagrid', params : {project_id : result.project_id}}" class="nav-link">
+                                                <router-link v-bind:to="{name : 'classes-datagrid', params : {class_id : result.class_id}}" class="nav-link">
 
                                                     <i class="far fa-eye mr-1"></i>Ver
 
@@ -198,9 +178,9 @@
 
                                             <li class="nav-item">
 
-                                                <a class="nav-link" type="button" v-on:click="Build(result.project_id)">
+                                                <a class="nav-link" type="button" v-on:click="Restore(result.class_log_id, result.class_id)">
 
-                                                    <i class="fas fa-hammer mr-1"></i>Gerar
+                                                    <i class="fas fa-hammer mr-1"></i>Restaurar
 
                                                 </a>
 
@@ -237,7 +217,7 @@
     export default {
 
         /** Nome do componente atual **/
-        name: "ProjectsDatagrid",
+        name: "ClassesHistory",
 
         components : {
 
@@ -251,7 +231,8 @@
 
                 inputs : {
 
-                    project_id : null,
+                    class_id : this.$route.params.class_id,
+                    class_log_id : null,
 
                 },
 
@@ -284,48 +265,7 @@
                 this.query.success = false;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_DATAGRID')
-
-                    /** Caso tenha sucesso **/
-                    .then(response => {
-
-                        /** */
-                        switch (response.data.cod)
-                        {
-
-                            case 1:
-
-                                this.query.result = response.data.result;
-
-                                window.setTimeout(() => {
-
-                                    this.controls.progress_bar = false;
-
-                                }, 1000);
-
-                                break;
-
-                        }
-
-                    })
-
-                    /** Caso tenha falha **/
-                    .catch(response => {
-
-                        console.log('Erro -> ' + response.data);
-
-                    });
-
-            },
-
-            /** Listagem de registros **/
-            Delete(){
-
-                this.controls.progress_bar = true;
-                this.query.success = false;
-
-                /** Envio de requisição **/
-                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_DELETE',{
+                axios.post('router.php?TABLE=CLASS_LOGS&ACTION=CLASS_LOGS_DATAGRID', {
 
                     inputs : this.inputs
 
@@ -334,12 +274,13 @@
                     /** Caso tenha sucesso **/
                     .then(response => {
 
-                        this.List();
+                        /** Guardo o Resultado */
+                        this.query.result = response.data.result;
 
+                        /** Retiro a barra de progresso */
                         window.setTimeout(() => {
 
                             this.controls.progress_bar = false;
-                            console.log('Sucesso -> ' + response.data);
 
                         }, 1000);
 
@@ -355,41 +296,30 @@
             },
 
             /** Listagem de registros **/
-            Build(project_id){
+            Restore(class_log_id, class_id){
 
+                /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
+
+                /** Escondo a mensagem de suscesos */
                 this.query.success = false;
-                this.inputs.project_id = project_id;
+
+                /** identificadores */
+                this.inputs.class_id = class_id;
+                this.inputs.class_log_id = class_log_id;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_BUILD',{
+                axios.post('router.php?TABLE=CLASS_LOGS&ACTION=CLASS_LOGS_RESTORE', {
 
                     inputs : this.inputs
 
                 })
 
                     /** Caso tenha sucesso **/
-                    .then(response => {
+                    .then(() => {
 
-                        switch (response.data.cod)
-                        {
-
-                            case 1:
-
-                                window.setTimeout(() => {
-
-                                    this.query.success = true;
-                                    this.controls.progress_bar = false;
-                                    console.log('Sucesso -> ' + response.data);
-
-                                }, 1000);
-                                break;
-
-                            case 0:
-                                console.log('Erro -> ' + response.data);
-                                break;
-
-                        }
+                        /** Listo todos os registros novamente */
+                        this.List();
 
                     })
 
@@ -400,7 +330,7 @@
 
                     });
 
-            }
+            },
 
         },
 

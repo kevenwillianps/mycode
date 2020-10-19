@@ -32,8 +32,8 @@ try {
         $name          = isset($inputs['inputs']['name'])          ? (string)$main->antiInjection($inputs['inputs']['name'])          : '';
         $name_space    = isset($inputs['inputs']['name_space'])    ? (string)$main->antiInjection($inputs['inputs']['name_space'])    : '';
         $description   = isset($inputs['inputs']['description'])   ? (string)$main->antiInjection($inputs['inputs']['description'])   : '';
-        $version       = isset($inputs['inputs']['version'])       ? (string)$main->antiInjection($inputs['inputs']['version'])       : '';
-        $release       = isset($inputs['inputs']['release'])       ? (string)$main->antiInjection($inputs['inputs']['release'])       : '';
+        $version       = isset($inputs['inputs']['version'])       ? (string)$main->antiInjection(date('Y') . '.' . date('m')) : date('Y') . '.' . date('m');
+        $release       = isset($inputs['inputs']['release'])       ? (string)$main->antiInjection((int)$inputs['inputs']['release'] + 1)      : ((int)$inputs['inputs']['release'] + 1);
         $table_name    = isset($inputs['inputs']['table_name'])    ? (string)$main->antiInjection($inputs['inputs']['table_name'])    : '';
         $date_register = isset($inputs['inputs']['date_register']) ? (string)$main->antiInjection($inputs['inputs']['date_register']) : date("y-m-d h:m:s");
         $date_update   = isset($inputs['inputs']['date_update'])   ? (string)$main->antiInjection($inputs['inputs']['date_update'])   : date("y-m-d h:m:s");
@@ -87,7 +87,7 @@ try {
                     {
 
                         /** Salvo as classes **/
-                        $classes->save($class_id, $situation_id, $user_id, $row->project_id, $folder_id, $main->nameClass($result['TABLE_NAME']), $name_space, $main->descriptionClass($result['TABLE_NAME']), $version, $release, $result['TABLE_NAME'], $date_register, $date_update);
+                        $classes->save($class_id, $situation_id, $user_id, $row->project_id, $folder_id, $main->nameClass($result['table_name']), $name_space, $main->descriptionClass($result['table_name']), $version, $release, $result['table_name'], $date_register, $date_update);
 
                     }
 

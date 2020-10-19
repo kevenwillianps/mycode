@@ -20,11 +20,11 @@
 
                 <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="inputs.project_id > 0">
 
                         <router-link v-bind:to="{name : 'projects-history', params : { project_id : inputs.project_id }}" class="nav-link">
 
-                            <i class="fas fa-history"></i>Histórico
+                            <i class="fas fa-history mr-1"></i>Histórico
 
                         </router-link>
 

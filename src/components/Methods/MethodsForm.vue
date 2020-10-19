@@ -20,6 +20,16 @@
 
                 <ul class="navbar-nav ml-auto">
 
+                    <li class="nav-item" v-if="inputs.method_id > 0">
+
+                        <router-link v-bind:to="{name : 'methods-history', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : inputs.method_id }}" class="nav-link">
+
+                            <i class="fas fa-history mr-1"></i>Histórico
+
+                        </router-link>
+
+                    </li>
+
                     <li class="nav-item">
 
                         <router-link v-bind:to="{name : 'methods-datagrid', params : { project_id : inputs.project_id, class_id : inputs.class_id, method_id : 0}}" class="nav-link">

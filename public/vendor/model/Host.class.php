@@ -16,7 +16,8 @@ class Host
     /** Pego a localização do banco de dados **/
     public function getDsn()
     {
-        return $dsn = (string)"mysql:host=localhost;port=3308;dbname=mycode3";
+        return $dsn = (string)"mysql:host=localhost;port=3306;dbname=mycode3;charset=utf8";
+//        return $dsn = (string)"mysql:host=localhost;dbname=mycode3";
     }
 
     /** Pego o usuário de acesso **/

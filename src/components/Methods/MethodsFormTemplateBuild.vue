@@ -40,7 +40,7 @@
 
             <div class="row">
 
-                <div class="col-md-3" v-for="(result, index) in query.result.methods_template" v-bind:key="index">
+                <div class="col-md-3 mb-3" v-for="(result, index) in query.result.methods_template" v-bind:key="index">
 
                     <div class="card card-default shadow-sm">
 
@@ -58,11 +58,21 @@
 
                             </h6>
 
-                            <p class="card-text">
+                            <a class="btn btn-outline-primary btn-block my-3" data-toggle="collapse" v-bind:href="'#collapse_code_' + result.method_template_id" role="button" aria-expanded="false" v-bind:aria-controls="'collapse_code_' + result.method_template_id">
 
-                                {{ result.code }}
+                                Visualizar Código
 
-                            </p>
+                            </a>
+
+                            <div class="collapse" v-bind:id="'collapse_code_' + result.method_template_id">
+
+                                <p class="card-text">
+
+                                    {{ result.code }}
+
+                                </p>
+
+                            </div>
 
                             <div class="btn-group-toggle" data-toggle="buttons">
 

@@ -20,6 +20,16 @@
 
                 <ul class="navbar-nav ml-auto">
 
+                    <li class="nav-item" v-if="inputs.class_id > 0">
+
+                        <router-link v-bind:to="{name : 'class-history', params : { project_id : inputs.project_id, class_id : inputs.class_id }}" class="nav-link">
+
+                            <i class="fas fa-history mr-1"></i>Histórico
+
+                        </router-link>
+
+                    </li>
+
                     <li class="nav-item">
 
                         <router-link v-bind:to="{name : 'classes-datagrid', params : { project_id : inputs.project_id}}" class="nav-link">
@@ -108,9 +118,9 @@
 
                             <select id="TableName" class="custom-select form-control" v-model="inputs.table_name">
 
-                                <option v-bind:value="result.TABLE_NAME" v-for="(result, index) in query.result.tables" v-bind:key="index">
+                                <option v-bind:value="result.table_name" v-for="(result, index) in query.result.tables" v-bind:key="index">
 
-                                    {{ result.TABLE_NAME }}
+                                    {{ result.table_name }}
 
                                 </option>
 

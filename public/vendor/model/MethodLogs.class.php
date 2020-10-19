@@ -41,6 +41,52 @@ class MethodLogs
         $this->connection->connect();
     }
 
+    /** Lista todos os registros **/
+    public function all($method_id)
+    {
+
+        /** Parâmetros de Entrada */
+        $this->method_id = (int)$method_id;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM method_logs WHERE method_id = :method_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do Sql */
+        $this->stmt->bindParam(':method_id', $this->method_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /** Lista todos os registros **/
+    public function get($method_log_id)
+    {
+
+        /** Parâmetros de Entrada */
+        $this->method_log_id = (int)$method_log_id;
+
+        /** Consulta SQL **/
+        $this->sql = "SELECT * FROM method_logs WHERE method_log_id = :method_log_id";
+
+        /** Preparo o Sql **/
+        $this->stmt = $this->connection->connect()->prepare($this->sql);
+
+        /** Preencho os parâmetros do Sql */
+        $this->stmt->bindParam(':method_log_id', $this->method_log_id);
+
+        /** Executo o SQl **/
+        $this->stmt->execute();
+
+        /** Retorno um objeto **/
+        return $this->stmt->fetchObject();
+    }
+
     /** Insere/autualiza um registro no banco de dados **/
     public function save($method_log_id, $method_id, $user_id, $class_id, $name, $description, $type, $code, $version, $release, $date_register, $date_update)
     {

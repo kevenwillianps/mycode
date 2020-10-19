@@ -10,13 +10,13 @@
 
 /** Realizo a importação de classes **/
 use \vendor\model\Main;
-use \vendor\model\Projects;
-use \vendor\model\ProjectLogs;
+use \vendor\model\Classes;
+use \vendor\model\ClassLogs;
 
 /** Instânciamento das classes importadas **/
 $main = new Main();
-$projects = new Projects();
-$projectLogs = new ProjectLogs();
+$class = new Classes();
+$classLogs = new ClassLogs();
 
 /** Verifico se existe sessão */
 if ($main->verifySession())
@@ -29,20 +29,20 @@ if ($main->verifySession())
         $inputs = json_decode(file_get_contents('php://input') , true);
 
         /** Parâmetros de Entrada */
-        $project_id = isset($inputs['inputs']['project_id']) ? (int)$main->antiInjection($inputs['inputs']['project_id']) : 0;
-        $project_log_id = isset($inputs['inputs']['project_log_id']) ? (int)$main->antiInjection($inputs['inputs']['project_log_id']) : 0;
+        $class_id = isset($inputs['inputs']['class_id']) ? (int)$main->antiInjection($inputs['inputs']['class_id']) : 0;
+        $class_log_id = isset($inputs['inputs']['class_log_id']) ? (int)$main->antiInjection($inputs['inputs']['class_log_id']) : 0;
 
         /** Controle de Erros **/
         $message = array();
 
         /** Validação de campos obrigatórios **/
         /** Verifico se o campo situation_id foi preenchido **/
-        if ($project_id < 0)
+        if ($class_id < 0)
         {
             array_push($message, 'O campo "ProjetoId", deve ser preenchido');
         }
 
-        if ($project_log_id < 0)
+        if ($class_log_id < 0)
         {
             array_push($message, 'O campo "ProjetoLogId", deve ser preenchido');
         }
@@ -64,32 +64,34 @@ if ($main->verifySession())
         {
 
             /** Busco um histórico */
-            $resultProjectLog = $projectLogs->get($project_log_id);
+            $resultClassLog = $classLogs->get($class_log_id);
 
             /** Verifico se vou salvar o log */
-            if (isset($resultProjectLog))
+            if (isset($resultClassLog))
             {
 
                 /** Busco um histórico */
-                $resultProjects = $projects->get($project_id);
+                $resultClass = $class->get($class_id);
 
                 /** Verifico se existe o registro **/
-                if (isset($resultProjects))
+                if (isset($resultClass))
                 {
 
                     /** Salvo o log */
-                    if ($projectLogs->save(0, $resultProjects->project_id, $resultProjects->user_id, $resultProjects->name, $resultProjects->description, $resultProjects->version, $resultProjects->release, $resultProjects->database_local, $resultProjects->database_name, $resultProjects->database_user, $resultProjects->database_password, $resultProjects->path, $resultProjects->date_register, $resultProjects->date_update))
+                    if ($classLogs->save(0, $resultClass->class_id, $resultClass->user_id, $resultClass->project_id, $resultClass->folder_id, $resultClass->name, $resultClass->name_space, $resultClass->description, $resultClass->version, $resultClass->release, $resultClass->table_name, $resultClass->date_register, $resultClass->date_update))
                     {
 
                         /** Executo o método */
-                        $projects->save($resultProjects->project_id, 1, $resultProjectLog->user_id, $resultProjectLog->name, $resultProjectLog->description, $resultProjectLog->version, $resultProjectLog->release, $resultProjectLog->database_local, $resultProjectLog->database_name, $resultProjectLog->database_user, $resultProjectLog->database_password, $resultProjectLog->path, $resultProjects->date_register, $resultProjects->date_update);
+                        $class->save($resultClassLog->class_id, 1, $resultClassLog->user_id, $resultClassLog->project_id, $resultClassLog->folder_id, $resultClassLog->name, $resultClassLog->name_space, $resultClassLog->description, $resultClassLog->version, $resultClassLog->release, $resultClassLog->table_name, $resultClassLog->date_register, $resultClassLog->date_update);
+
+                        /** Adiciono a mensagem de sucesso */
+                        array_push($message, "Informações Atualizadas");
 
                         /** Result **/
                         $result = array(
 
-                            "cod" => 1,
-                            "project_id" => $projects->getLast()->project_id,
-                            "result" => "Informações atualizadas com sucesso!"
+                            "cod" => 0,
+                            "message" => $message
 
                         );
 
@@ -130,14 +132,13 @@ if ($main->verifySession())
             {
 
                 /** Adiciono a mensagem de erro */
-                array_push($message, "Histórico Não Localizado");
+                array_push($message, "Histórico não Localizado");
 
                 /** Result **/
                 $result = array(
 
-                    "cod" => 1,
-                    "project_id" => $projects->getLast()->project_id,
-                    "result" => "Informações atualizadas com sucesso!"
+                    "cod" => 0,
+                    "message" => $message
 
                 );
 

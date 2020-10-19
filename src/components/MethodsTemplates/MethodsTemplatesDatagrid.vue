@@ -48,9 +48,65 @@
 
         </nav>
 
-        <div class="col-md-12 animate__animated animate__fadeIn mt-3">
+        <div class="col-md-12 mt-3"  v-if="controls.progress_bar">
 
-            <div class="row">
+            <div class="animate__animated animate__fadeIn">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="progress">
+
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12 animate__animated animate__fadeIn mt-3" v-else>
+
+            <div class="animate__animated animate__fadeIn" v-if="query.result <= 0">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="media">
+
+                            <img src="image/svg/003-error.svg" width="70px" class="mr-3" alt="MyCMS - Keven Willian">
+
+                            <div class="media-body">
+
+                                <h3 class="mt-0">
+
+                                    Ops!
+
+                                </h3>
+
+                                <h5 class="text-muted">
+
+                                    Não foram localizado registros
+
+                                </h5>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row" v-else>
 
                 <div class="col-md-3 mb-3" v-for="(result, index) in query.result" v-bind:key="index">
 
@@ -60,11 +116,11 @@
 
                             <h5 class="card-title">
 
-                                    <span class="badge badge-primary mr-1">
+                                <span class="badge badge-primary mr-1">
 
-                                        <i class="fas fa-hashtag mr-1"></i>{{ result.method_template_id }}
+                                    <i class="fas fa-hashtag mr-1"></i>{{ result.method_template_id }}
 
-                                    </span>
+                                </span>
 
                                 {{ result.name }}
 
@@ -100,7 +156,7 @@
 
                                         <a class="nav-link" type="button" data-toggle="modal" data-target="#myModal" v-on:click="inputs.method_template_id = result.method_template_id">
 
-                                            <i class="fas fa-fire-alt"></i>
+                                            <i class="fas fa-fire-alt mr-1"></i>Excluir
 
                                         </a>
 
@@ -110,7 +166,7 @@
 
                                         <router-link class="nav-link" v-bind:to="{name : 'methods-templates-form', params : { method_template_id : result.method_template_id}}">
 
-                                            <i class="fas fa-pencil-alt"></i>
+                                            <i class="fas fa-pencil-alt mr-1"></i> Alterar
 
                                         </router-link>
 
@@ -120,7 +176,7 @@
 
                                         <router-link class="nav-link" v-bind:to="{name : 'methods-templates-detail', params : { method_template_id : result.method_template_id}}">
 
-                                            <i class="fa fa-search"></i>
+                                            <i class="fa fa-search mr-1"></i> Detalhes
 
                                         </router-link>
 
@@ -130,7 +186,7 @@
 
                                         <a class="nav-link" type="button" data-toggle="collapse" v-bind:href="'#navbar_method_template_' + result.method_template_id" role="button" aria-expanded="false" aria-controls="collapseExample">
 
-                                            <i class="fas fa-hammer"></i>
+                                            <i class="fas fa-hammer mr-1"></i> Gerar
 
                                         </a>
 
@@ -151,12 +207,6 @@
                                     <input type="text" class="form-control" v-model="inputs.database_name">
 
                                 </div>
-
-                                <button class="btn btn-primary" v-on:click="Build(), inputs.method_template_id = result.method_template_id">
-
-                                    Gerar
-
-                                </button>
 
                             </div>
 
@@ -208,22 +258,39 @@
 
                 },
 
+                controls : {
+
+                    progress_bar : false,
+
+                },
+
             }
 
         },
 
         methods : {
 
-            /** Listagem de registros **/
+            /** Listo os registros **/
             List(){
 
-                /** Envio de requisição **/
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
+                /** Envio uma requisição **/
                 axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_DATAGRID')
 
                     /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.query.result = response.data.result;
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -262,6 +329,9 @@
             /** Listagem de registros **/
             Delete(){
 
+                /** Habilito a barra de progresso */
+                this.controls.progress_bar = true;
+
                 /** Envio de requisição **/
                 axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_DELETE',{
 
@@ -269,11 +339,20 @@
 
                 })
 
-                /** Caso tenha sucesso **/
+                    /** Caso tenha sucesso **/
                     .then(response => {
 
                         this.List();
-                        console.log('Sucesso -> ' + response.data);
+
+                        /** Defino um delay */
+                        window.setTimeout(() => {
+
+                            console.log('Sucesso -> ' + response.data);
+
+                            /** Desabilito a barra de progresso */
+                            this.controls.progress_bar = false;
+
+                        }, 1000);
 
                     })
 
@@ -285,34 +364,6 @@
                     });
 
             },
-
-            /** Listagem de registros **/
-            Build(){
-
-                /** Envio de requisição **/
-                    axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_BUILD',{
-
-                    inputs : this.inputs
-
-                })
-
-                    /** Caso tenha sucesso **/
-                    .then(response => {
-
-                        this.List();
-                        console.log('Sucesso -> ' + response.data);
-
-                    })
-
-                    /** Caso tenha falha **/
-                    .catch(response => {
-
-                        console.log('Erro -> ' + response.data);
-
-                    });
-
-            }
-
 
         },
 

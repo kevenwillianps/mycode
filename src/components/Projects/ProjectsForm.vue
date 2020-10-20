@@ -472,57 +472,57 @@
         /** Nome do componente atual **/
         name: "ProjectsForm",
 
-        data(){
+        data() {
 
             return {
 
                 /** Campos do formulário **/
-                inputs : {
+                inputs: {
 
-                    project_id : this.$route.params.project_id,
-                    situation_id : null,
-                    user_id : null,
-                    name : null,
-                    description : null,
-                    version : null,
-                    release : null,
-                    database_local : null,
-                    database_name : null,
-                    database_user : null,
-                    database_password : null,
-                    path : null,
-                    date_register : null,
-                    date_update : null,
+                    project_id: this.$route.params.project_id,
+                    situation_id: null,
+                    user_id: null,
+                    name: null,
+                    description: null,
+                    version: null,
+                    release: null,
+                    database_local: null,
+                    database_name: null,
+                    database_user: null,
+                    database_password: null,
+                    path: null,
+                    date_register: null,
+                    date_update: null,
 
                     /** Controlle de envio */
-                    generate_classes : false,
-                    generate_methods : false,
+                    generate_classes: false,
+                    generate_methods: false,
 
                 },
 
-                method_template : {
+                method_template: {
 
-                    id : [],
+                    id: [],
 
                 },
 
-                query : {
+                query: {
 
-                    result : {
+                    result: {
 
-                        error : [],
-                        success : [],
-                        situations : [],
-                        tables : [],
-                        methods_templates : [],
+                        error: [],
+                        success: [],
+                        situations: [],
+                        tables: [],
+                        methods_templates: [],
 
                     }
 
                 },
 
-                controls : {
+                controls: {
 
-                    progress_bar : false,
+                    progress_bar: false,
 
                 }
 
@@ -530,18 +530,18 @@
 
         },
 
-        methods : {
+        methods: {
 
             /** Adiciono ou removo um elemento da array **/
-            AddOrRemoveMethodTemplateId(method_template_id){
+            AddOrRemoveMethodTemplateId(method_template_id) {
 
                 /** Verifico se existe o elemento na array **/
-                if (this.method_template.id.indexOf(method_template_id) > -1){
+                if (this.method_template.id.indexOf(method_template_id) > -1) {
 
                     /** Removo o elemento da array **/
                     this.method_template.id.splice(this.method_template.id.indexOf(method_template_id), 1);
 
-                }else{
+                } else {
 
                     /** Adiciono elemento na array **/
                     this.method_template.id.push(method_template_id);
@@ -551,8 +551,7 @@
             },
 
             /** Testar conexão */
-            TestConnection()
-            {
+            TestConnection() {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -562,17 +561,17 @@
                 this.query.result.success = [];
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_TEST_CONNECTION',{
+                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_TEST_CONNECTION', {
 
-                    inputs : this.inputs
+                    inputs: this.inputs
 
                 })
 
-                    /** Caso tenha sucesso */
+                /** Caso tenha sucesso */
                     .then(response => {
 
                         /** Verificação do retorno **/
-                        switch (response.data.cod){
+                        switch (response.data.cod) {
 
                             /** Erro **/
                             case 0:
@@ -620,24 +619,23 @@
             },
 
             /** Listar Tabelas */
-            FindTables()
-            {
+            FindTables() {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FIND_TABLES_PROJECT',{
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_FIND_TABLES_PROJECT', {
 
-                    inputs : this.inputs
+                    inputs: this.inputs
 
                 })
 
-                    /** Caso tenha sucesso */
+                /** Caso tenha sucesso */
                     .then(response => {
 
                         /** Verificação do retorno **/
-                        switch (response.data.cod){
+                        switch (response.data.cod) {
 
                             /** Erro **/
                             case 0:
@@ -698,7 +696,7 @@
             },
 
             /** Método para salvar registro **/
-            Save(){
+            Save() {
 
                 /** habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -708,15 +706,15 @@
                 this.query.result.success = [];
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_SAVE',{
-                    inputs : this.inputs,
+                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_SAVE', {
+                    inputs: this.inputs,
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Verificação do retorno **/
-                        switch (response.data.cod){
+                        switch (response.data.cod) {
 
                             /** Erro **/
                             case 0:
@@ -728,15 +726,17 @@
                             case 1:
 
                                 /** Verifica se deve gerar classes automaticamente **/
-                                if (this.inputs.generate_classes){
+                                if (this.inputs.generate_classes) {
 
                                     /** Executo o método para gerar classes automaticamente **/
                                     this.SaveClasses(response.data.project_id, this.inputs.database_name, this.inputs.generate_methods);
 
-                                }else {
+                                } else {
 
                                     /** Realizo o redirecionamento **/
-                                    this.$router.replace({name : 'projects-datagrid'});
+                                    this.$router.replace({
+                                        name: 'projects-datagrid'
+                                    });
 
                                 }
                                 break;
@@ -770,7 +770,7 @@
             },
 
             /** Método para salvar registro **/
-            SaveClasses(project_id, database_name, generate_methods){
+            SaveClasses(project_id, database_name, generate_methods) {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -779,17 +779,17 @@
                 this.inputs.database_name = database_name;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_GENERATE_SAVE',{
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_GENERATE_SAVE', {
 
-                    inputs : this.inputs
+                    inputs: this.inputs
 
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Verificação do retorno **/
-                        switch (response.data.cod){
+                        switch (response.data.cod) {
 
                             /** Erro **/
                             case 0:
@@ -801,15 +801,17 @@
                             case 1:
 
                                 /** Verifico se vai gerar o métodos automaticamente */
-                                if (generate_methods){
+                                if (generate_methods) {
 
                                     /** Gero os métodos automaticamente */
                                     this.SaveMethods(response.data.classes, response.data.tables);
 
-                                }else {
+                                } else {
 
                                     /** Redirecionamento de rots */
-                                    this.$router.replace({name : 'projects-datagrid'});
+                                    this.$router.replace({
+                                        name: 'projects-datagrid'
+                                    });
 
                                 }
                                 break;
@@ -842,7 +844,7 @@
             },
 
             /** Método para salvar registro **/
-            SaveMethods(classes, tables){
+            SaveMethods(classes, tables) {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -851,18 +853,18 @@
                 this.inputs.tables = tables;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=METHODS&ACTION=METHODS_GENERATE_SAVE',{
+                axios.post('router.php?TABLE=METHODS&ACTION=METHODS_GENERATE_SAVE', {
 
-                    inputs : this.inputs,
-                    method_template : this.method_template
+                    inputs: this.inputs,
+                    method_template: this.method_template
 
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Verificação do retorno **/
-                        switch (response.data.cod){
+                        switch (response.data.cod) {
 
                             /** Erro **/
                             case 0:
@@ -875,7 +877,9 @@
                             case 1:
 
                                 /** Redirecionamento de rotas */
-                                this.$router.replace({name : 'projects-datagrid'});
+                                this.$router.replace({
+                                    name: 'projects-datagrid'
+                                });
                                 break;
 
                             /** Usuário não autenticado **/
@@ -906,19 +910,19 @@
             },
 
             /** Método para editar o registro **/
-            EditForm(){
+            EditForm() {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_EDIT_FORM',{
+                axios.post('router.php?TABLE=PROJECTS&ACTION=PROJECTS_EDIT_FORM', {
 
-                    inputs : this.inputs
+                    inputs: this.inputs
 
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Guardo os dados */
@@ -944,7 +948,7 @@
             },
 
             /** Método para listar registros **/
-            ListSituations(){
+            ListSituations() {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -952,7 +956,7 @@
                 /** Envio uma requisição ao backend **/
                 axios.post('router.php?TABLE=SITUATIONS&ACTION=SITUATIONS_DATAGRID')
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Guardo os dados */
@@ -978,7 +982,7 @@
             },
 
             /** Método para listar registros **/
-            ListMethodsTemplates(){
+            ListMethodsTemplates() {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -986,7 +990,7 @@
                 /** Envio uma requisição ao backend **/
                 axios.post('router.php?TABLE=METHODS_TEMPLATE&ACTION=METHODS_TEMPLATE_DATAGRID')
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Guardo os dados */
@@ -1013,10 +1017,10 @@
 
         },
 
-        mounted(){
+        mounted() {
 
             /** Verifico se é cadastro ou alteração **/
-            if (this.$route.params.project_id > 0){
+            if (this.$route.params.project_id > 0) {
 
                 this.EditForm();
 

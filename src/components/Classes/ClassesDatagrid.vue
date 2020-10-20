@@ -217,7 +217,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
     /** Importação de componentes **/
     import axios from 'axios';
     import ModalConfirm from '../Geral/ModalConfirm';
@@ -228,36 +227,36 @@
         /** Nome do componente atual **/
         name: "ClassesDatagrid",
 
-        components : {
+        components: {
 
             ModalConfirm,
             FoldersDatagrid,
 
         },
 
-        data (){
+        data() {
 
             return {
 
-                inputs : {
+                inputs: {
 
                     project_id: this.$route.params.project_id,
 
                 },
 
-                query : {
+                query: {
 
                     result: {
 
-                        classes : []
+                        classes: []
 
                     },
 
                 },
 
-                controls : {
+                controls: {
 
-                    progress_bar : false,
+                    progress_bar: false,
 
                 }
 
@@ -265,10 +264,10 @@
 
         },
 
-        methods : {
+        methods: {
 
             /** Listo os registros **/
-            List(){
+            List() {
 
                 /** Habilito a barra de progresso */
                 this.controls.progress_bar = true;
@@ -276,11 +275,11 @@
                 /** Envio uma requisição **/
                 axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DATAGRID', {
 
-                    inputs : this.inputs,
+                    inputs: this.inputs,
 
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Guardo os dados */
@@ -306,19 +305,19 @@
             },
 
             /** Listagem de registros **/
-            Delete(){
+            Delete() {
 
                 /** Desabilito a barra de progresso */
                 this.controls.progress_bar = true;
 
                 /** Envio de requisição **/
-                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DELETE',{
+                axios.post('router.php?TABLE=CLASSES&ACTION=CLASSES_DELETE', {
 
-                    inputs : this.inputs
+                    inputs: this.inputs
 
                 })
 
-                    /** Caso tenha sucesso **/
+                /** Caso tenha sucesso **/
                     .then(response => {
 
                         /** Listo os dados */
@@ -347,7 +346,7 @@
 
         },
 
-        mounted(){
+        mounted() {
 
             this.List();
 
